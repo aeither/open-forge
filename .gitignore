@@ -49,6 +49,7 @@ Thumbs.db
 *.temp
 
 # Move language specific
+.aptos
 */build
 /storage
 
@@ -58,5 +59,3 @@ Thumbs.db
 # Misc
 *.log
 *.cache
-
-.aptos
