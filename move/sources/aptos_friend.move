@@ -119,16 +119,18 @@ module aptos_friend_addr::aptos_friend {
             !exists<Issuer>(get_issuer_obj_addr(sender_addr)),
             ERR_USER_ALREADY_ISSUED_SHARE,
         );
-        let issuer_obj_constructor_ref = &object::create_named_object(
-            sender,
-            construct_issuer_object_seed(sender_addr),
-        );
+        let issuer_obj_constructor_ref =
+            &object::create_named_object(
+                sender,
+                construct_issuer_object_seed(sender_addr),
+            );
         let issuer_obj_signer = object::generate_signer(issuer_obj_constructor_ref);
 
-        let holding_obj_constructor_ref = &object::create_named_object(
-            sender,
-            construct_holding_object_seed(sender_addr, sender_addr),
-        );
+        let holding_obj_constructor_ref =
+            &object::create_named_object(
+                sender,
+                construct_holding_object_seed(sender_addr, sender_addr),
+            );
         let holding_obj_signer = object::generate_signer(holding_obj_constructor_ref);
 
         move_to(
@@ -152,10 +154,11 @@ module aptos_friend_addr::aptos_friend {
                 &mut user_obj.holdings, get_holding_obj(sender_addr, sender_addr)
             );
         } else {
-            let user_obj_constructor_ref = &object::create_named_object(
-                sender,
-                construct_user_object_seed(sender_addr),
-            );
+            let user_obj_constructor_ref =
+                &object::create_named_object(
+                    sender,
+                    construct_user_object_seed(sender_addr),
+                );
             let user_obj_signer = object::generate_signer(user_obj_constructor_ref);
             move_to(
                 &user_obj_signer,
@@ -182,8 +185,9 @@ module aptos_friend_addr::aptos_friend {
         amount: u64,
     ) acquires Issuer, Holding, User {
         let sender_addr = signer::address_of(sender);
-        let (share_cost, issuer_fee, protocol_fee, total_cost) =
-            calculate_buy_share_cost(issuer_obj, amount);
+        let (share_cost, issuer_fee, protocol_fee, total_cost) = calculate_buy_share_cost(
+            issuer_obj, amount
+        );
         assert!(
             coin::balance<AptosCoin>(sender_addr) >= total_cost,
             ERR_INSUFFICIENT_BALANCE,
@@ -200,10 +204,11 @@ module aptos_friend_addr::aptos_friend {
             holding.shares = holding.shares + amount;
         } else {
             // new holder buys shares
-            let holding_obj_constructor_ref = &object::create_named_object(
-                sender,
-                construct_holding_object_seed(issuer_addr, sender_addr),
-            );
+            let holding_obj_constructor_ref =
+                &object::create_named_object(
+                    sender,
+                    construct_holding_object_seed(issuer_addr, sender_addr),
+                );
             let holding_obj_signer = object::generate_signer(holding_obj_constructor_ref);
             move_to(
                 &holding_obj_signer,
@@ -221,10 +226,11 @@ module aptos_friend_addr::aptos_friend {
                     &mut buyer_obj.holdings, get_holding_obj(issuer_addr, sender_addr)
                 );
             } else {
-                let buyer_obj_constructor_ref = &object::create_named_object(
-                    sender,
-                    construct_user_object_seed(sender_addr),
-                );
+                let buyer_obj_constructor_ref =
+                    &object::create_named_object(
+                        sender,
+                        construct_user_object_seed(sender_addr),
+                    );
                 let buyer_obj_signer = object::generate_signer(buyer_obj_constructor_ref);
                 move_to(
                     &buyer_obj_signer,
@@ -259,8 +265,9 @@ module aptos_friend_addr::aptos_friend {
         amount: u64,
     ) acquires Issuer, Holding, User, Vault {
         let sender_addr = signer::address_of(sender);
-        let (share_cost, issuer_fee, protocol_fee, total_cost) =
-            calculate_sell_share_cost(issuer_obj, amount);
+        let (share_cost, issuer_fee, protocol_fee, total_cost) = calculate_sell_share_cost(
+            issuer_obj, amount
+        );
         assert!(
             coin::balance<AptosCoin>(sender_addr) >= total_cost,
             ERR_INSUFFICIENT_BALANCE,

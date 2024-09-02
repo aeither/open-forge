@@ -9,9 +9,9 @@ const surf = createSurfClient(aptos).useABI(ABI);
 
 // Reuse same Aptos instance to utilize cookie based sticky routing
 export function aptosClient() {
-  return aptos;
+	return aptos;
 }
 
 export function surfClient() {
-  return surf;
+	return surf;
 }
