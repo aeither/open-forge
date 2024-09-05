@@ -17,7 +17,7 @@ export function Home() {
 
   return (
     <>
-      <Header title="Aptos Friend" />
+      <Header title="Open Forge" />
       <Table className="max-w-screen-xl mx-auto">
         {!issuers.length && (
           <TableCaption>All users who have issued shares.</TableCaption>

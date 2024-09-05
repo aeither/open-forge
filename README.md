@@ -1,12 +1,12 @@
-## Aptos Friend Example
+## Open Forge Example
 
 This example is created from the boilerplate template in create-aptos-dapp.
 
 The Boilerplate template provides a starter dapp with all necessary dapp infrastructure and a simple wallet info implementation.
 
-### Aptos Friend Overview
+### Open Forge Overview
 
-Aptos friend is inspired by Friend.Tech, which is a social app that enables anyone to tokenize their profile by issuing shares (also know as keys). The price of the share is based on the supply and demand, i.e. price goes up when more people buying the share and vice versa. On top of the share trading, developers can build interesting things on top such as share gated chat, priority chat based on number of shares hold, etc.
+Open Forge is inspired by Friend.Tech, which is a social app that enables anyone to tokenize their profile by issuing shares (also know as keys). The price of the share is based on the supply and demand, i.e. price goes up when more people buying the share and vice versa. On top of the share trading, developers can build interesting things on top such as share gated chat, priority chat based on number of shares hold, etc.
 
 You can find a detailed explanation on the contract on [Aptos Learn](https://learn.aptoslabs.com/en/tutorial/solana-to-aptos-guide/move-friend/demo?workshop=solana-to-aptos).
 

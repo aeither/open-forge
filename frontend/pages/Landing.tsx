@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils"
 import { MailIcon } from "lucide-react"
 import { Link } from "react-router-dom"
 
+import { Header } from "@/components/Header"
 import Marquee from "@/components/magicui/marquee"
 import { Badge } from "@/components/ui/badge"
 
@@ -77,34 +78,7 @@ const ProjectCard = ({
 export default function Component() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <header className="flex items-center justify-between bg-background px-4 py-3 sm:px-6 lg:px-8">
-        <Link to="/" className="text-2xl font-bold">
-          Open Forge
-        </Link>
-        <nav className="hidden space-x-4 sm:flex">
-          <Link
-            to="/launches"
-            className="text-sm font-medium hover:underline underline-offset-4"
-          >
-            Launches
-          </Link>
-          <Link
-            to="/news"
-            className="text-sm font-medium hover:underline underline-offset-4"
-          >
-            News
-          </Link>
-          <Link
-            to="/community"
-            className="text-sm font-medium hover:underline underline-offset-4"
-          >
-            Community
-          </Link>
-        </nav>
-        <Button size="sm" className="rounded-full">
-          Get updates
-        </Button>
-      </header>
+      <Header title={"Open Forge"} />
       <main className="flex-1 bg-background">
         <section className="container mx-auto my-12 max-w-4xl px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-xl bg-white p-8 shadow-lg">

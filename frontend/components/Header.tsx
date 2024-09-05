@@ -3,6 +3,7 @@ import { type FC, useState } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
+import { WalletSelector } from "./WalletSelector"
 
 type LaunchpadHeaderProps = {
   title: string
@@ -55,6 +56,9 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
                   <User size={20} />
                 </Button>
               </Link>
+            </li>
+            <li>
+              <WalletSelector />
             </li>
           </ul>
         </nav>

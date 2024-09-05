@@ -15,7 +15,7 @@ export function MyProfile() {
 
   return (
     <>
-      <Header title="Aptos Friend" />
+      <Header title="Open Forge" />
       <div className="flex items-center justify-center flex-col">
         {connected && account ? (
           <Card>

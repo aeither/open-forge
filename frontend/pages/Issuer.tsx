@@ -12,7 +12,7 @@ export function Issuer() {
 
   return (
     <>
-      <Header title="Aptos Friend" />
+      <Header title="Open Forge" />
       <div className="flex items-center justify-center flex-col">
         <Card>
           <CardContent className="flex flex-col gap-10 pt-6">
