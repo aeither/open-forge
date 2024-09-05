@@ -3,6 +3,7 @@
 </p>
 
 <h1 align="center">Open Forge</h1>
+<p align="center" style="font-size: 18px; color: #666;">A community space for open-source growth by connecting Aptos builders and backers</p>
 
 <p align="center">
   <a href="https://open-forge-eight.vercel.app/">https://open-forge-eight.vercel.app/</a>

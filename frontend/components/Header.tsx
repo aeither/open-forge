@@ -1,9 +1,9 @@
 import { Bell, Search, User } from "lucide-react"
 import { type FC, useState } from "react"
 import { Link } from "react-router-dom"
+import { WalletSelector } from "./WalletSelector"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
-import { WalletSelector } from "./WalletSelector"
 
 type LaunchpadHeaderProps = {
   title: string
