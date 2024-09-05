@@ -5,6 +5,7 @@ import { Issuer } from "@/pages/Issuer"
 import { MyProfile } from "@/pages/MyProfile"
 import { Explore } from "./pages/Explore"
 import Landing from "./pages/Landing"
+import Leaderboard from "./pages/Leaderboard"
 import { ProjectDetails } from "./pages/ProjectDetails"
 import Upload from "./pages/Upload"
 
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/upload",
         element: <Upload />,
+      },
+      {
+        path: "/leaderboard",
+        element: <Leaderboard />,
       },
     ],
   },
