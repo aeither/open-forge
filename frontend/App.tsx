@@ -5,6 +5,7 @@ import { Issuer } from "@/pages/Issuer"
 import { MyProfile } from "@/pages/MyProfile"
 import { Explore } from "./pages/Explore"
 import Landing from "./pages/Landing"
+import { ProjectDetails } from "./pages/ProjectDetails"
 
 function Layout() {
   return (
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/my-profile",
         element: <MyProfile />,
+      },
+      {
+        path: "/project/:id",
+        element: <ProjectDetails />,
       },
     ],
   },
