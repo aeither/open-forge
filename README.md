@@ -1,8 +1,4 @@
-## Open Forge Example
-
-This example is created from the boilerplate template in create-aptos-dapp.
-
-The Boilerplate template provides a starter dapp with all necessary dapp infrastructure and a simple wallet info implementation.
+## Open Forge
 
 ### Open Forge Overview
 
