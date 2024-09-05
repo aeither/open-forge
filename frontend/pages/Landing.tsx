@@ -127,9 +127,11 @@ export default function Component() {
                   <MailIcon className="h-4 w-4" />
                   Get Updates
                 </Button>
-                <Button variant="outline" size="sm" className="rounded-full">
-                  View Projects
-                </Button>
+                <Link to="/explore">
+                  <Button variant="outline" size="sm" className="rounded-full">
+                    View Projects
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
