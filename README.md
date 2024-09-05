@@ -1,14 +1,20 @@
-## Open Forge
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/16a29955-8db2-407a-81bc-97720d3de5a4" alt="Open Forge Logo" width="200" height="200" style="border-radius: 10px;">
+</p>
 
-https://open-forge-eight.vercel.app/
+<h1 align="center">Open Forge</h1>
 
-### Open Forge Overview
+<p align="center">
+  <a href="https://open-forge-eight.vercel.app/">https://open-forge-eight.vercel.app/</a>
+</p>
+
+## Open Forge Overview
 
 Open Forge is a platform that makes supporting public goods in the Aptos ecosystem more fun and rewarding. It connects people who want to help with those who are building things, and it lets them earn money from open-source software and content. The platform uses AI to make predictions, community-driven randomness on the blockchain, and gamification to create a unique experience. With Aptos' technology and quick microtransactions, Open Forge makes it easy and engaging to support public goods.
 
 You can learn more about how Open Forge is changing the way public goods work in the Aptos ecosystem.
 
-### What tools the template uses?
+## Tech Stack
 
 - React framework
 - Vite development tool
@@ -17,7 +23,7 @@ You can learn more about how Open Forge is changing the way public goods work in
 - Aptos Wallet Adapter
 - Node based Move commands
 
-### What Move commands are available?
+## What Move commands are available?
 
 The tool utilizes [aptos-cli npm package](https://github.com/aptos-labs/aptos-cli) that lets us run Aptos CLI in a Node environment.
 
