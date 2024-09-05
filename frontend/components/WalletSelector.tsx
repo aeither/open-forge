@@ -1,24 +1,24 @@
 // Internal components
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/components/ui/collapsible'
+} from "@/components/ui/collapsible"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useToast } from '@/components/ui/use-toast'
+} from "@/components/ui/dropdown-menu"
+import { useToast } from "@/components/ui/use-toast"
 import {
   APTOS_CONNECT_ACCOUNT_URL,
   AboutAptosConnect,
@@ -31,7 +31,7 @@ import {
   isInstallRequired,
   truncateAddress,
   useWallet,
-} from '@aptos-labs/wallet-adapter-react'
+} from "@aptos-labs/wallet-adapter-react"
 import {
   ArrowLeft,
   ArrowRight,
@@ -39,8 +39,8 @@ import {
   Copy,
   LogOut,
   User,
-} from 'lucide-react'
-import { useCallback, useState } from 'react'
+} from "lucide-react"
+import { useCallback, useState } from "react"
 
 export function WalletSelector() {
   const { account, connected, disconnect, wallet } = useWallet()
@@ -54,14 +54,14 @@ export function WalletSelector() {
     try {
       await navigator.clipboard.writeText(account.address)
       toast({
-        title: 'Success',
-        description: 'Copied wallet address to clipboard.',
+        title: "Success",
+        description: "Copied wallet address to clipboard.",
       })
     } catch {
       toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to copy wallet address.',
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to copy wallet address.",
       })
     }
   }, [account?.address, toast])
@@ -70,7 +70,7 @@ export function WalletSelector() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button>
-          {account?.ansName || truncateAddress(account?.address) || 'Unknown'}
+          {account?.ansName || truncateAddress(account?.address) || "Unknown"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -126,7 +126,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
                 <span>with Social + Aptos Connect</span>
               </>
             ) : (
-              'Connect Wallet'
+              "Connect Wallet"
             )}
           </DialogTitle>
         </DialogHeader>
@@ -141,14 +141,14 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
               />
             ))}
             <p className="flex gap-1 justify-center items-center text-muted-foreground text-sm">
-              Learn more about{' '}
+              Learn more about{" "}
               <AboutAptosConnect.Trigger className="flex gap-1 py-3 items-center text-foreground">
                 Aptos Connect <ArrowRight size={16} />
               </AboutAptosConnect.Trigger>
             </p>
             <AptosPrivacyPolicy className="flex flex-col items-center py-1">
               <p className="text-xs leading-5">
-                <AptosPrivacyPolicy.Disclaimer />{' '}
+                <AptosPrivacyPolicy.Disclaimer />{" "}
                 <AptosPrivacyPolicy.Link className="text-muted-foreground underline underline-offset-4" />
                 <span className="text-muted-foreground">.</span>
               </p>
@@ -274,7 +274,7 @@ function renderEducationScreen(screen: AboutAptosConnectEducationScreen) {
           onClick={screen.next}
           className="gap-2 justify-self-end"
         >
-          {screen.screenIndex === screen.totalScreens - 1 ? 'Finish' : 'Next'}
+          {screen.screenIndex === screen.totalScreens - 1 ? "Finish" : "Next"}
           <ArrowRight size={16} />
         </Button>
       </div>

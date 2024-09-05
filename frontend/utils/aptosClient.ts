@@ -1,8 +1,8 @@
-import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
-import { createSurfClient } from '@thalalabs/surf'
+import { Aptos, AptosConfig } from "@aptos-labs/ts-sdk"
+import { createSurfClient } from "@thalalabs/surf"
 
-import { NETWORK } from '@/constants'
-import { ABI } from '@/utils/abi'
+import { NETWORK } from "@/constants"
+import { ABI } from "@/utils/abi"
 
 const aptos = new Aptos(new AptosConfig({ network: NETWORK }))
 const surf = createSurfClient(aptos).useABI(ABI)

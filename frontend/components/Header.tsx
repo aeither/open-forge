@@ -1,8 +1,8 @@
-import type { FC } from 'react'
-import { Link } from 'react-router-dom'
+import type { FC } from "react"
+import { Link } from "react-router-dom"
 
-import { WalletSelector } from '@/components/WalletSelector'
-import { buttonVariants } from '@/components/ui/button'
+import { WalletSelector } from "@/components/WalletSelector"
+import { buttonVariants } from "@/components/ui/button"
 
 type LaunchpadHeaderProps = {
   title: string
@@ -16,8 +16,8 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
       </h2>
       <div className="flex gap-2 items-center">
         <Link
-          className={buttonVariants({ variant: 'link' })}
-          to={'/my-profile'}
+          className={buttonVariants({ variant: "link" })}
+          to={"/my-profile"}
         >
           My Profile
         </Link>

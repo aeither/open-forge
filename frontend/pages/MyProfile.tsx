@@ -1,13 +1,13 @@
-import { useWallet } from '@aptos-labs/wallet-adapter-react'
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
-import { Header } from '@/components/Header'
-import { IssueShare } from '@/components/IssueShare'
-import { IssuerDetails } from '@/components/IssuerDetails'
-import { IssuerShareHolders } from '@/components/IssuerShareHolders'
-import { TradeShare } from '@/components/TradeShare'
-import { UserHoldings } from '@/components/UserHoldings'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useHasIssuedShare } from '@/hooks/useIssuer'
+import { Header } from "@/components/Header"
+import { IssueShare } from "@/components/IssueShare"
+import { IssuerDetails } from "@/components/IssuerDetails"
+import { IssuerShareHolders } from "@/components/IssuerShareHolders"
+import { TradeShare } from "@/components/TradeShare"
+import { UserHoldings } from "@/components/UserHoldings"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useHasIssuedShare } from "@/hooks/useIssuer"
 
 export function MyProfile() {
   const { connected, account } = useWallet()

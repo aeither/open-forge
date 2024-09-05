@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from 'react'
+import { Fragment, type ReactNode } from "react"
 
 export interface LabelValueGridProps {
   items: Array<{ label: string; subLabel?: string; value: ReactNode }>
@@ -36,8 +36,8 @@ export function DisplayValue({
       <p
         className={
           isCorrect
-            ? 'text-green-700 dark:text-green-300'
-            : 'text-red-600 dark:text-red-400'
+            ? "text-green-700 dark:text-green-300"
+            : "text-red-600 dark:text-red-400"
         }
       >
         {value}

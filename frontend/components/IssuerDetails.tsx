@@ -1,6 +1,6 @@
-import { LabelValueGrid } from '@/components/LabelValueGrid'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useGetIssuer } from '@/hooks/useIssuer'
+import { LabelValueGrid } from "@/components/LabelValueGrid"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useGetIssuer } from "@/hooks/useIssuer"
 
 type IssuerDetailsProps = {
   issuerAddress: `0x${string}`
@@ -20,11 +20,11 @@ export function IssuerDetails({ issuerAddress }: IssuerDetailsProps) {
             <LabelValueGrid
               items={[
                 {
-                  label: 'Username',
+                  label: "Username",
                   value: <p>{issuer.username}</p>,
                 },
                 {
-                  label: 'Issuer address',
+                  label: "Issuer address",
                   value: (
                     <a
                       href={`https://explorer.aptoslabs.com/account/${
@@ -39,7 +39,7 @@ export function IssuerDetails({ issuerAddress }: IssuerDetailsProps) {
                   ),
                 },
                 {
-                  label: 'Total Issued Shares',
+                  label: "Total Issued Shares",
                   value: <p>{issuer.totalIssuedShares}</p>,
                 },
               ]}

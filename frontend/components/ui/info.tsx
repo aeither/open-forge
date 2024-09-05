@@ -1,11 +1,11 @@
-import * as React from 'react'
-import { Info as InfoIcon } from 'lucide-react'
+import * as React from "react"
+import { Info as InfoIcon } from "lucide-react"
 
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
+} from "@/components/ui/tooltip"
 
 export interface InfoProps {
   description: string

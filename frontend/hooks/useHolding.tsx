@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 
-import { surfClient } from '@/utils/aptosClient'
-import type { Holding } from '@/utils/types'
+import { surfClient } from "@/utils/aptosClient"
+import type { Holding } from "@/utils/types"
 
 export function useGetHoldings(userAddress?: string) {
   const [holdings, setHoldings] = useState<Holding[]>()

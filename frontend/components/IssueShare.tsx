@@ -1,11 +1,11 @@
-import { useWalletClient } from '@thalalabs/surf/hooks'
-import { useState } from 'react'
+import { useWalletClient } from "@thalalabs/surf/hooks"
+import { useState } from "react"
 
-import { Button } from '@/components/ui/button'
-import { LabeledInput } from '@/components/ui/labeled-input'
-import { ABI } from '@/utils/abi'
-import { aptosClient } from '@/utils/aptosClient'
-import { useToast } from './ui/use-toast'
+import { Button } from "@/components/ui/button"
+import { LabeledInput } from "@/components/ui/labeled-input"
+import { ABI } from "@/utils/abi"
+import { aptosClient } from "@/utils/aptosClient"
+import { useToast } from "./ui/use-toast"
 
 export function IssueShare() {
   const { client: walletClient } = useWalletClient()
@@ -24,7 +24,7 @@ export function IssueShare() {
       transactionHash: resp.hash,
     })
     toast({
-      title: 'Success',
+      title: "Success",
       description: (
         <a
           href={`https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${import.meta.env.VITE_APP_NETWORK}`}
@@ -38,12 +38,12 @@ export function IssueShare() {
   return (
     <>
       <LabeledInput
-        label={'Username'}
+        label={"Username"}
         required
-        tooltip={''}
+        tooltip={""}
         value={username}
-        type={'text'}
-        id={'username'}
+        type={"text"}
+        id={"username"}
         onChange={(e) => setUsername(e.target.value)}
       />
       <Button disabled={!walletClient && !username} onClick={onClickIssueShare}>

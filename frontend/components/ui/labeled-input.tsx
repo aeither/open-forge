@@ -1,6 +1,6 @@
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { FC } from 'react'
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { FC } from "react"
 
 export const LabeledInput: FC<{
   label: string
@@ -8,7 +8,7 @@ export const LabeledInput: FC<{
   tooltip: string
   disabled?: boolean
   value?: number | string
-  type?: 'number' | 'text'
+  type?: "number" | "text"
   id: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }> = ({
@@ -19,12 +19,12 @@ export const LabeledInput: FC<{
   value,
   onChange,
   id,
-  type = 'number',
+  type = "number",
 }) => {
   return (
     <div className="flex flex-col item-center space-y-4 mt-4">
       <Label htmlFor={id} tooltip={tooltip}>
-        {label} {required ? '' : '(optional)'}
+        {label} {required ? "" : "(optional)"}
       </Label>
       <Input
         disabled={disabled}

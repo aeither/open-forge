@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Table,
   TableBody,
@@ -8,8 +8,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { useGetHolders } from '@/hooks/useHolder'
+} from "@/components/ui/table"
+import { useGetHolders } from "@/hooks/useHolder"
 
 type IssuerShareHoldersProps = {
   issuerAddress: `0x${string}`
@@ -41,7 +41,7 @@ export function IssuerShareHolders({ issuerAddress }: IssuerShareHoldersProps) {
                         holder.holder
                       }?network=${import.meta.env.VITE_APP_NETWORK}`}
                       target="_blank"
-                      style={{ textDecoration: 'underline' }}
+                      style={{ textDecoration: "underline" }}
                     >
                       {holder.holder}
                     </Link>

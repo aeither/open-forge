@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 
-import { surfClient } from '@/utils/aptosClient'
-import type { Issuer } from '@/utils/types'
+import { surfClient } from "@/utils/aptosClient"
+import type { Issuer } from "@/utils/types"
 
 // This call can be pretty expensive when fetching a big number of assets,
 // therefore it is not recommended to use it in production

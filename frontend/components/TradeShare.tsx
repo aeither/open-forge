@@ -1,16 +1,16 @@
-import { useWallet } from '@aptos-labs/wallet-adapter-react'
-import { useWalletClient } from '@thalalabs/surf/hooks'
-import { useState } from 'react'
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
+import { useWalletClient } from "@thalalabs/surf/hooks"
+import { useState } from "react"
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Toggle } from '@/components/ui/toggle'
-import { useToast } from '@/components/ui/use-toast'
-import { useGetHolding, useGetIssuerObjectAddress } from '@/hooks/useHolding'
-import { ABI } from '@/utils/abi'
-import { aptosClient } from '@/utils/aptosClient'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Toggle } from "@/components/ui/toggle"
+import { useToast } from "@/components/ui/use-toast"
+import { useGetHolding, useGetIssuerObjectAddress } from "@/hooks/useHolding"
+import { ABI } from "@/utils/abi"
+import { aptosClient } from "@/utils/aptosClient"
 
 type TradeShareProps = {
   issuerAddress: `0x${string}`
@@ -50,12 +50,12 @@ export function TradeShare({ issuerAddress }: TradeShareProps) {
     })
 
     toast({
-      title: 'Success',
+      title: "Success",
       description: (
         <a
           href={`https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${import.meta.env.VITE_APP_NETWORK}`}
         >
-          Share {isBuying ? 'bought' : 'sold'}, view on explorer
+          Share {isBuying ? "bought" : "sold"}, view on explorer
         </a>
       ),
     })
@@ -72,7 +72,7 @@ export function TradeShare({ issuerAddress }: TradeShareProps) {
           <Toggle
             aria-label="Buy"
             className={
-              isBuying === true ? 'bg-primary text-primary-foreground' : ''
+              isBuying === true ? "bg-primary text-primary-foreground" : ""
             }
             onClick={() => setIsBuying(true)}
           >
@@ -81,7 +81,7 @@ export function TradeShare({ issuerAddress }: TradeShareProps) {
           <Toggle
             aria-label="Sell"
             className={
-              isBuying === false ? 'bg-primary text-primary-foreground' : ''
+              isBuying === false ? "bg-primary text-primary-foreground" : ""
             }
             onClick={() => setIsBuying(false)}
           >
@@ -99,7 +99,7 @@ export function TradeShare({ issuerAddress }: TradeShareProps) {
           />
         </div>
         <Button onClick={handleTradeSubmit} className="w-full">
-          {isBuying ? 'Buy' : 'Sell'}
+          {isBuying ? "Buy" : "Sell"}
         </Button>
         <div className="flex items-center justify-between">
           <span>Your Balance:</span>

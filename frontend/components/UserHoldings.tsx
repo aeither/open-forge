@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Table,
   TableBody,
@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { useGetHoldings } from '@/hooks/useHolding'
+} from "@/components/ui/table"
+import { useGetHoldings } from "@/hooks/useHolding"
 
 type UserHoldingsProps = {
   userAddress: `0x${string}`
@@ -44,7 +44,7 @@ export function UserHoldings({ userAddress }: UserHoldingsProps) {
                     <TableCell>
                       <Link
                         to={`/issuer/${holding.issuer}`}
-                        style={{ textDecoration: 'underline' }}
+                        style={{ textDecoration: "underline" }}
                       >
                         {holding.issuer}
                       </Link>

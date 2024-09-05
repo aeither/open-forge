@@ -1,8 +1,8 @@
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
-import { Home } from '@/pages/Home'
-import { Issuer } from '@/pages/Issuer'
-import { MyProfile } from '@/pages/MyProfile'
+import { Home } from "@/pages/Home"
+import { Issuer } from "@/pages/Issuer"
+import { MyProfile } from "@/pages/MyProfile"
 
 function Layout() {
   return (
@@ -17,15 +17,15 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Home />,
       },
       {
-        path: '/issuer/:issuerAddress',
+        path: "/issuer/:issuerAddress",
         element: <Issuer />,
       },
       {
-        path: '/my-profile',
+        path: "/my-profile",
         element: <MyProfile />,
       },
     ],

@@ -1,11 +1,11 @@
-import { useParams } from 'react-router-dom'
+import { useParams } from "react-router-dom"
 
-import { Header } from '@/components/Header'
-import { IssuerDetails } from '@/components/IssuerDetails'
-import { IssuerShareHolders } from '@/components/IssuerShareHolders'
-import { TradeShare } from '@/components/TradeShare'
-import { UserHoldings } from '@/components/UserHoldings'
-import { Card, CardContent } from '@/components/ui/card'
+import { Header } from "@/components/Header"
+import { IssuerDetails } from "@/components/IssuerDetails"
+import { IssuerShareHolders } from "@/components/IssuerShareHolders"
+import { TradeShare } from "@/components/TradeShare"
+import { UserHoldings } from "@/components/UserHoldings"
+import { Card, CardContent } from "@/components/ui/card"
 
 export function Issuer() {
   const { issuerAddress } = useParams()

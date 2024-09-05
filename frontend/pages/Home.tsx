@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
-import { Header } from '@/components/Header'
+import { Header } from "@/components/Header"
 import {
   Table,
   TableBody,
@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { useGetIssuers } from '@/hooks/useIssuer'
+} from "@/components/ui/table"
+import { useGetIssuers } from "@/hooks/useIssuer"
 
 export function Home() {
   const issuers = useGetIssuers()
@@ -38,7 +38,7 @@ export function Home() {
                   <TableCell>
                     <Link
                       to={`/issuer/${issuer.issuerAddress}`}
-                      style={{ textDecoration: 'underline' }}
+                      style={{ textDecoration: "underline" }}
                     >
                       {issuer.issuerAddress}
                     </Link>
