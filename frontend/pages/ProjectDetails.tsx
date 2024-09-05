@@ -1,7 +1,9 @@
 import CommentSection from "@/components/CommentSection"
+import { Header } from "@/components/Header"
 import ProjectStats from "@/components/ProjectStats"
 import RelatedProjects from "@/components/RelatedProjects"
-import { Bell, ExternalLink, Search, Share2, User } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ExternalLink, Share2 } from "lucide-react"
 import type React from "react"
 import { useState } from "react"
 
@@ -52,50 +54,7 @@ export const ProjectDetails: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-bold">Project Explorer</h1>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search projects..."
-                className="pl-8 pr-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <Search
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={18}
-              />
-            </div>
-          </div>
-          <nav>
-            <ul className="flex items-center space-x-4">
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Explore
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Submit
-                </a>
-              </li>
-              <li>
-                <Bell
-                  className="text-gray-600 hover:text-gray-900 cursor-pointer"
-                  size={20}
-                />
-              </li>
-              <li>
-                <User
-                  className="text-gray-600 hover:text-gray-900 cursor-pointer"
-                  size={20}
-                />
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+      <Header title="Details" />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
@@ -144,9 +103,9 @@ export const ProjectDetails: React.FC = () => {
                   </span>
                 ))}
               </div>
-              <button className="text-white px-6 py-3 rounded-md hover:bg-green-700 transition duration-300">
+              <Button className="text-white px-6 py-3 rounded-md hover:bg-green-700 transition duration-300">
                 Support This Project
-              </button>
+              </Button>
             </div>
           </div>
 

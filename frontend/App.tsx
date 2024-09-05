@@ -6,6 +6,7 @@ import { MyProfile } from "@/pages/MyProfile"
 import { Explore } from "./pages/Explore"
 import Landing from "./pages/Landing"
 import { ProjectDetails } from "./pages/ProjectDetails"
+import Upload from "./pages/Upload"
 
 function Layout() {
   return (
@@ -14,7 +15,6 @@ function Layout() {
     </>
   )
 }
-
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -42,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/project/:id",
         element: <ProjectDetails />,
+      },
+      {
+        path: "/upload",
+        element: <Upload />,
       },
     ],
   },
