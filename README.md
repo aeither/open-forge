@@ -6,9 +6,9 @@ The Boilerplate template provides a starter dapp with all necessary dapp infrast
 
 ### Open Forge Overview
 
-Open Forge is inspired by Friend.Tech, which is a social app that enables anyone to tokenize their profile by issuing shares (also know as keys). The price of the share is based on the supply and demand, i.e. price goes up when more people buying the share and vice versa. On top of the share trading, developers can build interesting things on top such as share gated chat, priority chat based on number of shares hold, etc.
+Open Forge is a platform that makes supporting public goods in the Aptos ecosystem more fun and rewarding. It connects people who want to help with those who are building things, and it lets them earn money from open-source software and content. The platform uses AI to make predictions, community-driven randomness on the blockchain, and gamification to create a unique experience. With Aptos' technology and quick microtransactions, Open Forge makes it easy and engaging to support public goods.
 
-You can find a detailed explanation on the contract on [Aptos Learn](https://learn.aptoslabs.com/en/tutorial/solana-to-aptos-guide/move-friend/demo?workshop=solana-to-aptos).
+You can learn more about how Open Forge is changing the way public goods work in the Aptos ecosystem.
 
 ### What tools the template uses?
 
