@@ -4,6 +4,7 @@ import { Home } from "@/pages/Home"
 import { Issuer } from "@/pages/Issuer"
 import { MyProfile } from "@/pages/MyProfile"
 import { Explore } from "./pages/Explore"
+import { Irys } from "./pages/Irys"
 import Landing from "./pages/Landing"
 import Leaderboard from "./pages/Leaderboard"
 import { ProjectDetails } from "./pages/ProjectDetails"
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/leaderboard",
         element: <Leaderboard />,
+      },
+      {
+        path: "/irys",
+        element: <Irys />,
       },
     ],
   },

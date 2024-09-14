@@ -22,7 +22,8 @@
     "@aptos-labs/ts-sdk": "^1.27.1",
     "@aptos-labs/wallet-adapter-react": "^3.5.10",
     "@hookform/resolvers": "^3.9.0",
-    "@irys/sdk": "^0.2.11",
+    "@irys/web-upload": "^0.0.6",
+    "@irys/web-upload-aptos": "^0.0.6",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.0",
@@ -36,6 +37,7 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@thalalabs/surf": "^1.7.3",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.383.0",
@@ -60,13 +62,14 @@
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.38",
+    "prettier": "^3.3.2",
     "stream-browserify": "^3.0.0",
     "tailwindcss": "^3.4.3",
     "tree-kill": "1.2.2",
     "typescript": "^5.2.2",
+    "vercel": "^35.2.4",
     "vite": "^5.2.0",
-    "vite-plugin-notifier": "^0.1.5",
-    "prettier": "^3.3.2",
-    "vercel": "^35.2.4"
+    "vite-plugin-node-polyfills": "^0.22.0",
+    "vite-plugin-notifier": "^0.1.5"
   }
 }
