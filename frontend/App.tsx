@@ -1,12 +1,12 @@
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { Home } from "@/pages/Home"
-import { Issuer } from "@/pages/Issuer"
-import { MyProfile } from "@/pages/MyProfile"
 import { Explore } from "./pages/Explore"
 import { Irys } from "./pages/Irys"
+import { IssuerList } from "./pages/IssuerList"
 import Landing from "./pages/Landing"
 import Leaderboard from "./pages/Leaderboard"
+import { Profile } from "./pages/Profile"
 import { ProjectDetails } from "./pages/ProjectDetails"
 import Upload from "./pages/Upload"
 
@@ -22,6 +22,14 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
+        path: "/list",
+        element: <IssuerList />,
+      },
+      {
+        path: "/profile/:issuerAddress",
+        element: <Profile />,
+      },
+      {
         path: "/",
         element: <Landing />,
       },
@@ -32,14 +40,6 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <Home />,
-      },
-      {
-        path: "/issuer/:issuerAddress",
-        element: <Issuer />,
-      },
-      {
-        path: "/my-profile",
-        element: <MyProfile />,
       },
       {
         path: "/project/:id",

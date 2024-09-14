@@ -1,3 +1,4 @@
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import { Bell, Search, User } from "lucide-react"
 import { type FC, useState } from "react"
 import { Link } from "react-router-dom"
@@ -11,6 +12,7 @@ type LaunchpadHeaderProps = {
 
 export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
   const [searchQuery, setSearchQuery] = useState("")
+  const { connected, account } = useWallet()
 
   return (
     <header className="border-b">
@@ -50,13 +52,15 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
                 <Bell size={20} />
               </Button>
             </li>
-            <li>
-              <Link to={"/my-profile"}>
-                <Button variant="ghost" size="icon">
-                  <User size={20} />
-                </Button>
-              </Link>
-            </li>
+            {connected && account && (
+              <li>
+                <Link to={`/profile/${account.address}`}>
+                  <Button variant="ghost" size="icon">
+                    <User size={20} />
+                  </Button>
+                </Link>
+              </li>
+            )}
             <li>
               <WalletSelector />
             </li>
