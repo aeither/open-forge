@@ -2,11 +2,11 @@ import type { WalletContextState } from "@aptos-labs/wallet-adapter-react";
 import { WebUploader } from "@irys/web-upload";
 import { WebAptos } from "@irys/web-upload-aptos";
 
-let irysUploaderInstance: WebUploader | null = null;
+let irysUploaderInstance: any | null = null;
 
 export async function getIrysUploader(
   wallet: WalletContextState
-): Promise<WebUploader> {
+): Promise<any> {
   if (!irysUploaderInstance) {
     const rpcURL = "https://fullnode.testnet.aptoslabs.com"
     irysUploaderInstance = await WebUploader(WebAptos)
@@ -18,7 +18,7 @@ export async function getIrysUploader(
 }
 
 export async function getMetadataURI(
-  irysUploader: WebUploader,
+  irysUploader: any,
   image: File,
   name: string,
   description: string,
