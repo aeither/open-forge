@@ -30,11 +30,11 @@ module aptos_friend_addr::test_product_nft {
         product_nft::modify_product_description(creator, product_object, new_description);
 
         // Upvote product
-        product_nft::upvote_product(creator, product_object, 5);
+        product_nft::upvote_product(creator, product_object);
 
         // Check upvote count
         let upvote_count = product_nft::get_upvote_count(product_object);
-        assert!(upvote_count == 6, 0); // Initial count (1) + 5 upvotes
+        assert!(upvote_count == 2, 0); // Initial count (1) + 5 upvotes
 
         // Transfer product to user
         product_nft::transfer(creator, product_object, signer::address_of(user));

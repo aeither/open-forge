@@ -132,7 +132,7 @@ module aptos_friend_addr::product_nft {
     }
 
     public entry fun upvote_product(
-        user: &signer, product_object: Object<token::Token>, amount: u64
+        user: &signer, product_object: Object<token::Token>
     ) acquires TokenMutatorStore, UpvoteCount {
         let owner_address = signer::address_of(user);
         assert!(object::is_owner(product_object, owner_address), 0);
@@ -141,7 +141,7 @@ module aptos_friend_addr::product_nft {
 
         let upvote_count = borrow_global_mut<UpvoteCount>(product_address);
         let old_upvotes = upvote_count.value;
-        let new_upvotes = old_upvotes + amount;
+        let new_upvotes = old_upvotes + 1;
         upvote_count.value = new_upvotes;
 
         let TokenMutatorStore { mutator_ref: _, property_mutator_ref, token_name: _ } =
@@ -184,12 +184,12 @@ module aptos_friend_addr::product_nft {
 
     #[view]
     public fun get_product_obj(
-        creator_addr: address, name: String, description: String
+        creator_addr: address, name: String, collection_name: String
     ): Object<token::Token> {
         let token_address =
             token::create_token_address(
                 &creator_addr,
-                &description,
+                &collection_name,
                 &name
             );
         object::address_to_object<token::Token>(token_address)
