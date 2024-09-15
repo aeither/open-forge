@@ -1,5 +1,5 @@
 #[test_only]
-module aptos_friend_addr::test_end_to_end {
+module aptos_friend_addr::test_aptos_friend {
     use std::signer;
     use std::string;
     use std::vector;
