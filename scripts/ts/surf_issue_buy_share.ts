@@ -1,9 +1,9 @@
 import {
-    Account,
-    Aptos,
-    AptosConfig,
-    Network,
-    NetworkToNetworkName,
+  Account,
+  Aptos,
+  AptosConfig,
+  Network,
+  NetworkToNetworkName,
 } from "@aptos-labs/ts-sdk"
 import { createSurfClient } from "@thalalabs/surf"
 import dotenv from "dotenv"
@@ -19,9 +19,9 @@ const aptos = new Aptos(config)
 const surfClient = createSurfClient(aptos)
 
 // Assume we have the ABI for the aptos_friend module
-import { ABI as APTOS_FRIEND_ABI } from "../../frontend/utils/abi.ts"
+import { ABI as APTOS_FRIEND_ABI } from "../../frontend/utils/abi-aptos_friend.ts"
 
-const example = async () => {
+const main = async () => {
   console.log(
     "This example will create an account, issue a share, and buy some of it in the same transaction."
   )
@@ -89,4 +89,9 @@ const example = async () => {
   )
 }
 
-example()
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error)
+    process.exit(1)
+  })

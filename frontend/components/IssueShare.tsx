@@ -3,7 +3,7 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { LabeledInput } from "@/components/ui/labeled-input"
-import { ABI } from "@/utils/abi"
+import { ABI } from "@/utils/abi-aptos_friend"
 import { aptosClient } from "@/utils/aptosClient"
 import { useToast } from "./ui/use-toast"
 

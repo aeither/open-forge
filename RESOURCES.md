@@ -29,7 +29,7 @@ bun move:test && bun move:get-abi
 ## Interact
 
 ```bash
-npx tsx scripts/ts/interact.ts
+npx tsx scripts/ts/surf_issue_buy_share.ts
 ```
 
 ## Run script
