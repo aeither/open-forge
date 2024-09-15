@@ -23,11 +23,11 @@ module aptos_friend_addr::product_nft {
     const STATUS_NEW: vector<u8> = b"New";
 
     const COLLECTION_DESCRIPTION: vector<u8> = b"Product Hunt NFT Collection";
-    const COLLECTION_NAME: vector<u8> = b"Product Showcase";
     const COLLECTION_URI: vector<u8> = b"https://productshowcase.com";
 
     struct CollectionMutatorStore has key {
-        mutator_ref: collection::MutatorRef
+        mutator_ref: collection::MutatorRef,
+        collection_name: String
     }
 
     struct TokenMutatorStore has key {
@@ -44,21 +44,26 @@ module aptos_friend_addr::product_nft {
         new_upvotes: u64
     }
 
-    public entry fun create_collection(creator: &signer) {
+    fun init_module(resource_account: &signer) {
+        let collection_name = utf8(b"Product Showcase");
+        create_collection(resource_account, collection_name);
+    }
+
+    fun create_collection(creator: &signer, collection_name: String) {
         let royalty = option::none();
 
         let collection_constructor_ref =
             &collection::create_unlimited_collection(
                 creator,
                 utf8(COLLECTION_DESCRIPTION),
-                utf8(COLLECTION_NAME),
+                collection_name,
                 royalty,
                 utf8(COLLECTION_URI)
             );
 
         let mutator_ref = collection::generate_mutator_ref(collection_constructor_ref);
 
-        move_to(creator, CollectionMutatorStore { mutator_ref });
+        move_to(creator, CollectionMutatorStore { mutator_ref, collection_name });
     }
 
     public entry fun mint_product(
@@ -66,13 +71,15 @@ module aptos_friend_addr::product_nft {
         name: String,
         description: String,
         uri: String
-    ) {
+    ) acquires CollectionMutatorStore {
+        let creator_address = signer::address_of(creator);
+        let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
         let royalty = option::none();
 
         let token_constructor_ref =
             token::create_named_token(
                 creator,
-                utf8(COLLECTION_NAME),
+                collection_store.collection_name,
                 description,
                 name,
                 royalty,
@@ -181,14 +188,20 @@ module aptos_friend_addr::product_nft {
 
     #[view]
     public fun get_product_obj(
-        creator_addr: address, name: String, collection_name: String
-    ): Object<token::Token> {
+        creator_addr: address, name: String
+    ): Object<token::Token> acquires CollectionMutatorStore {
+        let collection_store = borrow_global<CollectionMutatorStore>(creator_addr);
         let token_address =
             token::create_token_address(
                 &creator_addr,
-                &collection_name,
+                &collection_store.collection_name,
                 &name
             );
         object::address_to_object<token::Token>(token_address)
+    }
+
+    #[test_only]
+    public fun init_module_for_test(creator: &signer) {
+        init_module(creator);
     }
 }

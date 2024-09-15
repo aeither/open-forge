@@ -7,14 +7,14 @@ module aptos_friend_addr::test_product_nft {
     use aptos_token_objects::token;
     use aptos_friend_addr::product_nft;
 
-    #[test(creator = @0x123, user = @0x456)]
+    #[test(creator = @aptos_friend_addr, user = @0x456)]
     public fun test_product_collection(creator: &signer, user: &signer) {
         // Setup
         account::create_account_for_test(signer::address_of(creator));
         account::create_account_for_test(signer::address_of(user));
 
-        // Create collection
-        product_nft::create_collection(creator);
+        // Initialize the module (this will create the collection)
+        product_nft::init_module_for_test(creator);
 
         // Mint product
         let name = string::utf8(b"Test Product");
@@ -23,7 +23,7 @@ module aptos_friend_addr::test_product_nft {
         product_nft::mint_product(creator, name, description, uri);
 
         // Get the product token object
-        let product_object = product_nft::get_product_obj(signer::address_of(creator), name, string::utf8(b"Product Showcase"));
+        let product_object = product_nft::get_product_obj(signer::address_of(creator), name);
 
         // Modify product description
         let new_description = string::utf8(b"Updated test product description");
@@ -43,13 +43,13 @@ module aptos_friend_addr::test_product_nft {
         assert!(object::is_owner(product_object, signer::address_of(user)), 1);
     }
 
-    #[test(creator = @0x123)]
+    #[test(creator = @aptos_friend_addr)]
     public fun test_mint_two(creator: &signer) {
         // Setup
         account::create_account_for_test(signer::address_of(creator));
 
-        // Create collection
-        product_nft::create_collection(creator);
+        // Initialize the module (this will create the collection)
+        product_nft::init_module_for_test(creator);
 
         // Mint product
         let name = string::utf8(b"Test Product");
@@ -57,7 +57,7 @@ module aptos_friend_addr::test_product_nft {
         let uri = string::utf8(b"https://test-product.com/image.jpg");
         product_nft::mint_product(creator, name, description, uri);
 
-        // Attempt to mint the a different product. Must use different name
+        // Attempt to mint a different product. Must use different name
         let name2 = string::utf8(b"Test Product 2");
         product_nft::mint_product(creator, name2, description, uri);
     }
