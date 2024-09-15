@@ -32,7 +32,7 @@ export function TradeShare({ issuerAddress }: TradeShareProps) {
   const handleTradeSubmit = async () => {
     if (!walletClient || !issuerObjectAddress) return
 
-    let resp
+    let resp: any
     if (isBuying) {
       resp = await walletClient.useABI(ABI).buy_share({
         type_arguments: [],

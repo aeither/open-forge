@@ -19,7 +19,7 @@ const aptos = new Aptos(config)
 const surfClient = createSurfClient(aptos)
 
 // Assume we have the ABI for the aptos_friend module
-import { ABI as APTOS_FRIEND_ABI } from "../../frontend/utils/abi-aptos_friend.ts"
+import { ABI as APTOS_FRIEND_ABI } from "../../frontend/utils/abi-aptos_friend"
 
 const main = async () => {
   console.log(

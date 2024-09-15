@@ -9,7 +9,7 @@
     "move:publish": "node ./scripts/move/publish",
     "move:upgrade": "node ./scripts/move/upgrade",
     "move:issue-share-and-buy-share": "node ./scripts/move/issue_share_and_buy_share",
-    "move:get-abi": "node ./scripts/move/get_abi",
+    "move:abi": "node ./scripts/move/abi",
     "dev": "vite",
     "build": "tsc && vite build",
     "deploy": "vercel",

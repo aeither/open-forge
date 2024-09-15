@@ -19,6 +19,15 @@ aptos account fund-with-faucet \
   --faucet-url https://faucet.testnet.aptoslabs.com
 ```
 
+
+### Compile
+
+```bash
+aptos move compile  \
+  --named-addresses aptos_friend_addr="0x100" \
+  --skip-fetch-latest-git-deps
+```
+
 ## Refresh ABI
 
 ```bash
@@ -81,12 +90,6 @@ source .env && aptos account fund-with-faucet \
   --account $launchpad_addr \
   --url "https://fullnode.testnet.aptoslabs.com" \
   --faucet-url "https://faucet.testnet.aptoslabs.com"
-```
-
-Compile
-
-```bash
-aptos move compile --named-addresses launchpad_addr=$launchpad_addr,minter=$minter  --skip-fetch-latest-git-deps 
 ```
 
 Deploy

@@ -181,4 +181,17 @@ module aptos_friend_addr::product_nft {
         let product_address = object::object_address(&product_object);
         borrow_global<UpvoteCount>(product_address).value
     }
+
+    #[view]
+    public fun get_product_obj(
+        creator_addr: address, name: String, description: String
+    ): Object<token::Token> {
+        let token_address =
+            token::create_token_address(
+                &creator_addr,
+                &description,
+                &name
+            );
+        object::address_to_object<token::Token>(token_address)
+    }
 }

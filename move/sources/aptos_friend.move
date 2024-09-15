@@ -34,12 +34,12 @@ module aptos_friend_addr::aptos_friend {
     struct Holding has key {
         issuer: address,
         holder: address,
-        shares: u64,
+        shares: u64
     }
 
     /// User stores the holdings of the user, anyone who bought shares will have a User object
     struct User has key {
-        holdings: vector<Object<Holding>>,
+        holdings: vector<Object<Holding>>
     }
 
     /// Issuer stores the issuer's address, username, total issued shares and the holder holdings
@@ -48,7 +48,7 @@ module aptos_friend_addr::aptos_friend {
         addr: address,
         username: String,
         total_issued_shares: u64,
-        holder_holdings: vector<Object<Holding>>,
+        holder_holdings: vector<Object<Holding>>
     }
 
     /// IssuerRegistry stores the list of issuers
@@ -59,14 +59,14 @@ module aptos_friend_addr::aptos_friend {
 
     /// Vault stores the APT to be sent to sellers
     struct Vault has key {
-        extend_ref: ExtendRef,
+        extend_ref: ExtendRef
     }
 
     #[event]
     struct IssueShareEvent has store, drop {
         issuer_addr: address,
         issuer_obj: Object<Issuer>,
-        username: String,
+        username: String
     }
 
     #[event]
@@ -79,7 +79,7 @@ module aptos_friend_addr::aptos_friend {
         share_cost: u64,
         issuer_fee: u64,
         protocol_fee: u64,
-        total_cost: u64,
+        total_cost: u64
     }
 
     #[event]
@@ -92,7 +92,7 @@ module aptos_friend_addr::aptos_friend {
         share_cost: u64,
         issuer_fee: u64,
         protocol_fee: u64,
-        total_cost: u64,
+        total_cost: u64
     }
 
     // If you deploy the module under an object, sender is the object's signer
@@ -103,7 +103,7 @@ module aptos_friend_addr::aptos_friend {
 
         move_to(
             vault_signer,
-            Vault { extend_ref: object::generate_extend_ref(vault_constructor_ref), },
+            Vault { extend_ref: object::generate_extend_ref(vault_constructor_ref) }
         );
         move_to(sender, IssuerRegistry { issuers: vector::empty() });
     }
@@ -113,29 +113,29 @@ module aptos_friend_addr::aptos_friend {
     /// Anyone can call once, to start issuing shares
     /// This will also issue 1 share to the issuer
     /// So after this function has called, there is 1 share holder which is the issuer
-    public entry fun issue_share(sender: &signer, username: String,) acquires User, IssuerRegistry {
+    public entry fun issue_share(sender: &signer, username: String) acquires User, IssuerRegistry {
         let sender_addr = signer::address_of(sender);
         assert!(
             !exists<Issuer>(get_issuer_obj_addr(sender_addr)),
-            ERR_USER_ALREADY_ISSUED_SHARE,
+            ERR_USER_ALREADY_ISSUED_SHARE
         );
         let issuer_obj_constructor_ref =
             &object::create_named_object(
                 sender,
-                construct_issuer_object_seed(sender_addr),
+                construct_issuer_object_seed(sender_addr)
             );
         let issuer_obj_signer = object::generate_signer(issuer_obj_constructor_ref);
 
         let holding_obj_constructor_ref =
             &object::create_named_object(
                 sender,
-                construct_holding_object_seed(sender_addr, sender_addr),
+                construct_holding_object_seed(sender_addr, sender_addr)
             );
         let holding_obj_signer = object::generate_signer(holding_obj_constructor_ref);
 
         move_to(
             &holding_obj_signer,
-            Holding { issuer: sender_addr, holder: sender_addr, shares: 1, },
+            Holding { issuer: sender_addr, holder: sender_addr, shares: 1 }
         );
 
         move_to(
@@ -144,8 +144,8 @@ module aptos_friend_addr::aptos_friend {
                 addr: sender_addr,
                 username,
                 total_issued_shares: 1,
-                holder_holdings: vector[get_holding_obj(sender_addr, sender_addr)],
-            },
+                holder_holdings: vector[get_holding_obj(sender_addr, sender_addr)]
+            }
         );
 
         if (exists<User>(get_user_obj_addr(sender_addr))) {
@@ -157,12 +157,14 @@ module aptos_friend_addr::aptos_friend {
             let user_obj_constructor_ref =
                 &object::create_named_object(
                     sender,
-                    construct_user_object_seed(sender_addr),
+                    construct_user_object_seed(sender_addr)
                 );
             let user_obj_signer = object::generate_signer(user_obj_constructor_ref);
             move_to(
                 &user_obj_signer,
-                User { holdings: vector[get_holding_obj(sender_addr, sender_addr)], },
+                User {
+                    holdings: vector[get_holding_obj(sender_addr, sender_addr)]
+                }
             );
         };
 
@@ -173,24 +175,21 @@ module aptos_friend_addr::aptos_friend {
             IssueShareEvent {
                 issuer_addr: sender_addr,
                 issuer_obj: get_issuer_obj(sender_addr),
-                username,
-            },
+                username
+            }
         );
     }
 
     /// Anyone can call, buy shares of an issuer
     public entry fun buy_share(
-        sender: &signer,
-        issuer_obj: Object<Issuer>,
-        amount: u64,
+        sender: &signer, issuer_obj: Object<Issuer>, amount: u64
     ) acquires Issuer, Holding, User {
         let sender_addr = signer::address_of(sender);
-        let (share_cost, issuer_fee, protocol_fee, total_cost) = calculate_buy_share_cost(
-            issuer_obj, amount
-        );
+        let (share_cost, issuer_fee, protocol_fee, total_cost) =
+            calculate_buy_share_cost(issuer_obj, amount);
         assert!(
             coin::balance<AptosCoin>(sender_addr) >= total_cost,
-            ERR_INSUFFICIENT_BALANCE,
+            ERR_INSUFFICIENT_BALANCE
         );
 
         let issuer = borrow_global_mut<Issuer>(object::object_address(&issuer_obj));
@@ -207,12 +206,12 @@ module aptos_friend_addr::aptos_friend {
             let holding_obj_constructor_ref =
                 &object::create_named_object(
                     sender,
-                    construct_holding_object_seed(issuer_addr, sender_addr),
+                    construct_holding_object_seed(issuer_addr, sender_addr)
                 );
             let holding_obj_signer = object::generate_signer(holding_obj_constructor_ref);
             move_to(
                 &holding_obj_signer,
-                Holding { issuer: issuer_addr, holder: sender_addr, shares: amount, },
+                Holding { issuer: issuer_addr, holder: sender_addr, shares: amount }
             );
 
             vector::push_back(
@@ -229,12 +228,14 @@ module aptos_friend_addr::aptos_friend {
                 let buyer_obj_constructor_ref =
                     &object::create_named_object(
                         sender,
-                        construct_user_object_seed(sender_addr),
+                        construct_user_object_seed(sender_addr)
                     );
                 let buyer_obj_signer = object::generate_signer(buyer_obj_constructor_ref);
                 move_to(
                     &buyer_obj_signer,
-                    User { holdings: vector[get_holding_obj(issuer_addr, sender_addr)], },
+                    User {
+                        holdings: vector[get_holding_obj(issuer_addr, sender_addr)]
+                    }
                 );
             };
         };
@@ -253,24 +254,21 @@ module aptos_friend_addr::aptos_friend {
                 share_cost,
                 issuer_fee,
                 protocol_fee,
-                total_cost,
-            },
+                total_cost
+            }
         );
     }
 
     /// Anyone can call, sell shares of an issuer
     public entry fun sell_share(
-        sender: &signer,
-        issuer_obj: Object<Issuer>,
-        amount: u64,
+        sender: &signer, issuer_obj: Object<Issuer>, amount: u64
     ) acquires Issuer, Holding, User, Vault {
         let sender_addr = signer::address_of(sender);
-        let (share_cost, issuer_fee, protocol_fee, total_cost) = calculate_sell_share_cost(
-            issuer_obj, amount
-        );
+        let (share_cost, issuer_fee, protocol_fee, total_cost) =
+            calculate_sell_share_cost(issuer_obj, amount);
         assert!(
             coin::balance<AptosCoin>(sender_addr) >= total_cost,
-            ERR_INSUFFICIENT_BALANCE,
+            ERR_INSUFFICIENT_BALANCE
         );
 
         let issuer = borrow_global_mut<Issuer>(object::object_address(&issuer_obj));
@@ -290,7 +288,7 @@ module aptos_friend_addr::aptos_friend {
         assert!(holding.shares >= amount, ERR_NOT_ENOUGH_SHARES_TO_SELL);
         assert!(
             sender_addr != issuer_addr || holding.shares > amount,
-            ERR_ISSUER_CANNOT_SELL_LAST_SHARE,
+            ERR_ISSUER_CANNOT_SELL_LAST_SHARE
         );
 
         holding.shares = holding.shares - amount;
@@ -321,8 +319,8 @@ module aptos_friend_addr::aptos_friend {
                 share_cost,
                 issuer_fee,
                 protocol_fee,
-                total_cost,
-            },
+                total_cost
+            }
         );
     }
 
@@ -397,7 +395,9 @@ module aptos_friend_addr::aptos_friend {
 
     #[view]
     /// Get issuer's holder holdings
-    public fun get_issuer_holder_holdings(issuer_obj: Object<Issuer>): vector<Object<Holding>> acquires Issuer {
+    public fun get_issuer_holder_holdings(
+        issuer_obj: Object<Issuer>
+    ): vector<Object<Holding>> acquires Issuer {
         let issuer = borrow_global<Issuer>(object::object_address(&issuer_obj));
         issuer.holder_holdings
     }
@@ -481,8 +481,8 @@ module aptos_friend_addr::aptos_friend {
                 &b"{}_share_issued_by_{}_hold_by_{}",
                 @aptos_friend_addr,
                 issuer_addr,
-                holder_addr,
-            ),
+                holder_addr
+            )
         )
     }
 
