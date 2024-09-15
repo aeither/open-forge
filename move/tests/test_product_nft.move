@@ -23,7 +23,9 @@ module aptos_friend_addr::test_product_nft {
         product_nft::mint_product(creator, name, description, uri);
 
         // Get the product token object
-        let product_object = product_nft::get_product_obj(signer::address_of(creator), name);
+        let product_object = product_nft::get_product_obj(
+            signer::address_of(creator), name
+        );
 
         // Modify product description
         let new_description = string::utf8(b"Updated test product description");

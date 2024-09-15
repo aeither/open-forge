@@ -5,10 +5,13 @@ module aptos_friend_addr::product_nft {
     use std::option::{Self};
     use std::error;
 
+    use aptos_std::string_utils;
+
     use aptos_framework::object::{Self, Object};
     use aptos_framework::resource_account;
     use aptos_framework::account;
     use aptos_framework::event;
+    use aptos_framework::timestamp;
 
     use aptos_token_objects::token::{Self, Token};
     use aptos_token_objects::collection;
@@ -45,7 +48,11 @@ module aptos_friend_addr::product_nft {
     }
 
     fun init_module(resource_account: &signer) {
-        let collection_name = utf8(b"Product Showcase");
+        let collection_name = utf8(b"Open Forge");
+        // let current_time_sec = timestamp::now_seconds();
+        // let combined = string_utils::format2(
+        //     &b"{} - {}", collection_name, current_time_sec
+        // );
         create_collection(resource_account, collection_name);
     }
 
