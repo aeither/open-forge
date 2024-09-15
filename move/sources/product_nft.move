@@ -33,10 +33,7 @@ module aptos_friend_addr::product_nft {
     struct TokenMutatorStore has key {
         mutator_ref: token::MutatorRef,
         property_mutator_ref: property_map::MutatorRef,
-        token_name: String
-    }
-
-    struct UpvoteCount has key {
+        token_name: String,
         value: u64
     }
 
@@ -100,50 +97,53 @@ module aptos_friend_addr::product_nft {
             1
         );
 
-    let object_signer = object::generate_signer(token_constructor_ref);
-    move_to(&object_signer, TokenMutatorStore { mutator_ref, property_mutator_ref, token_name: name });
         let object_signer = object::generate_signer(token_constructor_ref);
-        move_to(&object_signer, UpvoteCount { value: 1 });
+        move_to(
+            &object_signer,
+            TokenMutatorStore {
+                mutator_ref,
+                property_mutator_ref,
+                token_name: name,
+                value: 1
+            }
+        );
     }
 
-public entry fun modify_product_description(
-    owner: &signer,
-    product_object: Object<token::Token>,
-    new_description: String
-) acquires TokenMutatorStore {
-    assert!(
-        string::length(&new_description) <= MAX_DESCRIPTION_LENGTH,
-        error::out_of_range(EDESCRIPTION_TOO_LONG)
-    );
+    public entry fun modify_product_description(
+        owner: &signer, product_object: Object<token::Token>, new_description: String
+    ) acquires TokenMutatorStore {
+        assert!(
+            string::length(&new_description) <= MAX_DESCRIPTION_LENGTH,
+            error::out_of_range(EDESCRIPTION_TOO_LONG)
+        );
 
-    let owner_address = signer::address_of(owner);
-    assert!(object::is_owner(product_object, owner_address), 0);
+        let owner_address = signer::address_of(owner);
+        assert!(object::is_owner(product_object, owner_address), 0);
 
-    let product_address = object::object_address(&product_object);
-    
-    let token_mutator_store = borrow_global<TokenMutatorStore>(product_address);
+        let product_address = object::object_address(&product_object);
 
-    token::set_description(&token_mutator_store.mutator_ref, new_description);
-}
+        let token_mutator_store = borrow_global<TokenMutatorStore>(product_address);
+
+        token::set_description(&token_mutator_store.mutator_ref, new_description);
+    }
 
     public entry fun upvote_product(
         user: &signer, product_object: Object<token::Token>
-    ) acquires TokenMutatorStore, UpvoteCount {
+    ) acquires TokenMutatorStore {
         let owner_address = signer::address_of(user);
         assert!(object::is_owner(product_object, owner_address), 0);
 
         let product_address = object::object_address(&product_object);
 
-        let upvote_count = borrow_global_mut<UpvoteCount>(product_address);
+        let upvote_count = borrow_global_mut<TokenMutatorStore>(product_address);
         let old_upvotes = upvote_count.value;
         let new_upvotes = old_upvotes + 1;
         upvote_count.value = new_upvotes;
 
-        let TokenMutatorStore { mutator_ref: _, property_mutator_ref, token_name: _ } =
-            borrow_global<TokenMutatorStore>(product_address);
+        let token_mutator_store = borrow_global<TokenMutatorStore>(product_address);
 
         property_map::update_typed(
-            property_mutator_ref,
+            &token_mutator_store.property_mutator_ref,
             &string::utf8(UPVOTE_COUNT),
             new_upvotes
         );
@@ -155,7 +155,7 @@ public entry fun modify_product_description(
         };
 
         property_map::update_typed(
-            property_mutator_ref,
+            &token_mutator_store.property_mutator_ref,
             &string::utf8(PRODUCT_STATUS),
             string::utf8(new_status)
         );
@@ -172,9 +172,11 @@ public entry fun modify_product_description(
     }
 
     #[view]
-    public fun get_upvote_count(product_object: Object<token::Token>): u64 acquires UpvoteCount {
+    public fun get_upvote_count(
+        product_object: Object<token::Token>
+    ): u64 acquires TokenMutatorStore {
         let product_address = object::object_address(&product_object);
-        borrow_global<UpvoteCount>(product_address).value
+        borrow_global<TokenMutatorStore>(product_address).value
     }
 
     #[view]
