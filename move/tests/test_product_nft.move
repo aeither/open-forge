@@ -34,12 +34,31 @@ module aptos_friend_addr::test_product_nft {
 
         // Check upvote count
         let upvote_count = product_nft::get_upvote_count(product_object);
-        assert!(upvote_count == 2, 0); // Initial count (1) + 5 upvotes
+        assert!(upvote_count == 2, 0); // Initial count (1) + 1 upvote
 
         // Transfer product to user
         product_nft::transfer(creator, product_object, signer::address_of(user));
 
         // Verify new owner
         assert!(object::is_owner(product_object, signer::address_of(user)), 1);
+    }
+
+    #[test(creator = @0x123)]
+    public fun test_mint_twice(creator: &signer) {
+        // Setup
+        account::create_account_for_test(signer::address_of(creator));
+
+        // Create collection
+        product_nft::create_collection(creator);
+
+        // Mint product
+        let name = string::utf8(b"Test Product");
+        let name2 = string::utf8(b"Test Product 2");
+        let description = string::utf8(b"This is a test product");
+        let uri = string::utf8(b"https://test-product.com/image.jpg");
+        product_nft::mint_product(creator, name, description, uri);
+
+        // Attempt to mint the same product again (should fail)
+        product_nft::mint_product(creator, name, description, uri);
     }
 }

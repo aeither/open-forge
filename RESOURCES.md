@@ -20,10 +20,10 @@ aptos account fund-with-faucet \
 ```
 
 
-### Compile
+### Test or Compile
 
 ```bash
-aptos move compile  \
+aptos move test  \
   --named-addresses aptos_friend_addr="0x100" \
   --skip-fetch-latest-git-deps
 ```
