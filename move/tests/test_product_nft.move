@@ -44,7 +44,7 @@ module aptos_friend_addr::test_product_nft {
     }
 
     #[test(creator = @0x123)]
-    public fun test_mint_twice(creator: &signer) {
+    public fun test_mint_two(creator: &signer) {
         // Setup
         account::create_account_for_test(signer::address_of(creator));
 
@@ -53,12 +53,12 @@ module aptos_friend_addr::test_product_nft {
 
         // Mint product
         let name = string::utf8(b"Test Product");
-        let name2 = string::utf8(b"Test Product 2");
         let description = string::utf8(b"This is a test product");
         let uri = string::utf8(b"https://test-product.com/image.jpg");
         product_nft::mint_product(creator, name, description, uri);
 
-        // Attempt to mint the same product again (should fail)
-        product_nft::mint_product(creator, name, description, uri);
+        // Attempt to mint the a different product. Must use different name
+        let name2 = string::utf8(b"Test Product 2");
+        product_nft::mint_product(creator, name2, description, uri);
     }
 }

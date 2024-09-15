@@ -10,7 +10,7 @@ module aptos_friend_addr::product_nft {
     use aptos_framework::account;
     use aptos_framework::event;
 
-    use aptos_token_objects::token;
+    use aptos_token_objects::token::{Self, Token};
     use aptos_token_objects::collection;
     use aptos_token_objects::property_map;
 
@@ -70,7 +70,7 @@ module aptos_friend_addr::product_nft {
         let royalty = option::none();
 
         let token_constructor_ref =
-            &token::create_named_token(
+            token::create_named_token(
                 creator,
                 utf8(COLLECTION_NAME),
                 description,
@@ -79,12 +79,12 @@ module aptos_friend_addr::product_nft {
                 uri
             );
 
-        let mutator_ref = token::generate_mutator_ref(token_constructor_ref);
+        let mutator_ref = token::generate_mutator_ref(&token_constructor_ref);
         let property_mutator_ref =
-            property_map::generate_mutator_ref(token_constructor_ref);
+            property_map::generate_mutator_ref(&token_constructor_ref);
 
         let properties = property_map::prepare_input(vector[], vector[], vector[]);
-        property_map::init(token_constructor_ref, properties);
+        property_map::init(&token_constructor_ref, properties);
 
         property_map::add_typed(
             &property_mutator_ref,
@@ -97,7 +97,7 @@ module aptos_friend_addr::product_nft {
             1
         );
 
-        let object_signer = object::generate_signer(token_constructor_ref);
+        let object_signer = object::generate_signer(&token_constructor_ref);
         move_to(
             &object_signer,
             TokenMutatorStore {
