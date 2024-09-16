@@ -50,10 +50,10 @@ module aptos_friend_addr::product_nft {
         new_upvotes: u64
     }
 
-    fun init_module(resource_account: &signer) {
-        let collection_name = utf8(b"Open Forge");
-        create_collection(resource_account, collection_name);
-    }
+    // fun init_module(resource_account: &signer) {
+    //     let collection_name = utf8(b"Open Forge");
+    //     create_collection(resource_account, collection_name);
+    // }
 
     #[randomness]
     entry fun create_collection(creator: &signer, collection_name: String) {
@@ -71,10 +71,6 @@ module aptos_friend_addr::product_nft {
         string::append(&mut collection_name_with_suffix, collection_name);
         string::append(&mut collection_name_with_suffix, string::utf8(b" - "));
         string::append(&mut collection_name_with_suffix, string::utf8(random_suffix));
-        // let collection_name_with_suffix =
-        //     string_utils::format2(
-        //         &b"{} - {}", collection_name, string::utf8(random_suffix)
-        //     );
 
         let royalty = option::none();
         let collection_constructor_ref =
@@ -244,8 +240,6 @@ module aptos_friend_addr::product_nft {
     // Tests
     #[test_only]
     use aptos_std::crypto_algebra::enable_cryptography_algebra_natives;
-    // #[test_only]
-    // use std::debug::print;
 
     #[test_only]
     fun setup_test(fx: &signer, account: &signer) {
@@ -258,8 +252,9 @@ module aptos_friend_addr::product_nft {
     }
 
     #[test_only]
-    public fun init_module_for_test(creator: &signer) {
-        init_module(creator);
+    public fun create_collection_with_randomness(creator: &signer) {
+        let collection_name = utf8(b"Open Forge");
+        create_collection(creator, collection_name);
     }
 
     #[test(fx = @aptos_framework, creator = @aptos_friend_addr)]
@@ -268,7 +263,7 @@ module aptos_friend_addr::product_nft {
         setup_test(fx, creator);
 
         // Call init_module
-        init_module_for_test(creator);
+        create_collection_with_randomness(creator);
 
         // Assert that the collection was created
         let creator_address = signer::address_of(creator);
@@ -296,7 +291,7 @@ module aptos_friend_addr::product_nft {
         account::create_account_for_test(signer::address_of(user));
 
         // Initialize the module (this will create the collection)
-        init_module_for_test(creator);
+        create_collection_with_randomness(creator);
 
         // Mint product
         let name = string::utf8(b"Test Product");
@@ -331,7 +326,7 @@ module aptos_friend_addr::product_nft {
         setup_test(fx, creator);
 
         // Initialize the module (this will create the collection)
-        init_module_for_test(creator);
+        create_collection_with_randomness(creator);
 
         // Mint product
         let name = string::utf8(b"Test Product");

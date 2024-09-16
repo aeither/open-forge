@@ -24,6 +24,7 @@ aptos account fund-with-faucet \
 
 ```bash
 aptos move test  \
+  --package-dir move \
   --named-addresses aptos_friend_addr="0x100" \
   --skip-fetch-latest-git-deps
 ```
@@ -32,6 +33,19 @@ aptos move test  \
 
 ```bash
 bun move:test && bun move:get-abi
+```
+
+## Deploy
+
+```bash
+source .env && aptos move create-resource-account-and-publish-package \
+  --package-dir move \
+  --address-name aptos_friend_addr \
+  --profile aptos-friend-testnet \
+  --named-addresses aptos_friend_addr=$aptos_friend_addr \
+  --skip-fetch-latest-git-deps \
+  --assume-yes \
+  --seed "$(openssl rand -hex 32)"
 ```
 
 
@@ -90,19 +104,6 @@ source .env && aptos account fund-with-faucet \
   --account $launchpad_addr \
   --url "https://fullnode.testnet.aptoslabs.com" \
   --faucet-url "https://faucet.testnet.aptoslabs.com"
-```
-
-Deploy
-
-```bash
-source .env && aptos move create-resource-account-and-publish-package \
-  --package-dir . \
-  --address-name launchpad_addr \
-  --profile aptos-move-contracts-testnet \
-  --named-addresses initial_creator_addr=$initial_creator_addr,launchpad_addr=$launchpad_addr,minter=$minter \
-  --skip-fetch-latest-git-deps \
-  --assume-yes \
-  --seed "$(openssl rand -hex 32)"
 ```
 
 ## ABI
