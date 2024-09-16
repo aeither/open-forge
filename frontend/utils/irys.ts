@@ -17,7 +17,7 @@ export async function getIrysUploader(
   return irysUploaderInstance;
 }
 
-export async function getMetadataURI(
+export async function uploadMetadataURI(
   irysUploader: any,
   image: File,
   name: string,

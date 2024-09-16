@@ -4,7 +4,7 @@ import {
   AptosConfig,
   Ed25519PrivateKey,
   Network,
-  NetworkToNetworkName
+  NetworkToNetworkName,
 } from "@aptos-labs/ts-sdk"
 import { createSurfClient } from "@thalalabs/surf"
 import dotenv from "dotenv"
@@ -43,11 +43,17 @@ const main = async () => {
 
   // await createProductNFT()
 
-  const PRODUCT_NAME="product 1"
-  await mintProductNFT(PRODUCT_NAME, "description 1", "uri address")
+  const PRODUCT_NAME = "Open Forge 1"
+  const TOKEN_URI =
+    "https://gateway.irys.xyz/DECscf3teYKE86hM8SmiUxPYmnfedQNRGiQhPmofBNRo"
+  await mintProductNFT(
+    PRODUCT_NAME,
+    "Connecting Aptos builders and backers",
+    TOKEN_URI
+  )
   await upvoteProduct(
     user.accountAddress as unknown as `0x${string}`,
-    PRODUCT_NAME,
+    PRODUCT_NAME
   )
 }
 
@@ -90,7 +96,7 @@ const mintProductNFT = async (
 
 const upvoteProduct = async (
   creatorAddress: `0x${string}`,
-  productName: string,
+  productName: string
 ) => {
   // First, get the product object
   const productObject = await surfProductNFT.view.get_product_obj({

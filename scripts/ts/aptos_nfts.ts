@@ -36,6 +36,7 @@ const main = async () => {
     functionArguments: [user.accountAddress as unknown as `0x${string}`],
     typeArguments: [],
   })
+  console.log("🚀 ~ main ~ collectionName:", collectionName)
 
   const collectionId = await aptos.getCollectionId({
     collectionName: collectionName,
