@@ -230,6 +230,12 @@ module aptos_friend_addr::product_nft {
         object::address_to_object<token::Token>(token_address)
     }
 
+    #[view]
+    public fun get_collection_name(creator_addr: address): String acquires CollectionMutatorStore {
+        let collection_store = borrow_global<CollectionMutatorStore>(creator_addr);
+        collection_store.collection_name
+    }
+
     // Utils
     fun log(prefix: &vector<u8>, value: &String) {
         let full_message = vector::empty<u8>();

@@ -10,6 +10,7 @@
     "move:upgrade": "node ./scripts/move/upgrade",
     "move:issue-share-and-buy-share": "node ./scripts/move/issue_share_and_buy_share",
     "move:abi": "node ./scripts/move/abi",
+    "move:fmt": "cd move && aptos move fmt",
     "ts:mint": "npx tsx scripts/ts/surf_product_nft_mint.ts",
     "dev": "vite",
     "build": "tsc && vite build",

@@ -30,10 +30,6 @@ const user = Account.fromPrivateKey({
 })
 
 const main = async () => {
-  console.log(
-    "This example will create an account, issue a share, and buy some of it in the same transaction."
-  )
-
   console.log("=== Address ===\n")
   console.log(`User's address is: ${user.accountAddress}`)
 
