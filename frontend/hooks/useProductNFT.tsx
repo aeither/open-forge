@@ -1,6 +1,5 @@
-import { COLLECTION_NAME } from "@/lib/constants"
+import { Button } from "@/components/ui/button"
 import { ABI } from "@/utils/abi-product_nft"
-
 import { aptosClient } from "@/utils/aptosClient"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useWalletClient } from "@thalalabs/surf/hooks"
@@ -31,13 +30,27 @@ export const useMintProductNFT = () => {
       })
 
       queryClient.invalidateQueries()
+
+      const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
+
       toast("Success", {
-        description: `Mint transaction succeeded, hash: ${executedTransaction.hash}`,
+        description: (
+          <div>
+            <p>Mint transaction succeeded, hash: {executedTransaction.hash}</p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.open(explorerUrl, "_blank")}
+              className="mt-2"
+            >
+              View on Explorer
+            </Button>
+          </div>
+        ),
+        duration: 5000,
       })
 
-      console.log(
-        `View transaction on explorer: https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
-      )
+      console.log(`View transaction on explorer: ${explorerUrl}`)
     },
     onError: (error) => {
       console.error(error)
@@ -46,14 +59,4 @@ export const useMintProductNFT = () => {
       })
     },
   })
-}
-
-export const getCollectionName = async () => {
-  //   const [collectionName] =
-  //     await surfClientProductNFT().view.get_collection_name({
-  //       functionArguments: [user.accountAddress as unknown as `0x${string}`],
-  //       typeArguments: [],
-  //     })
-
-  return COLLECTION_NAME
 }
