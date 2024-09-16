@@ -46,6 +46,9 @@ async function publish() {
 
     // Write the updated content back to the .env file
     fs.writeFileSync(filePath, envContent, "utf8")
+
+    // Explorer at Address
+    console.log(`https://explorer.aptoslabs.com/account/${objectAddress.objectAddress}/modules/run/product_nft/create_collection?network=testnet`)
   })
 }
 publish();

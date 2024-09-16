@@ -56,7 +56,9 @@ module aptos_friend_addr::product_nft {
     // }
 
     #[randomness]
-    entry fun create_collection(creator: &signer, collection_name: String) {
+    entry fun create_collection(creator: &signer) {
+        let collection_name = utf8(b"Open Forge");
+
         let chars = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         let random_suffix = vector::empty<u8>();
         let i = 0;
@@ -253,8 +255,7 @@ module aptos_friend_addr::product_nft {
 
     #[test_only]
     public fun create_collection_with_randomness(creator: &signer) {
-        let collection_name = utf8(b"Open Forge");
-        create_collection(creator, collection_name);
+        create_collection(creator);
     }
 
     #[test(fx = @aptos_framework, creator = @aptos_friend_addr)]
