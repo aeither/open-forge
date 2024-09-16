@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { useMintProductNFT } from "@/hooks/useProductNFT"
 import { getIrysUploader, uploadMetadataURI } from "@/utils/irys"
 
 export function Irys() {
@@ -17,7 +18,8 @@ export function Irys() {
   const [externalUrl, setExternalUrl] = useState("")
   const [metadataUrl, setMetadataUrl] = useState("")
   const [isUploading, setIsUploading] = useState(false)
-
+  const mintProduct = useMintProductNFT()
+  
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       setImage(e.target.files[0])
@@ -39,6 +41,12 @@ export function Irys() {
         externalUrl
       )
       setMetadataUrl(metadataUploadUrl)
+
+      mintProduct.mutate({
+        name,
+        description,
+        uri: metadataUploadUrl,
+      })
     } catch (error) {
       console.error("Error uploading:", error)
     } finally {

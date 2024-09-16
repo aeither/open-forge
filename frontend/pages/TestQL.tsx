@@ -1,3 +1,4 @@
+import { COLLECTION_NAME } from "@/lib/constants"
 import { gql, useQuery } from "@apollo/client"
 import type React from "react"
 import { useEffect, useState } from "react"
@@ -24,38 +25,36 @@ interface GetCollectionNftsVars {
   collection_name: string
 }
 
+// https://cloud.hasura.io/public/graphiql?endpoint=https://api.testnet.aptoslabs.com/v1/graphql
 const GET_COLLECTION_NFTS = gql`
-  query GetCollectionNfts($collection_name: String) {
-    current_token_datas_v2(
-      where: {current_collection: {collection_name: {_eq: $collection_name}}}
-      order_by: {last_transaction_timestamp: desc}
-    ) {
-      token_name
-      description
-      token_uri
-    }
+query GetCollectionNfts($collection_name: String) {
+  current_token_datas_v2(
+    where: {current_collection: {collection_name: {_eq: $collection_name}}}
+    order_by: {last_transaction_timestamp: desc}
+  ) {
+    token_name
+    description
+    token_uri
+    collection_id
+    last_transaction_timestamp
+    token_data_id
+    token_properties
   }
+}
 `
 
 const CollectionNftsPage: React.FC = () => {
-  const [collectionName, setCollectionName] = useState<string>("")
   const [nftsWithMetadata, setNftsWithMetadata] = useState<NFT[]>([])
 
-  useEffect(() => {
-    const fetchCollectionName = async () => {
-      const name = "Open Forge - nLexRZ" // Placeholder
-      setCollectionName(name)
-    }
+  
 
-    fetchCollectionName()
-  }, [])
 
   const { loading, error, data } = useQuery<
     GetCollectionNftsData,
     GetCollectionNftsVars
   >(GET_COLLECTION_NFTS, {
-    variables: { collection_name: collectionName },
-    skip: !collectionName,
+    variables: { collection_name: COLLECTION_NAME },
+    skip: !COLLECTION_NAME,
   })
 
   useEffect(() => {
@@ -88,7 +87,7 @@ const CollectionNftsPage: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">
-        NFTs in Collection: {collectionName}
+        NFTs in Collection: {COLLECTION_NAME}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {nftsWithMetadata.map((nft: NFT, index: number) => (

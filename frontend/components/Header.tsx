@@ -1,10 +1,9 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
-import { Bell, Search, User } from "lucide-react"
+import { User } from "lucide-react"
 import { type FC, useState } from "react"
 import { Link } from "react-router-dom"
 import { WalletSelector } from "./WalletSelector"
 import { Button } from "./ui/button"
-import { Input } from "./ui/input"
 
 type LaunchpadHeaderProps = {
   title: string
@@ -21,22 +20,9 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
           <Link to="/">
             <h1 className="text-xl font-bold">{title}</h1>
           </Link>
-          <div className="relative">
-            <Input
-              type="text"
-              placeholder="Search projects..."
-              className="pl-8 w-64"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Search
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-              size={18}
-            />
-          </div>
         </div>
         <nav>
-          <ul className="flex items-center space-x-4">
+          <ul className="flex items-center space-x-2">
             <li>
               <Button variant="ghost" asChild>
                 <Link to="/explore">Explore</Link>
@@ -45,11 +31,6 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
             <li>
               <Button variant="ghost" asChild>
                 <Link to="/upload">Submit</Link>
-              </Button>
-            </li>
-            <li>
-              <Button variant="ghost" size="icon">
-                <Bell size={20} />
               </Button>
             </li>
             {connected && account && (

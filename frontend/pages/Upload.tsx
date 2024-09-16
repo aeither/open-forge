@@ -124,9 +124,21 @@ const UploadProject: React.FC = () => {
                 onChange={handleInputChange}
               >
                 <option value="">Select Category</option>
-                <option value="tech">Tech</option>
-                <option value="design">Design</option>
-                <option value="productivity">Productivity</option>
+                <option value="DeFi">DeFi</option>
+                <option value="Explorers">Explorers</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Bridges">Bridges</option>
+                <option value="NFT">NFT</option>
+                <option value="Tooling">Tooling</option>
+                <option value="Social">Social</option>
+                <option value="Wallets">Wallets</option>
+                <option value="Education">Education</option>
+                <option value="Stablecoins">Stablecoins</option>
+                <option value="Security">Security</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Marketplaces">Marketplaces</option>
+                <option value="Launchpads">Launchpads</option>
+                <option value="Infra">Infra</option>
               </select>
               <input
                 type="text"

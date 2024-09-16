@@ -2,6 +2,7 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { Home } from "@/pages/Home"
 import { ApolloProvider } from "@apollo/client/react/context/ApolloProvider"
+import { Toaster } from "./components/ui/sonner"
 import { Explore } from "./pages/Explore"
 import { Irys } from "./pages/Irys"
 import { IssuerList } from "./pages/IssuerList"
@@ -73,6 +74,7 @@ function App() {
     <>
       <ApolloProvider client={client}>
         <RouterProvider router={router} />
+        <Toaster richColors position="top-right" />
       </ApolloProvider>
     </>
   )

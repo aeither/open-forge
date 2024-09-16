@@ -3,9 +3,10 @@ import { createSurfClient } from "@thalalabs/surf"
 
 import { NETWORK } from "@/constants"
 import { ABI } from "@/utils/abi-aptos_friend"
+import { ABI as ABI_PRODUCT_NFT } from "@/utils/abi-product_nft"
 
 const aptos = new Aptos(new AptosConfig({ network: NETWORK }))
-const surf = createSurfClient(aptos).useABI(ABI)
+const surf = createSurfClient(aptos)
 
 // Reuse same Aptos instance to utilize cookie based sticky routing
 export function aptosClient() {
@@ -13,5 +14,9 @@ export function aptosClient() {
 }
 
 export function surfClient() {
-  return surf
+  return surf.useABI(ABI)
+}
+
+export function surfClientProductNFT() {
+  return surf.useABI(ABI_PRODUCT_NFT)
 }
