@@ -19,7 +19,7 @@ export function Irys() {
   const [metadataUrl, setMetadataUrl] = useState("")
   const [isUploading, setIsUploading] = useState(false)
   const mintProduct = useMintProductNFT()
-  
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       setImage(e.target.files[0])

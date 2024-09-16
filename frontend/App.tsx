@@ -3,6 +3,7 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 import { Home } from "@/pages/Home"
 import { ApolloProvider } from "@apollo/client/react/context/ApolloProvider"
 import { Toaster } from "./components/ui/sonner"
+import { QueryProvider } from "./lib/providers"
 import { Explore } from "./pages/Explore"
 import { Irys } from "./pages/Irys"
 import { IssuerList } from "./pages/IssuerList"
@@ -72,10 +73,12 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <ApolloProvider client={client}>
-        <RouterProvider router={router} />
-        <Toaster richColors position="top-right" />
-      </ApolloProvider>
+      <QueryProvider>
+        <ApolloProvider client={client}>
+          <RouterProvider router={router} />
+          <Toaster richColors position="bottom-right" />
+        </ApolloProvider>
+      </QueryProvider>
     </>
   )
 }
