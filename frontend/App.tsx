@@ -1,6 +1,7 @@
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { Home } from "@/pages/Home"
+import { ApolloProvider } from "@apollo/client/react/context/ApolloProvider"
 import { Explore } from "./pages/Explore"
 import { Irys } from "./pages/Irys"
 import { IssuerList } from "./pages/IssuerList"
@@ -8,7 +9,9 @@ import Landing from "./pages/Landing"
 import Leaderboard from "./pages/Leaderboard"
 import { Profile } from "./pages/Profile"
 import { ProjectDetails } from "./pages/ProjectDetails"
+import NftCollectionPage from "./pages/TestQL"
 import Upload from "./pages/Upload"
+import client from "./utils/apollo-client"
 
 function Layout() {
   return (
@@ -57,6 +60,10 @@ const router = createBrowserRouter([
         path: "/irys",
         element: <Irys />,
       },
+      {
+        path: "/test2",
+        element: <NftCollectionPage />,
+      },
     ],
   },
 ])
@@ -64,7 +71,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <ApolloProvider client={client}>
+        <RouterProvider router={router} />
+      </ApolloProvider>
     </>
   )
 }

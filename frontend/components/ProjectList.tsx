@@ -54,6 +54,46 @@ const ProjectList: React.FC = () => {
       tags: ["Oracle", "Infrastructure"],
       votes: 28,
     },
+    {
+      id: 6,
+      name: "AptosPlay",
+      description: "Decentralized gaming platform on Aptos",
+      logo: "/api/placeholder/80/80",
+      tags: ["Gaming", "Entertainment"],
+      votes: 25,
+    },
+    {
+      id: 7,
+      name: "MoveDAO",
+      description: "Decentralized autonomous organization for Aptos governance",
+      logo: "/api/placeholder/80/80",
+      tags: ["DAO", "Governance"],
+      votes: 22,
+    },
+    {
+      id: 8,
+      name: "AptosChat",
+      description: "Decentralized chat application on Aptos",
+      logo: "/api/placeholder/80/80",
+      tags: ["Chat", "Communication"],
+      votes: 20,
+    },
+    {
+      id: 9,
+      name: "MoveExplorer",
+      description: "Decentralized explorer for Aptos blockchain",
+      logo: "/api/placeholder/80/80",
+      tags: ["Explorer", "Infrastructure"],
+      votes: 18,
+    },
+    {
+      id: 10,
+      name: "AptosWallet",
+      description: "Decentralized wallet for Aptos users",
+      logo: "/api/placeholder/80/80",
+      tags: ["Wallet", "Security"],
+      votes: 15,
+    },
   ])
 
   const handleUpvote = (id: number) => {

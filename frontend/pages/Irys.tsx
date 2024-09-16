@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { getIrysUploader, getMetadataURI } from "@/utils/irys"
+import { getIrysUploader, uploadMetadataURI } from "@/utils/irys"
 
 export function Irys() {
   const wallet = useWallet()
@@ -31,7 +31,7 @@ export function Irys() {
     try {
       const irysUploader = await getIrysUploader(wallet)
 
-      const metadataUploadUrl = await getMetadataURI(
+      const metadataUploadUrl = await uploadMetadataURI(
         irysUploader,
         image,
         name,
