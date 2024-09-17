@@ -74,16 +74,6 @@ module aptos_friend_addr::product_nft {
         create_collection(app_signer);
     }
 
-    fun get_app_signer_addr(): address {
-        object::create_object_address(&@aptos_friend_addr, APP_OBJECT_SEED)
-    }
-
-    fun get_app_signer(): signer acquires ObjectController {
-        object::generate_signer_for_extending(
-            &borrow_global<ObjectController>(get_app_signer_addr()).app_extend_ref
-        )
-    }
-
     // #[randomness]
     entry fun create_collection(creator: &signer) {
 
@@ -243,6 +233,18 @@ module aptos_friend_addr::product_nft {
         let owner_address = signer::address_of(owner);
         assert!(object::is_owner(object, owner_address), 0);
         object::transfer(owner, object, to);
+    }
+
+    fun get_app_signer(): signer acquires ObjectController {
+        object::generate_signer_for_extending(
+            &borrow_global<ObjectController>(get_app_signer_addr()).app_extend_ref
+        )
+    }
+
+
+    #[view]
+    public fun get_app_signer_addr(): address {
+        object::create_object_address(&@aptos_friend_addr, APP_OBJECT_SEED)
     }
 
     #[view]

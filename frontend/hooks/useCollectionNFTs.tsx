@@ -31,6 +31,10 @@ interface GetCollectionNftsVars {
   collection_name: string
 }
 
+/**
+ * Edit on Hasura
+ * https://cloud.hasura.io/public/graphiql?endpoint=https://api.testnet.aptoslabs.com/v1/graphql
+ */
 const GET_COLLECTION_NFTS = gql`
   query GetCollectionNfts($collection_name: String) {
     current_token_datas_v2(

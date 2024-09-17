@@ -33,14 +33,19 @@ const main = async () => {
   console.log(`User's address is: ${user.accountAddress}`)
 
   const [collectionName] = await surfProductNFT.view.get_collection_name({
-    functionArguments: [user.accountAddress as unknown as `0x${string}`],
+    functionArguments: [],
     typeArguments: [],
   })
   console.log("🚀 ~ main ~ collectionName:", collectionName)
 
+  const [app_signer_addr] = await surfProductNFT.view.get_app_signer_addr({
+    functionArguments: [],
+    typeArguments: [],
+  })
+
   const collectionId = await aptos.getCollectionId({
     collectionName: collectionName,
-    creatorAddress: user.accountAddress,
+    creatorAddress: app_signer_addr,
   })
 
   const data = await aptos.getCollectionDataByCollectionId({
@@ -49,7 +54,7 @@ const main = async () => {
 
   const ownedTokens = await aptos.getAccountOwnedTokensFromCollectionAddress({
     collectionAddress: collectionId as AccountAddressInput,
-    accountAddress: user.accountAddress,
+    accountAddress: app_signer_addr,
   })
   console.log("🚀 ~ main ~ ownedTokens:", ownedTokens)
 
