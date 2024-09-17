@@ -43,7 +43,7 @@ const main = async () => {
 
   // await createProductNFT()
 
-  const PRODUCT_NAME = "Open Forge 2"
+  const PRODUCT_NAME = "Open Forge 3"
   const TOKEN_URI =
     "https://gateway.irys.xyz/DECscf3teYKE86hM8SmiUxPYmnfedQNRGiQhPmofBNRo"
   await mintProductNFT(
@@ -94,9 +94,7 @@ const mintProductNFT = async (
   )
 }
 
-const upvoteProduct = async (
-  productName: string
-) => {
+const upvoteProduct = async (productName: string) => {
   const result = await surfProductNFT.entry.upvote_product({
     functionArguments: [productName],
     typeArguments: [],

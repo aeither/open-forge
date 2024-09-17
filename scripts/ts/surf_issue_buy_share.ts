@@ -48,12 +48,7 @@ const main = async () => {
    * View Functions
    */
 
-  const [issuer_obj_addr] = await surfClient
-    .useABI(APTOS_FRIEND_ABI)
-    .view.get_vault_addr({
-      functionArguments: [user.accountAddress as unknown as `0x${string}`],
-      typeArguments: [],
-    })
+// TODO: add view to know how much user owns for viewing profile
 
   /**
    * Entry Functions
