@@ -1,6 +1,5 @@
 import type { Network } from "@aptos-labs/wallet-adapter-react"
 
-export const NETWORK: Network =
-  (process.env.NEXT_PUBLIC_NETWORK as Network) ?? "testnet"
+export const NETWORK: Network = import.meta.env.VITE_APP_NETWORK ?? "testnet"
 
-export const COLLECTION_NAME = "Open Forge - nLexRZ"
+export const COLLECTION_NAME = "Open Forge - bRiBtq"

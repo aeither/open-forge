@@ -1,7 +1,7 @@
 import { Aptos, AptosConfig } from "@aptos-labs/ts-sdk"
 import { createSurfClient } from "@thalalabs/surf"
 
-import { NETWORK } from "@/constants"
+import { NETWORK } from "@/lib/constants"
 import { ABI } from "@/utils/abi-aptos_friend"
 import { ABI as ABI_PRODUCT_NFT } from "@/utils/abi-product_nft"
 
