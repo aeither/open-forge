@@ -9,7 +9,7 @@ async function test() {
     packageDirectoryPath: "move",
     namedAddresses: {
       aptos_friend_addr: "0x100",
-    //   product_nft_addr: "0x101",
+      // user_addr: "0x101",
     },
     extraArguments: ["--skip-fetch-latest-git-deps"],
   })

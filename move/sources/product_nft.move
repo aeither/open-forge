@@ -101,8 +101,7 @@ module aptos_friend_addr::product_nft {
         description: String,
         uri: String
     ) acquires CollectionMutatorStore {
-        let creator_address = signer::address_of(creator);
-        let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
+        let collection_store = borrow_global<CollectionMutatorStore>(@aptos_friend_addr);
 
         log(&b"mint_product -> collection_name", &collection_store.collection_name);
 
@@ -327,10 +326,13 @@ module aptos_friend_addr::product_nft {
         assert!(object::is_owner(product_object, signer::address_of(user)), 1);
     }
 
-    #[test(fx = @aptos_framework, creator = @aptos_friend_addr)]
-    public fun test_mint_two(fx: &signer, creator: &signer) acquires CollectionMutatorStore {
+    #[test(fx = @aptos_framework, creator = @aptos_friend_addr, user = @0x456)]
+    public fun test_mint_two(
+        fx: &signer, creator: &signer, user: &signer
+    ) acquires CollectionMutatorStore {
         // Setup
         setup_test(fx, creator);
+        account::create_account_for_test(signer::address_of(user));
 
         // Initialize the module (this will create the collection)
         create_collection_with_randomness(creator);

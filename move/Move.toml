@@ -5,6 +5,7 @@ authors = []
 
 [addresses]
 aptos_friend_addr = "_"
+# user_addr = "_"
 # product_nft_addr = "_"
 
 [dependencies]
