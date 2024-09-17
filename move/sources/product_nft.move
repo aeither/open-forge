@@ -55,8 +55,10 @@ module aptos_friend_addr::product_nft {
 
     #[event]
     struct UpvoteUpdate has drop, store {
-        product: address,
-        old_upvotes: u64,
+        upvoter: address,
+        product_name: String,
+        timestamp: u64,
+        product_addr: address,
         new_upvotes: u64
     }
 
@@ -193,10 +195,7 @@ module aptos_friend_addr::product_nft {
     public entry fun upvote_product(
         user: &signer, name: String
     ) acquires CollectionMutatorStore, TokenMutatorStore {
-        // let owner_address = signer::address_of(user);
-        // assert!(object::is_owner(product_object, owner_address), 0);
-        // let product_address = object::object_address(&product_object);
-
+        let upvoter_address = signer::address_of(user);
         let product_address = get_product_address(name);
 
         let product = borrow_global_mut<TokenMutatorStore>(product_address);
@@ -204,10 +203,8 @@ module aptos_friend_addr::product_nft {
         let new_upvotes = old_upvotes + 1;
         product.value = new_upvotes;
 
-        let token_mutator_store = borrow_global<TokenMutatorStore>(product_address);
-
         property_map::update_typed(
-            &token_mutator_store.property_mutator_ref,
+            &product.property_mutator_ref,
             &string::utf8(UPVOTE_COUNT),
             new_upvotes
         );
@@ -219,12 +216,22 @@ module aptos_friend_addr::product_nft {
         };
 
         property_map::update_typed(
-            &token_mutator_store.property_mutator_ref,
+            &product.property_mutator_ref,
             &string::utf8(PRODUCT_STATUS),
             string::utf8(new_status)
         );
 
-        event::emit(UpvoteUpdate { product: product_address, old_upvotes, new_upvotes });
+        let product_name = product.token_name;
+
+        event::emit(
+            UpvoteUpdate {
+                upvoter: upvoter_address,
+                product_name,
+                product_addr: product_address,
+                new_upvotes,
+                timestamp: timestamp::now_seconds()
+            }
+        );
     }
 
     public entry fun transfer<T: key>(
@@ -240,7 +247,6 @@ module aptos_friend_addr::product_nft {
             &borrow_global<ObjectController>(get_app_signer_addr()).app_extend_ref
         )
     }
-
 
     #[view]
     public fun get_app_signer_addr(): address {
@@ -308,7 +314,7 @@ module aptos_friend_addr::product_nft {
     use aptos_std::crypto_algebra::enable_cryptography_algebra_natives;
 
     #[test_only]
-    fun setup_test(fx: &signer, account: &signer) {
+    fun setup_test(fx: &signer, aptos: &signer, account: &signer) {
         enable_cryptography_algebra_natives(fx);
         randomness::initialize_for_testing(fx);
         randomness::set_seed(
@@ -316,6 +322,7 @@ module aptos_friend_addr::product_nft {
         );
         account::create_account_for_test(signer::address_of(account));
 
+        timestamp::set_time_has_started_for_testing(aptos);
         init_module(account);
     }
 
@@ -324,10 +331,12 @@ module aptos_friend_addr::product_nft {
         create_collection(creator);
     }
 
-    #[test(fx = @aptos_framework, creator = @aptos_friend_addr)]
-    fun test_random_collection_name(fx: &signer, creator: &signer) acquires CollectionMutatorStore {
+    #[test(fx = @aptos_framework, aptos = @0x1, creator = @aptos_friend_addr)]
+    fun test_random_collection_name(
+        fx: &signer, aptos: &signer, creator: &signer
+    ) acquires CollectionMutatorStore {
         // Setup
-        setup_test(fx, creator);
+        setup_test(fx, aptos, creator);
 
         // Call init_module
         // create_collection_with_randomness(creator);
@@ -349,12 +358,17 @@ module aptos_friend_addr::product_nft {
         assert!(string::index_of(&collection_name, &utf8(b"Open Forge")) == 0, 2);
     }
 
-    #[test(fx = @aptos_framework, creator = @aptos_friend_addr, user = @0x456)]
+    #[test(
+        fx = @aptos_framework, aptos = @0x1, creator = @aptos_friend_addr, user = @0x456
+    )]
     public fun test_product_collection(
-        fx: &signer, creator: &signer, user: &signer
+        fx: &signer,
+        aptos: &signer,
+        creator: &signer,
+        user: &signer
     ) acquires ObjectController, CollectionMutatorStore, TokenMutatorStore {
         // Setup
-        setup_test(fx, creator);
+        setup_test(fx, aptos, creator);
         account::create_account_for_test(signer::address_of(user));
 
         // Initialize the module (this will create the collection)
@@ -386,12 +400,17 @@ module aptos_friend_addr::product_nft {
         assert!(object::is_owner(product_object, signer::address_of(creator)), 1);
     }
 
-    #[test(fx = @aptos_framework, creator = @aptos_friend_addr, user = @0x456)]
+    #[test(
+        fx = @aptos_framework, aptos = @0x1, creator = @aptos_friend_addr, user = @0x456
+    )]
     public fun test_mint_two(
-        fx: &signer, creator: &signer, user: &signer
+        fx: &signer,
+        aptos: &signer,
+        creator: &signer,
+        user: &signer
     ) acquires ObjectController, CollectionMutatorStore {
         // Setup
-        setup_test(fx, creator);
+        setup_test(fx, aptos, creator);
         account::create_account_for_test(signer::address_of(user));
 
         // Initialize the module (this will create the collection)
