@@ -1,4 +1,5 @@
 import { useCollectionNFTs } from "@/hooks/useCollectionNFTs"
+import { useUpvoteProduct } from "@/hooks/useProductNFT"
 import { ChevronUp } from "lucide-react"
 import type React from "react"
 import { Link } from "react-router-dom"
@@ -14,10 +15,13 @@ interface Project {
 
 const ProjectList: React.FC = () => {
   const { loading, error, nftsWithMetadata } = useCollectionNFTs()
+  const upvoteProduct = useUpvoteProduct()
 
-  const handleUpvote = (id: string) => {
-    // Implement upvote logic here
-    console.log(`Upvoted project with id: ${id}`)
+  const handleUpvote = (name: string) => {
+    upvoteProduct.mutate({
+      productName: name,
+    })
+    console.log(`Upvoted project with id: ${name}`)
   }
 
   if (loading) return <div>Loading...</div>
@@ -59,9 +63,10 @@ const ProjectList: React.FC = () => {
               </div>
             </div>
             <button
+              type="button"
               onClick={(e) => {
                 e.preventDefault()
-                handleUpvote(project.id)
+                handleUpvote(project.name)
               }}
               className="flex flex-col items-center justify-center p-2 rounded-md"
             >
