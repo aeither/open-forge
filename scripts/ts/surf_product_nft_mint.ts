@@ -39,7 +39,7 @@ const main = async () => {
   //   amount: INITIAL_BALANCE,
   // })
 
-  console.log("\n=== Issue share and buy share ===\n")
+  console.log("\n=== Product NFT Mint ===\n")
 
   // await createProductNFT()
 
@@ -52,7 +52,7 @@ const main = async () => {
     TOKEN_URI
   )
   await upvoteProduct(
-    user.accountAddress as unknown as `0x${string}`,
+    // user.accountAddress as unknown as `0x${string}`,
     PRODUCT_NAME
   )
 }
@@ -95,12 +95,11 @@ const mintProductNFT = async (
 }
 
 const upvoteProduct = async (
-  creatorAddress: `0x${string}`,
   productName: string
 ) => {
   // First, get the product object
   const productObject = await surfProductNFT.view.get_product_obj({
-    functionArguments: [creatorAddress, productName],
+    functionArguments: [productName],
     typeArguments: [],
   })
 

@@ -1,7 +1,7 @@
 // Internal components
 import { useToast } from "@/components/ui/use-toast"
+import { NETWORK } from "@/lib/constants"
 // Internal constants
-import { NETWORK } from "@/constants"
 import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react"
 import type { PropsWithChildren } from "react"
 
