@@ -31,7 +31,7 @@ module aptos_friend_addr::product_nft {
     const STATUS_NEW: vector<u8> = b"New";
 
     // openssl rand -hex 3
-    const COLLECTION_NAME: vector<u8> = b"Open Forge - 80edcb";
+    const COLLECTION_NAME: vector<u8> = b"Open Forge - 81f64b";
     const COLLECTION_DESCRIPTION: vector<u8> = b"Open Forge Products Collection";
     const COLLECTION_URI: vector<u8> = b"https://aptos-open-forge-dev-demo.com";
 
