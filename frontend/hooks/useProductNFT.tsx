@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { ABI } from "@/utils/abi-product_nft"
-import { aptosClient, surfClientProductNFT } from "@/utils/aptosClient"
+import { aptosClient } from "@/utils/aptosClient"
+import { GET_COLLECTION_NFTS } from "@/utils/graphql-doc"
+import { useApolloClient } from "@apollo/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useWalletClient } from "@thalalabs/surf/hooks"
 import { toast } from "sonner"
@@ -18,6 +20,7 @@ export type UpvoteProductArguments = {
 export const useMintProductNFT = () => {
   const { client } = useWalletClient()
   const queryClient = useQueryClient()
+  const apolloClient = useApolloClient()
 
   return useMutation({
     mutationFn: async ({ name, description, uri }: MintProductNFTArguments) => {
@@ -68,19 +71,14 @@ export const useMintProductNFT = () => {
 export const useUpvoteProduct = () => {
   const { client } = useWalletClient()
   const queryClient = useQueryClient()
+  const apolloClient = useApolloClient()
 
   return useMutation({
     mutationFn: async ({ productName }: UpvoteProductArguments) => {
       if (!client) throw new Error("Wallet client not available")
 
-      const productObject = await surfClientProductNFT().view.get_product_obj({
-        functionArguments: [productName],
-        typeArguments: [],
-      })
-
-      // Now upvote the product
       const result = await client.useABI(ABI).upvote_product({
-        arguments: [productObject[0].inner],
+        arguments: [productName],
         type_arguments: [],
       })
 
@@ -92,10 +90,13 @@ export const useUpvoteProduct = () => {
       })
 
       queryClient.invalidateQueries()
+      await apolloClient.refetchQueries({
+        include: [GET_COLLECTION_NFTS],
+      })
 
       const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
 
-      toast("Success", {
+      toast.success("Success", {
         description: (
           <div>
             <p>
@@ -118,7 +119,7 @@ export const useUpvoteProduct = () => {
     },
     onError: (error) => {
       console.error(error)
-      toast("Error", {
+      toast.error("Error", {
         description: "Failed to upvote product",
       })
     },

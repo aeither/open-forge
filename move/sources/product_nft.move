@@ -75,7 +75,7 @@ module aptos_friend_addr::product_nft {
     }
 
     // #[randomness]
-    entry fun create_collection(creator: &signer) {
+    fun create_collection(creator: &signer) {
 
         // let chars = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         // let random_suffix = vector::empty<u8>();

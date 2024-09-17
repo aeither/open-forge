@@ -1,9 +1,6 @@
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { Home } from "@/pages/Home"
-import { ApolloProvider } from "@apollo/client/react/context/ApolloProvider"
-import { Toaster } from "./components/ui/sonner"
-import { QueryProvider } from "./lib/providers"
 import { Explore } from "./pages/Explore"
 import { Irys } from "./pages/Irys"
 import { IssuerList } from "./pages/IssuerList"
@@ -11,9 +8,7 @@ import Landing from "./pages/Landing"
 import Leaderboard from "./pages/Leaderboard"
 import { Profile } from "./pages/Profile"
 import { ProjectDetails } from "./pages/ProjectDetails"
-import NftCollectionPage from "./pages/TestQL"
 import Upload from "./pages/Upload"
-import client from "./utils/apollo-client"
 
 function Layout() {
   return (
@@ -62,10 +57,10 @@ const router = createBrowserRouter([
         path: "/irys",
         element: <Irys />,
       },
-      {
-        path: "/test2",
-        element: <NftCollectionPage />,
-      },
+      // {
+      //   path: "/test2",
+      //   element: <NftCollectionPage />,
+      // },
     ],
   },
 ])
@@ -73,12 +68,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <QueryProvider>
-        <ApolloProvider client={client}>
-          <RouterProvider router={router} />
-          <Toaster richColors position="bottom-right" />
-        </ApolloProvider>
-      </QueryProvider>
+      <RouterProvider router={router} />
     </>
   )
 }
