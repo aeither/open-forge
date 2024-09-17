@@ -1,5 +1,8 @@
+import { aptosClient } from "@/utils/aptosClient"
 import { ChevronUp, Eye, MessageSquare } from "lucide-react"
 import type React from "react"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 interface Contributor {
   id: number
@@ -9,19 +12,48 @@ interface Contributor {
 
 interface ProjectStatsProps {
   project: {
+    id: string
     votes: number
     views: number
     comments: number
-    contributors: Contributor[]
+    contributor: Contributor
   }
   onUpvote: () => void
 }
 
+const getOwnerAddress = async (id: string) => {
+  try {
+    const ownershipData = await aptosClient().getCurrentDigitalAssetOwnership({
+      digitalAssetAddress: id as any,
+    })
+
+    if (ownershipData.owner_address) {
+      return ownershipData.owner_address
+    }
+    console.log("Token ownership data not found")
+    return null
+  } catch (error) {
+    console.error("Error fetching token ownership:", error)
+    return null
+  }
+}
+
 const ProjectStats: React.FC<ProjectStatsProps> = ({ project, onUpvote }) => {
+  const [ownerAddress, setOwnerAddress] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchOwnerAddress = async () => {
+      const address = await getOwnerAddress(project.id)
+      setOwnerAddress(address)
+    }
+    fetchOwnerAddress()
+  }, [project.id])
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
       <div className="flex items-center justify-between mb-6">
         <button
+          type="button"
           onClick={onUpvote}
           className="flex flex-col items-center justify-center p-2 rounded-md hover:bg-gray-100 transition duration-300"
         >
@@ -40,18 +72,15 @@ const ProjectStats: React.FC<ProjectStatsProps> = ({ project, onUpvote }) => {
         </div>
       </div>
       <div>
-        <h3 className="text-lg font-semibold mb-2">Contributors</h3>
-        <div className="flex flex-wrap">
-          {project.contributors.map((contributor) => (
-            <img
-              key={contributor.id}
-              src={contributor.avatar}
-              alt={contributor.name}
-              title={contributor.name}
-              className="w-10 h-10 rounded-full border-2 border-white -ml-2 first:ml-0"
-            />
-          ))}
-        </div>
+        <h3 className="text-lg font-semibold mb-2">Contributor</h3>
+        <Link to={`/profile/${ownerAddress}`}>
+          <img
+            src={project.contributor.avatar}
+            alt={project.contributor.name}
+            title={project.contributor.name}
+            className="w-10 h-10 rounded-full border-2 border-white cursor-pointer"
+          />
+        </Link>
       </div>
     </div>
   )

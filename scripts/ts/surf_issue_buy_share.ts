@@ -44,6 +44,21 @@ const main = async () => {
 
   console.log("\n=== Issue share and buy share ===\n")
 
+  /**
+   * View Functions
+   */
+
+  const [issuer_obj_addr] = await surfClient
+    .useABI(APTOS_FRIEND_ABI)
+    .view.get_vault_addr({
+      functionArguments: [user.accountAddress as unknown as `0x${string}`],
+      typeArguments: [],
+    })
+
+  /**
+   * Entry Functions
+   */
+
   // Use Surf to create and submit the transaction
   const issueResult = await surfClient
     .useABI(APTOS_FRIEND_ABI)
@@ -63,17 +78,14 @@ const main = async () => {
     `View transaction on explorer: https://explorer.aptoslabs.com/txn/${issueExecutedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
   )
 
-  const issuer_obj = await surfClient
+  const [issuer_obj_addr] = await surfClient
     .useABI(APTOS_FRIEND_ABI)
-    .view.get_issuer_obj({
+    .view.get_issuer_obj_addr({
       functionArguments: [user.accountAddress as unknown as `0x${string}`],
       typeArguments: [],
     })
   const buyResult = await surfClient.useABI(APTOS_FRIEND_ABI).entry.buy_share({
-    functionArguments: [
-      issuer_obj[0].inner,
-      Math.floor(Math.random() * 14) + 2,
-    ],
+    functionArguments: [issuer_obj_addr, Math.floor(Math.random() * 14) + 2],
     typeArguments: [],
     account: user,
   })

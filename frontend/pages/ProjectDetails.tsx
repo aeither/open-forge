@@ -4,8 +4,8 @@ import ProjectStats from "@/components/ProjectStats"
 import RelatedProjects from "@/components/RelatedProjects"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Share2 } from "lucide-react"
-import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 
 interface Contributor {
   id: number
@@ -14,7 +14,7 @@ interface Contributor {
 }
 
 interface Project {
-  id: number
+  id: string
   name: string
   tagline: string
   description: string
@@ -24,12 +24,13 @@ interface Project {
   votes: number
   views: number
   comments: number
-  contributors: Contributor[]
+  contributor: Contributor
 }
 
 export const ProjectDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>()
   const [project, setProject] = useState<Project>({
-    id: 1,
+    id: id || "1",
     name: "Project Explorer",
     tagline: "Discover and showcase innovative projects",
     description:
@@ -40,12 +41,12 @@ export const ProjectDetails: React.FC = () => {
     votes: 1337,
     views: 5000,
     comments: 42,
-    contributors: [
-      { id: 1, name: "Alice", avatar: "/api/placeholder/40/40" },
-      { id: 2, name: "Bob", avatar: "/api/placeholder/40/40" },
-      { id: 3, name: "Charlie", avatar: "/api/placeholder/40/40" },
-    ],
+    contributor: { id: 1, name: "Alice", avatar: "/api/placeholder/40/40" },
   })
+
+  useEffect(() => {
+    console.log("Project ID:", id)
+  }, [id])
 
   const handleUpvote = () => {
     setProject((prev) => ({ ...prev, votes: prev.votes + 1 }))
@@ -53,13 +54,10 @@ export const ProjectDetails: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
       <Header title="Details" />
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column: Project Information */}
           <div className="w-full lg:w-2/3">
             <div className="p-6 rounded-lg shadow-sm">
               <img
@@ -79,7 +77,7 @@ export const ProjectDetails: React.FC = () => {
                   <ExternalLink size={16} className="mr-1" />
                   Visit Website
                 </a>
-                <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">
+                <button type="button" className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">
                   <Share2 size={16} className="mr-2" />
                   Share
                 </button>
@@ -93,7 +91,7 @@ export const ProjectDetails: React.FC = () => {
                 <li>Collaboration tools for project teams</li>
                 <li>Detailed analytics and insights for project creators</li>
               </ul>
-              <div className="mb-6">
+              {/* <div className="mb-6">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
@@ -102,21 +100,19 @@ export const ProjectDetails: React.FC = () => {
                     {tag}
                   </span>
                 ))}
-              </div>
+              </div> */}
               <Button className="text-white px-6 py-3 rounded-md hover:bg-green-700 transition duration-300">
                 Support This Project
               </Button>
             </div>
           </div>
 
-          {/* Right Column: Project Stats and Related Content */}
           <div className="w-full lg:w-1/3">
             <ProjectStats project={project} onUpvote={handleUpvote} />
             <RelatedProjects />
           </div>
         </div>
 
-        {/* Comments Section */}
         <div className="mt-8">
           <CommentSection projectId={project.id} />
         </div>

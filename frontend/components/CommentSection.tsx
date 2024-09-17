@@ -12,7 +12,7 @@ interface Comment {
 }
 
 interface CommentSectionProps {
-  projectId: number
+  projectId: string
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({ projectId }) => {
