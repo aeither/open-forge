@@ -20,7 +20,6 @@ export type UpvoteProductArguments = {
 export const useMintProductNFT = () => {
   const { client } = useWalletClient()
   const queryClient = useQueryClient()
-  const apolloClient = useApolloClient()
 
   return useMutation({
     mutationFn: async ({ name, description, uri }: MintProductNFTArguments) => {
