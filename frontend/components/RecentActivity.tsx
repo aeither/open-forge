@@ -28,6 +28,10 @@ async function fetchProductEvents(): Promise<UpvoteUpdateEvent[]> {
   try {
     const events = await getAptosClient().getModuleEventsByEventType({
       eventType: eventType,
+      options: {
+        limit: 10,
+        orderBy: [{ transaction_block_height: "desc" }],
+      },
     })
     return events as UpvoteUpdateEvent[]
   } catch (error) {
@@ -53,7 +57,7 @@ const RecentActivity: React.FC = () => {
     <div className="p-4 rounded-lg shadow-sm bg-white">
       <h2 className="font-semibold mb-4">Recent Activity</h2>
       <ul className="space-y-4">
-        {events?.slice(0, 5).map((event, index) => (
+        {events?.map((event, index) => (
           <li key={index} className="flex items-center space-x-3">
             <div className="rounded-full p-2">
               <User size={16} />

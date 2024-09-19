@@ -114,7 +114,7 @@ export default function Component() {
       <section className="bg-muted py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="mb-8 text-center text-2xl font-bold sm:mb-12 sm:text-3xl">
-            Our Open Forge Innovators
+            Open Forge Innovators
           </h2>
           <div className="relative h-[300px] w-full overflow-hidden rounded-lg border bg-background md:shadow-xl">
             <div className="flex h-full flex-col">

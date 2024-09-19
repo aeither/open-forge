@@ -109,7 +109,6 @@ function CallbackPage() {
         <Progress
           value={progress}
           className="w-full mb-4"
-          indicatorClassName={hasError ? "bg-red-500" : "bg-blue-500"}
         />
         <p className="text-center text-gray-600">
           {hasError
