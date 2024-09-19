@@ -3,6 +3,7 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import { User } from "lucide-react"
 import { type FC, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import WalletButtons from "./WalletButtons"
 import { WalletSelector } from "./WalletSelector"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
@@ -12,8 +13,9 @@ type LaunchpadHeaderProps = {
 }
 
 export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
-  const { connected, account, network } = useWallet()
+  const { connected, account, network, wallet } = useWallet()
   const [isTestnet, setIsTestnet] = useState(true)
+  // const keylessAccount = useKeylessAccount()
 
   useEffect(() => {
     const checkAndChangeNetwork = async () => {
@@ -61,13 +63,27 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
             <li>
               <WalletSelector />
             </li>
+            <li>
+              <WalletButtons />
+            </li>
           </ul>
         </nav>
       </div>
 
+      <Button
+        variant="ghost"
+        asChild
+        onClick={() => console.log(connected, account, network)}
+      >
+        <span>Log Connected, Account, Network</span>
+      </Button>
+
       {connected && !isTestnet && (
         <>
-          <Badge variant={"destructive"} className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-auto">
+          <Badge
+            variant={"destructive"}
+            className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-auto"
+          >
             Please switch to Testnet.
           </Badge>
         </>

@@ -1,6 +1,7 @@
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { Home } from "@/pages/Home"
+import CallbackPage from "./pages/Callback"
 import { Explore } from "./pages/Explore"
 import { Irys } from "./pages/Irys"
 import { IssuerList } from "./pages/IssuerList"
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+      {
+        path: "/callback",
+        element: <CallbackPage />,
+      },
       {
         path: "/list",
         element: <IssuerList />,

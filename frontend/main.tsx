@@ -8,6 +8,7 @@ import { WalletProvider } from "@/components/WalletProvider.tsx"
 import { ApolloProvider } from "@apollo/client"
 // Internal components
 import { Toaster } from "./components/ui/sonner"
+import { KeylessAccountProvider } from "./context/KeylessAccountContext"
 import { QueryProvider } from "./lib/providers"
 import client from "./utils/apollo-client"
 
@@ -16,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <WalletProvider>
       <QueryProvider>
         <ApolloProvider client={client}>
-          <App />
+          <KeylessAccountProvider>
+            <App />
+          </KeylessAccountProvider>
           <Toaster richColors theme="light" position="bottom-right" />
         </ApolloProvider>
       </QueryProvider>
