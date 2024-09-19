@@ -1,3 +1,4 @@
+import { Progress } from "@/components/ui/progress"
 import { useKeylessAccount } from "@/context/KeylessAccountContext"
 import { getLocalEphemeralKeyPair } from "@/hooks/useEphemeralKeyPair"
 import { getAptosClient } from "@/utils/aptosClient"
@@ -100,15 +101,26 @@ function CallbackPage() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen w-screen">
-      <div className="nes-container is-rounded shadow-md cursor-not-allowed bg-gray-200">
-        <h1>Loading your blockchain account...</h1>
-        <br />
-        <progress
-          className={`nes-progress ${hasError ? "is-error" : "is-primary"}`}
+    <div className="flex flex-col items-center justify-center h-screen w-screen">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Loading your account
+        </h1>
+        <Progress
           value={progress}
-          max="100"
+          className="w-full mb-4"
+          indicatorClassName={hasError ? "bg-red-500" : "bg-blue-500"}
         />
+        <p className="text-center text-gray-600">
+          {hasError
+            ? "An error occurred. Please try again."
+            : `${progress}% complete`}
+        </p>
+        {progress === 100 && !hasError && (
+          <p className="text-center text-green-600 mt-4">
+            Redirecting...
+          </p>
+        )}
       </div>
     </div>
   )
