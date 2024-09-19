@@ -1,10 +1,10 @@
-import type { Account } from "@aptos-labs/ts-sdk"
+import type { KeylessAccount } from "@aptos-labs/ts-sdk"
 import type React from "react"
 import { createContext, useContext, useState } from "react"
 
 interface KeylessAccountContextType {
-  keylessAccount: Account | null
-  setKeylessAccount: (account: Account | null) => void
+  keylessAccount: KeylessAccount | null
+  setKeylessAccount: (account: KeylessAccount | null) => void
 }
 
 const KeylessAccountContext = createContext<
@@ -14,7 +14,7 @@ const KeylessAccountContext = createContext<
 export const KeylessAccountProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
-  const [keylessAccount, setKeylessAccount] = useState<Account | null>(null)
+  const [keylessAccount, setKeylessAccount] = useState<KeylessAccount | null>(null)
 
   return (
     <KeylessAccountContext.Provider

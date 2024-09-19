@@ -13,9 +13,8 @@ type LaunchpadHeaderProps = {
 }
 
 export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
-  const { connected, account, network, wallet } = useWallet()
+  const { connected, account, network } = useWallet()
   const [isTestnet, setIsTestnet] = useState(true)
-  // const keylessAccount = useKeylessAccount()
 
   useEffect(() => {
     const checkAndChangeNetwork = async () => {
@@ -69,14 +68,6 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
           </ul>
         </nav>
       </div>
-
-      <Button
-        variant="ghost"
-        asChild
-        onClick={() => console.log(connected, account, network)}
-      >
-        <span>Log Connected, Account, Network</span>
-      </Button>
 
       {connected && !isTestnet && (
         <>
