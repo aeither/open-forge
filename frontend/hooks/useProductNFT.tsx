@@ -6,7 +6,7 @@ import { GET_COLLECTION_NFTS } from "@/utils/graphql-doc"
 import { useApolloClient } from "@apollo/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createEntryPayload } from "@thalalabs/surf"
-import { useSubmitTransaction, useWalletClient } from "@thalalabs/surf/hooks"
+import { useWalletClient } from "@thalalabs/surf/hooks"
 import { toast } from "sonner"
 
 export type MintProductNFTArguments = {
@@ -18,30 +18,51 @@ export type MintProductNFTArguments = {
 export type UpvoteProductArguments = {
   productName: string
 }
-
 export const useMintProductNFT = () => {
   const { client } = useWalletClient()
   const queryClient = useQueryClient()
+  const apolloClient = useApolloClient()
+  const { keylessAccount } = useKeylessAccount()
 
   return useMutation({
     mutationFn: async ({ name, description, uri }: MintProductNFTArguments) => {
+      const payload = createEntryPayload(ABI, {
+        function: "mint_product",
+        functionArguments: [name, description, uri],
+        typeArguments: [],
+      })
+
+      const toastId = toast.loading("Minting product NFT...")
+
+      if (keylessAccount) {
+        const result = await getSurfClient().submitTransaction({
+          payload,
+          signer: keylessAccount,
+        })
+        return { hash: result.hash, toastId }
+      }
+
       if (!client) throw new Error("Wallet client not available")
       const result = await client.useABI(ABI).mint_product({
         arguments: [name, description, uri],
         type_arguments: [],
       })
-      return result.hash
+      return { hash: result.hash, toastId }
     },
-    onSuccess: async (hash) => {
+    onSuccess: async ({ hash, toastId }) => {
       const executedTransaction = await getAptosClient().waitForTransaction({
         transactionHash: hash,
       })
 
       queryClient.invalidateQueries()
+      await apolloClient.refetchQueries({
+        include: [GET_COLLECTION_NFTS],
+      })
 
       const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
 
-      toast("Success", {
+      toast.success("Mint successful", {
+        id: toastId,
         description: (
           <div>
             <p>Mint transaction succeeded!</p>
@@ -60,9 +81,10 @@ export const useMintProductNFT = () => {
 
       console.log(`View transaction on explorer: ${explorerUrl}`)
     },
-    onError: (error) => {
+    onError: (error, variables, context) => {
       console.error(error)
-      toast("Error", {
+      toast.error("Mint failed", {
+        id: (context as { toastId: string })?.toastId,
         description: "Failed to mint product NFT",
       })
     },
@@ -70,14 +92,10 @@ export const useMintProductNFT = () => {
 }
 
 export const useUpvoteProduct = () => {
+  const { client } = useWalletClient()
   const queryClient = useQueryClient()
   const apolloClient = useApolloClient()
   const { keylessAccount } = useKeylessAccount()
-  const {
-    reset,
-    submitTransaction,
-    data: submitResult,
-  } = useSubmitTransaction()
 
   return useMutation({
     mutationFn: async ({ productName }: UpvoteProductArguments) => {
@@ -97,9 +115,12 @@ export const useUpvoteProduct = () => {
         return { hash: result.hash, toastId }
       }
 
-      await submitTransaction(payload)
-      reset()
-      return { hash: submitResult.hash, toastId }
+      if (!client) throw new Error("Wallet client not available")
+      const result = await client.useABI(ABI).upvote_product({
+        arguments: [productName],
+        type_arguments: [],
+      })
+      return { hash: result.hash, toastId }
     },
     onSuccess: async ({ hash, toastId }) => {
       const executedTransaction = await getAptosClient().waitForTransaction({
