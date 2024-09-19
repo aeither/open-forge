@@ -70,10 +70,13 @@ aptos move run-script \
   Nodit API Queries
 -->
 
+
+Get the ABI
+
 ```bash
 source .env && curl --request GET \
-     --url https://aptos-testnet.nodit.io/v1/accounts/<your_account_address>/module/product_nft \
-     --header 'X-API-KEY: <your X-API-KEY>' \
+     --url https://aptos-testnet.nodit.io/v1/accounts/0x45f0e092310103dd54abbd6eea30839fc867843560a7f36ddbc05b27b3b00677/module/product_nft \
+     --header 'X-API-KEY: $NODIT_API_KEY' \
      --header 'accept: application/json'
 ```
 
