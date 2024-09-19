@@ -10,6 +10,7 @@ import { Toggle } from "@/components/ui/toggle"
 import { useToast } from "@/components/ui/use-toast"
 import { useGetHolding, useGetIssuerObjectAddress } from "@/hooks/useHolding"
 import { ABI } from "@/utils/abi-aptos_friend"
+import { getAptosClient } from "@/utils/aptosClient"
 
 type TradeShareProps = {
   issuerAddress: `0x${string}`

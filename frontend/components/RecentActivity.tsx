@@ -1,4 +1,5 @@
 import { PRODUCT_NFT_ADDR } from "@/lib/constants"
+import { getAptosClient } from "@/utils/aptosClient"
 import { useQuery } from "@tanstack/react-query"
 import { formatDistanceToNow } from "date-fns"
 import { User } from "lucide-react"

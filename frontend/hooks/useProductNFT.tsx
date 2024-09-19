@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ABI } from "@/utils/abi-product_nft"
+import { getAptosClient } from "@/utils/aptosClient"
 import { GET_COLLECTION_NFTS } from "@/utils/graphql-doc"
 import { useApolloClient } from "@apollo/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

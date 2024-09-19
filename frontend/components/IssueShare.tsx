@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { LabeledInput } from "@/components/ui/labeled-input"
 import { ABI } from "@/utils/abi-aptos_friend"
 import { useToast } from "./ui/use-toast"
+import { getAptosClient } from "@/utils/aptosClient"
 
 export function IssueShare() {
   const { client: walletClient } = useWalletClient()

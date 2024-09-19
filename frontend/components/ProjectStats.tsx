@@ -1,3 +1,4 @@
+import { getAptosClient } from "@/utils/aptosClient"
 import { ChevronUp, Eye, MessageSquare } from "lucide-react"
 import type React from "react"
 import { useEffect, useState } from "react"
