@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
-import { surfClient } from "@/utils/aptosClient"
 import type { Holding } from "@/utils/types"
+import { surfClientBuilderShare } from "@/utils/aptosClient"
 
 export function useGetHolders(issuerAddress?: string) {
   const [holdings, setHoldings] = useState<Holding[]>()
@@ -24,7 +24,7 @@ export function useGetHolders(issuerAddress?: string) {
 
 const getIssuerObject = async (issuerAddress: `0x${string}`) => {
   return (
-    await surfClient().view.get_issuer_obj({
+    await surfClientBuilderShare().view.get_issuer_obj({
       typeArguments: [],
       functionArguments: [issuerAddress],
     })
@@ -33,7 +33,7 @@ const getIssuerObject = async (issuerAddress: `0x${string}`) => {
 
 const getHoldingObjects = async (issuerObject: { inner: `0x${string}` }) => {
   return (
-    await surfClient().view.get_issuer_holder_holdings({
+    await surfClientBuilderShare().view.get_issuer_holder_holdings({
       typeArguments: [],
       functionArguments: [issuerObject.inner],
     })
@@ -43,7 +43,7 @@ const getHoldingObjects = async (issuerObject: { inner: `0x${string}` }) => {
 const getHoldings = async (holdingObjects: { inner: `0x${string}` }[]) => {
   return await Promise.all(
     holdingObjects.map(async (holdingObject: { inner: `0x${string}` }) =>
-      surfClient()
+      surfClientBuilderShare()
         .view.get_holding({
           typeArguments: [],
           functionArguments: [holdingObject.inner],

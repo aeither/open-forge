@@ -13,7 +13,11 @@ export function getAptosClient() {
   return aptos
 }
 
-export function surfClient() {
+export function getSurfClient() {
+  return surf
+}
+
+export function surfClientBuilderShare() {
   return surf.useABI(ABI)
 }
 

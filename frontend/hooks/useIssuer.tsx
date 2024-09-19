@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
-import { surfClient } from "@/utils/aptosClient"
 import type { Issuer } from "@/utils/types"
+import { surfClientBuilderShare } from "@/utils/aptosClient"
 
 // This call can be pretty expensive when fetching a big number of assets,
 // therefore it is not recommended to use it in production
@@ -43,7 +43,7 @@ export function useHasIssuedShare(issuerAddress?: string) {
     if (!issuerAddress) {
       return
     }
-    surfClient()
+    surfClientBuilderShare()
       .view.has_issued_share({
         typeArguments: [],
         functionArguments: [issuerAddress as `0x${string}`],
@@ -58,7 +58,7 @@ export function useHasIssuedShare(issuerAddress?: string) {
 
 const getRegistry = async () => {
   return (
-    await surfClient().view.get_issuer_registry({
+    await surfClientBuilderShare().view.get_issuer_registry({
       typeArguments: [],
       functionArguments: [],
     })
@@ -67,7 +67,7 @@ const getRegistry = async () => {
 
 const getIssuerObject = async (issuerAddress: `0x${string}`) => {
   return (
-    await surfClient().view.get_issuer_obj({
+    await surfClientBuilderShare().view.get_issuer_obj({
       typeArguments: [],
       functionArguments: [issuerAddress],
     })
@@ -75,7 +75,7 @@ const getIssuerObject = async (issuerAddress: `0x${string}`) => {
 }
 
 const getIssuer = async (issuerObject: { inner: `0x${string}` }) => {
-  return await surfClient()
+  return await surfClientBuilderShare()
     .view.get_issuer({
       typeArguments: [],
       functionArguments: [issuerObject.inner],
