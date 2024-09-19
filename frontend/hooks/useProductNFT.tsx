@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button"
+import { useKeylessAccount } from "@/context/KeylessAccountContext"
 import { ABI } from "@/utils/abi-product_nft"
-import { getAptosClient } from "@/utils/aptosClient"
+import { getAptosClient, getSurfClient } from "@/utils/aptosClient"
 import { GET_COLLECTION_NFTS } from "@/utils/graphql-doc"
 import { useApolloClient } from "@apollo/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useWalletClient } from "@thalalabs/surf/hooks"
+import { createEntryPayload } from "@thalalabs/surf"
+import { useSubmitTransaction, useWalletClient } from "@thalalabs/surf/hooks"
 import { toast } from "sonner"
 
 export type MintProductNFTArguments = {
@@ -42,7 +44,7 @@ export const useMintProductNFT = () => {
       toast("Success", {
         description: (
           <div>
-            <p>Mint transaction succeeded, hash: {executedTransaction.hash}</p>
+            <p>Mint transaction succeeded!</p>
             <Button
               variant="outline"
               size="sm"
@@ -68,22 +70,38 @@ export const useMintProductNFT = () => {
 }
 
 export const useUpvoteProduct = () => {
-  const { client } = useWalletClient()
   const queryClient = useQueryClient()
   const apolloClient = useApolloClient()
+  const { keylessAccount } = useKeylessAccount()
+  const {
+    reset,
+    submitTransaction,
+    data: submitResult,
+  } = useSubmitTransaction()
 
   return useMutation({
     mutationFn: async ({ productName }: UpvoteProductArguments) => {
-      if (!client) throw new Error("Wallet client not available")
-
-      const result = await client.useABI(ABI).upvote_product({
-        arguments: [productName],
-        type_arguments: [],
+      const payload = createEntryPayload(ABI, {
+        function: "upvote_product",
+        functionArguments: [productName],
+        typeArguments: [],
       })
 
-      return result.hash
+      const toastId = toast.loading("Upvoting product...")
+
+      if (keylessAccount) {
+        const result = await getSurfClient().submitTransaction({
+          payload,
+          signer: keylessAccount,
+        })
+        return { hash: result.hash, toastId }
+      }
+
+      await submitTransaction(payload)
+      reset()
+      return { hash: submitResult.hash, toastId }
     },
-    onSuccess: async (hash) => {
+    onSuccess: async ({ hash, toastId }) => {
       const executedTransaction = await getAptosClient().waitForTransaction({
         transactionHash: hash,
       })
@@ -95,12 +113,11 @@ export const useUpvoteProduct = () => {
 
       const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
 
-      toast.success("Success", {
+      toast.success("Upvote successful", {
+        id: toastId,
         description: (
           <div>
-            <p>
-              Upvote transaction succeeded, hash: {executedTransaction.hash}
-            </p>
+            <p>Upvote transaction succeeded!</p>
             <Button
               variant="outline"
               size="sm"
@@ -116,9 +133,10 @@ export const useUpvoteProduct = () => {
 
       console.log(`View transaction on explorer: ${explorerUrl}`)
     },
-    onError: (error) => {
+    onError: (error, variables, context) => {
       console.error(error)
-      toast.error("Error", {
+      toast.error("Upvote failed", {
+        id: (context as { toastId: string })?.toastId,
         description: "Failed to upvote product",
       })
     },
