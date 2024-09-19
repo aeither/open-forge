@@ -5,11 +5,9 @@ import useEphemeralKeyPair from "@/hooks/useEphemeralKeyPair"
 import { collapseAddress } from "@/utils/address"
 import { toast } from "sonner"
 import GoogleLogo from "../GoogleLogo"
+import { Button } from "../ui/button"
 
-const buttonStyles =
-  "nes-btn flex items-center justify-center md:gap-4 py-2 flex-nowrap whitespace-nowrap"
-
-export default function WalletButtons() {
+export default function KeylessButton() {
   if (!import.meta.env.VITE_GOOGLE_CLIENT_ID) {
     throw new Error("Google Client ID is not set in env")
   }
@@ -44,7 +42,6 @@ export default function WalletButtons() {
       <div className="flex items-center justify-center m-auto sm:m-0 sm:px-4">
         <button
           type="button"
-          className={buttonStyles}
           onClick={disconnect}
           title="Disconnect Wallet"
         >
@@ -58,12 +55,11 @@ export default function WalletButtons() {
   }
 
   return (
-    <div className="flex items-center justify-center m-auto sm:m-0 sm:px-4">
+    <div className="flex items-center justify-center m-auto">
       <a href={redirectUrl.toString()} className="hover:no-underline">
-        <button type="button" className={buttonStyles}>
-          <GoogleLogo />
-          <p>Sign in with Google</p>
-        </button>
+        <Button size="sm" variant="default">
+          Connect
+        </Button>
       </a>
     </div>
   )

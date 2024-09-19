@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Toggle } from "@/components/ui/toggle"
-import { useToast } from "@/components/ui/use-toast"
 import { useGetHolding, useGetIssuerObjectAddress } from "@/hooks/useHolding"
 import { ABI } from "@/utils/abi-aptos_friend"
 import { getAptosClient } from "@/utils/aptosClient"
+import { toast } from "sonner"
 
 type TradeShareProps = {
   issuerAddress: `0x${string}`
@@ -19,7 +19,6 @@ type TradeShareProps = {
 export function TradeShare({ issuerAddress }: TradeShareProps) {
   const { client: walletClient } = useWalletClient()
   const { account } = useWallet()
-  const { toast } = useToast()
   const holding = useGetHolding(
     issuerAddress,
     account?.address as `0x${string}`
@@ -48,9 +47,8 @@ export function TradeShare({ issuerAddress }: TradeShareProps) {
     const executedTransaction = await getAptosClient().waitForTransaction({
       transactionHash: resp.hash,
     })
-
-    toast({
-      title: "Success",
+    
+    toast.success("Success", {
       description: (
         <a
           href={`https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${import.meta.env.VITE_APP_NETWORK}`}

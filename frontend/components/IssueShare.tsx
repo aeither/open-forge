@@ -4,12 +4,11 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { LabeledInput } from "@/components/ui/labeled-input"
 import { ABI } from "@/utils/abi-aptos_friend"
-import { useToast } from "./ui/use-toast"
 import { getAptosClient } from "@/utils/aptosClient"
+import { toast } from "sonner"
 
 export function IssueShare() {
   const { client: walletClient } = useWalletClient()
-  const { toast } = useToast()
 
   const [username, setUsername] = useState<string>()
 
@@ -23,8 +22,7 @@ export function IssueShare() {
     const executedTransaction = await getAptosClient().waitForTransaction({
       transactionHash: resp.hash,
     })
-    toast({
-      title: "Success",
+    toast.success("Success", {
       description: (
         <a
           href={`https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${import.meta.env.VITE_APP_NETWORK}`}

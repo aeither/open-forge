@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useToast } from "@/components/ui/use-toast"
+import { useKeylessAccount } from "@/context/KeylessAccountContext"
 import {
   APTOS_CONNECT_ACCOUNT_URL,
   AboutAptosConnect,
@@ -41,36 +41,64 @@ import {
   User,
 } from "lucide-react"
 import { useCallback, useState } from "react"
+import { toast } from "sonner"
+import GoogleLogo from "./GoogleLogo"
+import KeylessButton from "./KeylessButton"
 
 export function WalletSelector() {
   const { account, connected, disconnect, wallet } = useWallet()
-  const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const { keylessAccount, setKeylessAccount } = useKeylessAccount()
 
   const closeDialog = useCallback(() => setIsDialogOpen(false), [])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const copyAddress = useCallback(async () => {
+    if (keylessAccount) {
+      try {
+        await navigator.clipboard.writeText(
+          keylessAccount.accountAddress.toString()
+        )
+        toast("Success", {
+          description: "Copied wallet address to clipboard.",
+        })
+      } catch {
+        toast.error("Error", {
+          description: "Failed to copy wallet address.",
+        })
+      }
+      return
+    }
+
     if (!account?.address) return
     try {
       await navigator.clipboard.writeText(account.address)
-      toast({
-        title: "Success",
+      toast("Success", {
         description: "Copied wallet address to clipboard.",
       })
     } catch {
-      toast({
-        variant: "destructive",
-        title: "Error",
+      toast.error("Error", {
         description: "Failed to copy wallet address.",
       })
     }
-  }, [account?.address, toast])
+  }, [account?.address, toast, keylessAccount])
 
-  return connected ? (
+  const disconnectWallet = () => {
+    if (keylessAccount) {
+      setKeylessAccount(null)
+    } else {
+      disconnect()
+    }
+  }
+
+  return connected || keylessAccount ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button>
-          {account?.ansName || truncateAddress(account?.address) || "Unknown"}
+          {account?.ansName ||
+            truncateAddress(account?.address) ||
+            truncateAddress(keylessAccount?.accountAddress.toString()) ||
+            "Unknown"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -89,7 +117,7 @@ export function WalletSelector() {
             </a>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onSelect={disconnect} className="gap-2">
+        <DropdownMenuItem onSelect={disconnectWallet} className="gap-2">
           <LogOut className="h-4 w-4" /> Disconnect
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -161,6 +189,18 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
             </div>
           </div>
         )}
+
+        <div className="animate-wiggle flex items-center justify-between px-4 mt-4 py-3 gap-4 border rounded-md border-highlight">
+          <div className="flex items-center gap-4">
+            <div className="h-6 w-6">
+              <GoogleLogo />
+            </div>
+            <div className="text-base font-normal">Keyless App Wallet</div>
+          </div>
+          <div className="flex items-center gap-4">
+            <KeylessButton />
+          </div>
+        </div>
 
         <div className="flex flex-col gap-3 pt-3">
           {availableWallets.map((wallet) => (

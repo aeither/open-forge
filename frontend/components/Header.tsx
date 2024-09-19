@@ -3,7 +3,6 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import { User } from "lucide-react"
 import { type FC, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import WalletButtons from "./WalletButtons"
 import { WalletSelector } from "./WalletSelector"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
@@ -61,9 +60,6 @@ export const Header: FC<LaunchpadHeaderProps> = ({ title }) => {
             )}
             <li>
               <WalletSelector />
-            </li>
-            <li>
-              <WalletButtons />
             </li>
           </ul>
         </nav>
