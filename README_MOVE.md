@@ -67,11 +67,19 @@ aptos move run-script \
 
 
 <!-- 
-  This is a much larger comment block.
-  It contains multiple lines of text.
-  The text is used to explain the purpose of the code.
-  It can also be used to provide additional context.
-  The comment block can be as large as needed.
+  Nodit API Queries
+-->
+
+```bash
+source .env && curl --request GET \
+     --url https://aptos-testnet.nodit.io/v1/accounts/<your_account_address>/module/product_nft \
+     --header 'X-API-KEY: <your X-API-KEY>' \
+     --header 'accept: application/json'
+```
+
+
+<!-- 
+  May be useful
 -->
 
 # aptos-move-contracts
