@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { ABI } from "@/utils/abi-product_nft"
-import { aptosClient } from "@/utils/aptosClient"
 import { GET_COLLECTION_NFTS } from "@/utils/graphql-doc"
 import { useApolloClient } from "@apollo/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -31,7 +30,7 @@ export const useMintProductNFT = () => {
       return result.hash
     },
     onSuccess: async (hash) => {
-      const executedTransaction = await aptosClient().waitForTransaction({
+      const executedTransaction = await getAptosClient().waitForTransaction({
         transactionHash: hash,
       })
 
@@ -84,7 +83,7 @@ export const useUpvoteProduct = () => {
       return result.hash
     },
     onSuccess: async (hash) => {
-      const executedTransaction = await aptosClient().waitForTransaction({
+      const executedTransaction = await getAptosClient().waitForTransaction({
         transactionHash: hash,
       })
 

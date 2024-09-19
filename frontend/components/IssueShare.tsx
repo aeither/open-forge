@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { LabeledInput } from "@/components/ui/labeled-input"
 import { ABI } from "@/utils/abi-aptos_friend"
-import { aptosClient } from "@/utils/aptosClient"
 import { useToast } from "./ui/use-toast"
 
 export function IssueShare() {
@@ -20,7 +19,7 @@ export function IssueShare() {
       type_arguments: [],
       arguments: [username],
     })
-    const executedTransaction = await aptosClient().waitForTransaction({
+    const executedTransaction = await getAptosClient().waitForTransaction({
       transactionHash: resp.hash,
     })
     toast({

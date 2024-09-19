@@ -9,7 +9,7 @@ const aptos = new Aptos(new AptosConfig({ network: NETWORK }))
 const surf = createSurfClient(aptos)
 
 // Reuse same Aptos instance to utilize cookie based sticky routing
-export function aptosClient() {
+export function getAptosClient() {
   return aptos
 }
 

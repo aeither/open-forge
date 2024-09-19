@@ -1,5 +1,4 @@
 import { PRODUCT_NFT_ADDR } from "@/lib/constants"
-import { aptosClient } from "@/utils/aptosClient"
 import { useQuery } from "@tanstack/react-query"
 import { formatDistanceToNow } from "date-fns"
 import { User } from "lucide-react"
@@ -26,7 +25,7 @@ async function fetchProductEvents(): Promise<UpvoteUpdateEvent[]> {
   const eventType = `${PRODUCT_NFT_ADDR}::product_nft::UpvoteUpdate`
 
   try {
-    const events = await aptosClient().getModuleEventsByEventType({
+    const events = await getAptosClient().getModuleEventsByEventType({
       eventType: eventType,
     })
     return events as UpvoteUpdateEvent[]

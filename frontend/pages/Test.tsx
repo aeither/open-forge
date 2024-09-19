@@ -1,4 +1,4 @@
-import { aptosClient } from "@/utils/aptosClient"
+import { getAptosClient } from "@/utils/aptosClient"
 import { useState } from "react"
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 
     try {
       const ownedTokens =
-        await aptosClient().getAccountOwnedTokensFromCollectionAddress({
+        await getAptosClient().getAccountOwnedTokensFromCollectionAddress({
           accountAddress: userAddress,
           collectionAddress: collectionAddress,
         })

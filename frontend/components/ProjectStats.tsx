@@ -1,4 +1,3 @@
-import { aptosClient } from "@/utils/aptosClient"
 import { ChevronUp, Eye, MessageSquare } from "lucide-react"
 import type React from "react"
 import { useEffect, useState } from "react"
@@ -23,7 +22,7 @@ interface ProjectStatsProps {
 
 const getOwnerAddress = async (id: string) => {
   try {
-    const ownershipData = await aptosClient().getCurrentDigitalAssetOwnership({
+    const ownershipData = await getAptosClient().getCurrentDigitalAssetOwnership({
       digitalAssetAddress: id as any,
     })
 

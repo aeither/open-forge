@@ -10,7 +10,6 @@ import { Toggle } from "@/components/ui/toggle"
 import { useToast } from "@/components/ui/use-toast"
 import { useGetHolding, useGetIssuerObjectAddress } from "@/hooks/useHolding"
 import { ABI } from "@/utils/abi-aptos_friend"
-import { aptosClient } from "@/utils/aptosClient"
 
 type TradeShareProps = {
   issuerAddress: `0x${string}`
@@ -45,7 +44,7 @@ export function TradeShare({ issuerAddress }: TradeShareProps) {
       })
     }
 
-    const executedTransaction = await aptosClient().waitForTransaction({
+    const executedTransaction = await getAptosClient().waitForTransaction({
       transactionHash: resp.hash,
     })
 
