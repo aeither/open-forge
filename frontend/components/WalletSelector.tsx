@@ -1,4 +1,3 @@
-// Internal components
 import { Button } from "@/components/ui/button"
 import {
   Collapsible,
@@ -19,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useKeylessAccount } from "@/context/KeylessAccountContext"
+import { getAptosClient } from "@/utils/aptosClient"
 import {
   APTOS_CONNECT_ACCOUNT_URL,
   AboutAptosConnect,
@@ -40,26 +40,68 @@ import {
   LogOut,
   User,
 } from "lucide-react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
 import GoogleLogo from "./GoogleLogo"
 import KeylessButton from "./KeylessButton"
+
+type DomainInfo = {
+  domain: string
+  expiration_timestamp: number
+  registered_address: string
+  subdomain: string
+  token_standard: string
+  is_primary: boolean
+  owner_address: string
+  subdomain_expiration_policy: null
+  domain_expiration_timestamp: string
+}
 
 export function WalletSelector() {
   const { account, connected, disconnect, wallet } = useWallet()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { keylessAccount, setKeylessAccount } = useKeylessAccount()
+  const [accountName, setAccountName] = useState<string | null>(null)
 
   const closeDialog = useCallback(() => setIsDialogOpen(false), [])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const fetchAccountName = async () => {
+      if (account?.address) {
+        try {
+          const names = await getAptosClient().getAccountNames({
+            accountAddress: account.address,
+          })
+          setAccountName(`${names[0].domain}.apt` || null)
+        } catch (error) {
+          console.error("Error fetching account name:", error)
+          setAccountName(null)
+        }
+      } else if (keylessAccount) {
+        try {
+          const names = await getAptosClient().getAccountNames({
+            accountAddress: keylessAccount.accountAddress.toString(),
+          })
+          setAccountName(`${names[0].domain}.apt` || null)
+        } catch (error) {
+          console.error("Error fetching account name:", error)
+          setAccountName(null)
+        }
+      } else {
+        setAccountName(null)
+      }
+    }
+
+    fetchAccountName()
+  }, [account?.address, keylessAccount])
+
   const copyAddress = useCallback(async () => {
     if (keylessAccount) {
       try {
         await navigator.clipboard.writeText(
           keylessAccount.accountAddress.toString()
         )
-        toast("Success", {
+        toast.success("Success", {
           description: "Copied wallet address to clipboard.",
         })
       } catch {
@@ -73,7 +115,7 @@ export function WalletSelector() {
     if (!account?.address) return
     try {
       await navigator.clipboard.writeText(account.address)
-      toast("Success", {
+      toast.success("Success", {
         description: "Copied wallet address to clipboard.",
       })
     } catch {
@@ -81,7 +123,7 @@ export function WalletSelector() {
         description: "Failed to copy wallet address.",
       })
     }
-  }, [account?.address, toast, keylessAccount])
+  }, [account?.address, keylessAccount])
 
   const disconnectWallet = () => {
     if (keylessAccount) {
@@ -95,7 +137,7 @@ export function WalletSelector() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button>
-          {account?.ansName ||
+          {accountName ||
             truncateAddress(account?.address) ||
             truncateAddress(keylessAccount?.accountAddress.toString()) ||
             "Unknown"}

@@ -18,6 +18,7 @@ function Layout() {
     </>
   )
 }
+
 const router = createBrowserRouter([
   {
     element: <Layout />,

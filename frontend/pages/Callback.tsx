@@ -106,19 +106,14 @@ function CallbackPage() {
         <h1 className="text-2xl font-bold text-center mb-4">
           Loading your account
         </h1>
-        <Progress
-          value={progress}
-          className="w-full mb-4"
-        />
+        <Progress value={progress} className="w-full mb-4" />
         <p className="text-center text-gray-600">
           {hasError
             ? "An error occurred. Please try again."
             : `${progress}% complete`}
         </p>
         {progress === 100 && !hasError && (
-          <p className="text-center text-green-600 mt-4">
-            Redirecting...
-          </p>
+          <p className="text-center text-green-600 mt-4">Redirecting...</p>
         )}
       </div>
     </div>

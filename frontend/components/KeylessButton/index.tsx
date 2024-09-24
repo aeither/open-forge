@@ -1,5 +1,3 @@
-"use client"
-
 import { useKeylessAccount } from "@/context/KeylessAccountContext"
 import useEphemeralKeyPair from "@/hooks/useEphemeralKeyPair"
 import { collapseAddress } from "@/utils/address"
@@ -40,11 +38,7 @@ export default function KeylessButton() {
   if (keylessAccount) {
     return (
       <div className="flex items-center justify-center m-auto sm:m-0 sm:px-4">
-        <button
-          type="button"
-          onClick={disconnect}
-          title="Disconnect Wallet"
-        >
+        <button type="button" onClick={disconnect} title="Disconnect Wallet">
           <GoogleLogo />
           <span title={keylessAccount.accountAddress.toString()}>
             {collapseAddress(keylessAccount.accountAddress.toString())}

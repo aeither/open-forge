@@ -1,11 +1,11 @@
 import {
-    Account,
-    type AccountAddressInput,
-    Aptos,
-    AptosConfig,
-    Ed25519PrivateKey,
-    Network,
-    NetworkToNetworkName,
+  Account,
+  type AccountAddressInput,
+  Aptos,
+  AptosConfig,
+  Ed25519PrivateKey,
+  Network,
+  NetworkToNetworkName,
 } from "@aptos-labs/ts-sdk"
 import { createSurfClient } from "@thalalabs/surf"
 import dotenv from "dotenv"
