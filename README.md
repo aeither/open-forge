@@ -9,17 +9,68 @@
   <a href="https://open-forge-eight.vercel.app/">https://open-forge-eight.vercel.app/</a>
 </p>
 
-## Open Forge Overview
+# Open Forge: Revolutionizing Project Discovery and Funding
 
-Open Forge is a platform that makes supporting public goods in the Aptos ecosystem more fun and rewarding. It connects people who want to help with those who are building things, and it lets them earn money from open-source software and content. The platform uses AI to make predictions, community-driven randomness on the blockchain, and gamification to create a unique experience. With Aptos' technology and quick microtransactions, Open Forge makes it easy and engaging to support public goods.
+Open Forge is a gamified community space that connects builders and backers. It uses Aptos blockchain and randomness to help find, support, and grow innovative projects from any ecosystem.
 
-You can learn more about how Open Forge is changing the way public goods work in the Aptos ecosystem.
+## Problem Statement
 
-## Tech Stack
+In the world of blockchain and beyond, great ideas often get lost in the noise. Current platforms either favor established projects or rely on complex voting systems that can be gamed. What if we could create a fair, engaging, and addictive way to discover and fund projects that combines the best of social media, gamification, and blockchain technology?
 
-- React framework
-- Vite development tool
-- shadcn/ui + tailwind for styling
-- Aptos TS SDK
-- Aptos Wallet Adapter
-- Node based Move commands
+## Project Description
+
+Open Forge is an Aptos-based platform that makes finding and funding cool projects fun and fair. It uses bonding curves to reward early backers, creating a rush to support promising ideas. The platform shows projects randomly, giving everyone a fair shot at the spotlight. With no-fuss keyless tech and a Telegram mini-app through Mizu wallet, Open Forge feels as easy as using your favorite social media app, but with the power of blockchain behind it.
+
+## Key Features
+
+### Tagged Projects
+Find projects easily with simple tags
+
+### Random Daily Spotlight
+A fair chance for every project to shine, powered by Aptos' on-chain randomness
+
+### Keyless Security
+Super safe and easy to use, thanks to Aptos
+
+### Smart Funding
+* Quick, cheap transactions on Aptos
+* Bonding curves that make early backing exciting and rewarding
+
+### ANS Integration
+See memorable names instead of long addresses
+
+## What Makes Us Different
+
+We mix blockchain, randomness, and clever funding tricks to support great ideas in new ways. This means every project gets a fair shot, and backing early feels like getting in on a secret.
+
+## User Experience
+
+Our app:
+* Feels like a regular app, no crypto knowledge needed
+* Has a fun "pass or back" system for discovering projects, like a dating app for ideas
+* Completes transactions almost instantly
+* Works right in Telegram with Mizu wallet
+
+## Building a Community
+
+Open Forge helps communities grow by:
+* Giving project creators new ways to earn
+* Bringing people together around exciting ideas
+* Letting the community shape how projects grow
+* Making it easy to check out creators' social profiles
+
+## Boosting Great Ideas
+
+Open Forge helps great ideas take off by:
+* Funding projects that make a difference
+* Making sure good ideas get noticed
+* Letting the community vote on which projects to showcase
+* Making it easy for backers to give feedback to creators
+
+## Our Tech Stack
+
+* **Frontend**: Next.js 14, TypeScript, Shadcn, Tailwind CSS, Wagmi v2, Viem v2
+* **Smart Contracts**: Written in Move, with cool bonding curves and randomness features
+* **Fun Factor**: A swipe-to-discover system that makes finding projects addictive
+
+Open Forge is all about creating a better way for communities to support and grow amazing projects. By using the unique features of Aptos blockchain and some clever tricks, we're making it possible for anyone to help build the future they want to see.
