@@ -31,7 +31,7 @@ module aptos_friend_addr::product_nft {
     const STATUS_NEW: vector<u8> = b"New";
 
     // openssl rand -hex 3
-    const COLLECTION_NAME: vector<u8> = b"Open Forge - 81f64b";
+    const COLLECTION_NAME: vector<u8> = b"Open Forge - 20c920";
     const COLLECTION_DESCRIPTION: vector<u8> = b"Open Forge Products Collection";
     const COLLECTION_URI: vector<u8> = b"https://aptos-open-forge-dev-demo.com";
 
@@ -49,6 +49,8 @@ module aptos_friend_addr::product_nft {
         mutator_ref: token::MutatorRef,
         property_mutator_ref: property_map::MutatorRef,
         token_name: String,
+        long_description: String,
+        social_url: String,
         value: u64,
         id: u64
     }
@@ -123,7 +125,9 @@ module aptos_friend_addr::product_nft {
         user: &signer,
         name: String,
         description: String,
-        uri: String
+        uri: String,
+        long_description: String,
+        social_url: String
     ) acquires ObjectController, CollectionMutatorStore, MintTracker {
         let creator_address = get_app_signer_addr();
         let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
@@ -170,6 +174,8 @@ module aptos_friend_addr::product_nft {
                 mutator_ref,
                 property_mutator_ref,
                 token_name: name,
+                long_description,
+                social_url,
                 value: 1,
                 id: mint_tracker.total_minted
             }
@@ -202,6 +208,28 @@ module aptos_friend_addr::product_nft {
         let token_mutator_store = borrow_global<TokenMutatorStore>(product_address);
 
         token::set_description(&token_mutator_store.mutator_ref, new_description);
+    }
+
+    public entry fun modify_product_details(
+        owner: &signer,
+        product_name: String,
+        new_long_description: String,
+        new_social_url: String
+    ) acquires CollectionMutatorStore, TokenMutatorStore {
+        assert!(
+            string::length(&new_long_description) <= MAX_DESCRIPTION_LENGTH,
+            error::out_of_range(EDESCRIPTION_TOO_LONG)
+        );
+
+        let owner_address = signer::address_of(owner);
+        let product_object = get_product_obj(product_name);
+        assert!(object::is_owner(product_object, owner_address), 0);
+
+        let product_address = object::object_address(&product_object);
+        let token_mutator_store = borrow_global_mut<TokenMutatorStore>(product_address);
+
+        token_mutator_store.long_description = new_long_description;
+        token_mutator_store.social_url = new_social_url;
     }
 
     public entry fun upvote_product(
@@ -432,7 +460,18 @@ module aptos_friend_addr::product_nft {
         let product_name = string::utf8(b"Test Product");
         let description = string::utf8(b"This is a test product");
         let uri = string::utf8(b"https://test-product.com/image.jpg");
-        mint_product(creator, product_name, description, uri);
+        let long_description = string::utf8(
+            b"This is a longer description for the test product"
+        );
+        let social_url = string::utf8(b"https://twitter.com/testproduct");
+        mint_product(
+            creator,
+            product_name,
+            description,
+            uri,
+            long_description,
+            social_url
+        );
 
         // Check total_minted
         let creator_address = get_app_signer_addr();
@@ -442,6 +481,13 @@ module aptos_friend_addr::product_nft {
         // Modify product description
         let new_description = string::utf8(b"Updated test product description");
         modify_product_description(creator, product_name, new_description);
+
+        // Modify product details
+        let new_long_description = string::utf8(b"This is an updated longer description");
+        let new_social_url = string::utf8(b"https://facebook.com/testproduct");
+        modify_product_details(
+            creator, product_name, new_long_description, new_social_url
+        );
 
         // Upvote product
         upvote_product(creator, product_name);
@@ -473,11 +519,15 @@ module aptos_friend_addr::product_nft {
         let name = string::utf8(b"Test Product");
         let description = string::utf8(b"This is a test product");
         let uri = string::utf8(b"https://test-product.com/image.jpg");
-        mint_product(creator, name, description, uri);
+        let long_description = string::utf8(b"Long description for test product");
+        let social_url = string::utf8(b"https://twitter.com/testproduct");
+        mint_product(creator, name, description, uri, long_description, social_url);
 
         // Attempt to mint a different product. Must use different name
         let name2 = string::utf8(b"Test Product 2");
-        mint_product(creator, name2, description, uri);
+        let long_description2 = string::utf8(b"Long description for test product 2");
+        let social_url2 = string::utf8(b"https://twitter.com/testproduct2");
+        mint_product(creator, name2, description, uri, long_description2, social_url2);
     }
 
     #[test(fx = @aptos_framework, aptos = @0x1, creator = @aptos_friend_addr)]
@@ -492,9 +542,25 @@ module aptos_friend_addr::product_nft {
         let product_name2 = string::utf8(b"Test Product 2");
         let description = string::utf8(b"This is a test product");
         let uri = string::utf8(b"https://test-product.com/image.jpg");
+        let long_description = string::utf8(b"Long description for test product");
+        let social_url = string::utf8(b"https://twitter.com/testproduct");
 
-        mint_product(creator, product_name1, description, uri);
-        mint_product(creator, product_name2, description, uri);
+        mint_product(
+            creator,
+            product_name1,
+            description,
+            uri,
+            long_description,
+            social_url
+        );
+        mint_product(
+            creator,
+            product_name2,
+            description,
+            uri,
+            long_description,
+            social_url
+        );
 
         // Set a random product ID
         set_random_product_id();
