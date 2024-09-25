@@ -45,25 +45,13 @@ import { toast } from "sonner"
 import GoogleLogo from "./GoogleLogo"
 import KeylessButton from "./KeylessButton"
 
-type DomainInfo = {
-  domain: string
-  expiration_timestamp: number
-  registered_address: string
-  subdomain: string
-  token_standard: string
-  is_primary: boolean
-  owner_address: string
-  subdomain_expiration_policy: null
-  domain_expiration_timestamp: string
-}
-
 export function WalletSelector() {
-  const { account, connected, disconnect, wallet } = useWallet()
+  const { account, connected, disconnect, wallet, wallets = [] } = useWallet()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { keylessAccount, setKeylessAccount } = useKeylessAccount()
   const [accountName, setAccountName] = useState<string | null>(null)
-
   const closeDialog = useCallback(() => setIsDialogOpen(false), [])
+  const mizuWallet = wallets.find((w) => w.name === "Mizu Wallet")
 
   useEffect(() => {
     const fetchAccountName = async () => {
@@ -133,19 +121,25 @@ export function WalletSelector() {
     }
   }
 
+  if (!mizuWallet) {
+    return <>Mizu Wallet Not Found</>
+  }
+
   return connected || keylessAccount ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>
+        <Button variant="outline">
           {accountName ||
             truncateAddress(account?.address) ||
             truncateAddress(keylessAccount?.accountAddress.toString()) ||
             "Unknown"}
+          <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onSelect={copyAddress} className="gap-2">
-          <Copy className="h-4 w-4" /> Copy address
+        <DropdownMenuItem onClick={copyAddress}>
+          <Copy className="mr-2 h-4 w-4" />
+          Copy address
         </DropdownMenuItem>
         {wallet && isAptosConnectWallet(wallet) && (
           <DropdownMenuItem asChild>
@@ -153,14 +147,15 @@ export function WalletSelector() {
               href={APTOS_CONNECT_ACCOUNT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex gap-2"
             >
-              <User className="h-4 w-4" /> Account
+              <User className="mr-2 h-4 w-4" />
+              Account
             </a>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onSelect={disconnectWallet} className="gap-2">
-          <LogOut className="h-4 w-4" /> Disconnect
+        <DropdownMenuItem onClick={disconnectWallet}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Disconnect
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -169,7 +164,9 @@ export function WalletSelector() {
       <DialogTrigger asChild>
         <Button>Connect a Wallet</Button>
       </DialogTrigger>
-      <ConnectWalletDialog close={closeDialog} />
+      {/* <DialogContent> */}
+        <ConnectWalletDialog close={closeDialog} />
+      {/* </DialogContent> */}
     </Dialog>
   )
 }
