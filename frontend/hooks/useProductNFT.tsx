@@ -68,7 +68,7 @@ export const useMintProductNFT = () => {
         include: [GET_COLLECTION_NFTS],
       })
 
-      const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
+      const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${import.meta.env.VITE_APP_NETWORK}`
 
       toast.success("Mint successful", {
         id: toastId,
@@ -141,7 +141,7 @@ export const useUpvoteProduct = () => {
         include: [GET_COLLECTION_NFTS],
       })
 
-      const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${process.env.VITE_APP_NETWORK}`
+      const explorerUrl = `https://explorer.aptoslabs.com/txn/${executedTransaction.hash}?network=${import.meta.env.VITE_APP_NETWORK}`
 
       toast.success("Upvote successful", {
         id: toastId,
