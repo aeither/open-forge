@@ -9,6 +9,11 @@
   <a href="https://open-forge-eight.vercel.app/">https://open-forge-eight.vercel.app/</a>
 </p>
 
+# Demo
+
+Telegram: 
+
+
 # Open Forge: Revolutionizing Project Discovery and Funding
 
 Open Forge is a gamified community space that connects builders and backers. It uses Aptos blockchain and randomness to help find, support, and grow innovative projects from any ecosystem.

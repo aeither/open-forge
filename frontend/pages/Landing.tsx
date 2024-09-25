@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { MailIcon } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import { Header } from "@/components/Header"
@@ -45,7 +44,6 @@ const openForgeProjects = [
     achievementLevel: "Platinum",
   },
 ]
-
 const firstRow = openForgeProjects.slice(0, openForgeProjects.length / 2)
 const secondRow = openForgeProjects.slice(openForgeProjects.length / 2)
 
@@ -57,7 +55,7 @@ const ProjectCard = ({
   return (
     <figure
       className={cn(
-        "relative w-64 cursor-pointer overflow-hidden rounded-xl",
+        "relative w-48 sm:w-64 cursor-pointer overflow-hidden rounded-xl",
         "bg-gradient-to-t from-black to-transparent",
         "hover:from-black/80"
       )}
@@ -68,8 +66,8 @@ const ProjectCard = ({
         )}
       </div>
       <div className="relative z-10 flex h-full flex-col justify-end p-4">
-        <h3 className="text-xl font-bold text-white">{name}</h3>
-        <div>{isFeatured && <Badge>FEATURED</Badge>}</div>
+        <h3 className="text-sm sm:text-xl font-bold text-white">{name}</h3>
+        <div>{isFeatured && <Badge className="text-xs">FEATURED</Badge>}</div>
       </div>
     </figure>
   )
@@ -80,30 +78,33 @@ export default function Component() {
     <div className="flex flex-col min-h-[100dvh]">
       <Header title={"Open Forge"} />
       <main className="flex-1 bg-background">
-        <section className="container mx-auto my-12 max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-xl bg-white p-8 shadow-lg">
+        <section className="container mx-auto my-8 sm:my-12 max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="relative rounded-xl bg-white p-6 sm:p-8 shadow-lg">
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10" />
             <div className="relative z-10">
-              <h1 className="mb-4 text-center text-4xl font-bold sm:text-5xl lg:text-6xl">
+              <h1 className="mb-4 text-center text-3xl sm:text-4xl lg:text-6xl font-bold">
                 Empowering Public Goods on Aptos
               </h1>
-              <p className="mb-8 text-center text-lg text-muted-foreground sm:mb-12">
+              <p className="mb-6 sm:mb-8 text-center text-base sm:text-lg text-muted-foreground">
                 Open Forge is a revolutionary gamified public goods accelerator
                 built on the Aptos blockchain. We're reimagining how open-source
                 projects are funded, supported, and showcased within the Aptos
                 ecosystem.
               </p>
-              <div className="flex justify-center gap-4">
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Button
                   size="sm"
                   className="flex items-center gap-2 rounded-full"
                 >
-                  <MailIcon className="h-4 w-4" />
-                  Get Updates
+                  Surprise me
                 </Button>
-                <Link to="/explore">
-                  <Button variant="outline" size="sm" className="rounded-full">
-                    View Projects
+                <Link to="/explore" className="w-full sm:w-auto">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full w-full sm:w-auto"
+                  >
+                    Explore Projects
                   </Button>
                 </Link>
               </div>
@@ -111,12 +112,12 @@ export default function Component() {
           </div>
         </section>
       </main>
-      <section className="bg-muted py-12 sm:py-16 lg:py-20">
+      <section className="bg-muted py-8 sm:py-12 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-center text-2xl font-bold sm:mb-12 sm:text-3xl">
-            Open Forge Innovators
+          <h2 className="mb-6 sm:mb-8 text-center text-xl sm:text-2xl font-bold">
+            Become Open Forge Innovators
           </h2>
-          <div className="relative h-[300px] w-full overflow-hidden rounded-lg border bg-background md:shadow-xl">
+          <div className="relative h-[200px] sm:h-[300px] w-full overflow-hidden rounded-lg border bg-background md:shadow-xl">
             <div className="flex h-full flex-col">
               <div className="flex-1 overflow-hidden">
                 <Marquee pauseOnHover className="h-full [--duration:20s]">
@@ -139,6 +140,17 @@ export default function Component() {
             </div>
             <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background" />
+          </div>
+          <div className="mt-6 sm:mt-8 flex justify-center">
+            <Link to="/upload" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-full w-full sm:w-auto"
+              >
+                Submit a Project
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
