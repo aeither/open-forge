@@ -40,11 +40,17 @@ module aptos_friend_addr::product_nft {
         collection_name: String
     }
 
+    struct MintTracker has key {
+        total_minted: u64,
+        last_random_id: u64
+    }
+
     struct TokenMutatorStore has key {
         mutator_ref: token::MutatorRef,
         property_mutator_ref: property_map::MutatorRef,
         token_name: String,
-        value: u64
+        value: u64,
+        id: u64
     }
 
     #[event]
@@ -72,6 +78,7 @@ module aptos_friend_addr::product_nft {
         let app_signer = &object::generate_signer(&constructor_ref);
 
         move_to(app_signer, ObjectController { app_extend_ref: extend_ref });
+        move_to(app_signer, MintTracker { total_minted: 0, last_random_id: 0 });
 
         create_collection(app_signer);
     }
@@ -117,7 +124,7 @@ module aptos_friend_addr::product_nft {
         name: String,
         description: String,
         uri: String
-    ) acquires ObjectController, CollectionMutatorStore {
+    ) acquires ObjectController, CollectionMutatorStore, MintTracker {
         let creator_address = get_app_signer_addr();
         let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
 
@@ -153,13 +160,18 @@ module aptos_friend_addr::product_nft {
             1
         );
 
+        let creator_address = get_app_signer_addr();
+        let mint_tracker = borrow_global_mut<MintTracker>(creator_address);
+        mint_tracker.total_minted = mint_tracker.total_minted + 1;
+
         move_to(
             &token_signer,
             TokenMutatorStore {
                 mutator_ref,
                 property_mutator_ref,
                 token_name: name,
-                value: 1
+                value: 1,
+                id: mint_tracker.total_minted
             }
         );
 
@@ -248,6 +260,65 @@ module aptos_friend_addr::product_nft {
         )
     }
 
+    #[randomness]
+    entry fun set_random_product_id() acquires MintTracker {
+        let creator_address = get_app_signer_addr();
+        let mint_tracker = borrow_global_mut<MintTracker>(creator_address);
+        let total_minted = mint_tracker.total_minted;
+
+        if (total_minted == 0) {
+            mint_tracker.last_random_id = 0;
+        } else {
+            // Use u64_range to get a random number between 1 and total_minted (inclusive)
+            mint_tracker.last_random_id = aptos_framework::randomness::u64_range(
+                1, total_minted + 1
+            );
+        };
+    }
+
+    #[view]
+    public fun get_random_product_id(): u64 acquires MintTracker {
+        let creator_address = get_app_signer_addr();
+        let mint_tracker = borrow_global<MintTracker>(creator_address);
+        mint_tracker.last_random_id
+    }
+
+    //  entry fun getRandomProduct(): Object<Token> acquires MintTracker, CollectionMutatorStore {
+    //     let random_id = getRandomProductId();
+
+    //     if (random_id == 0) {
+    //         // No products minted yet
+    //         abort 0
+    //     };
+
+    //     let creator_address = get_app_signer_addr();
+    //     let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
+    //     let collection_name = collection_store.collection_name;
+
+    //     // Iterate through all minted tokens to find the one with the matching id
+    //     let i = 1;
+    //     while (i <= random_id) {
+    //         let token_name = string_utils::format2(&b"{}", i);
+    //         let token_address = token::create_token_address(
+    //             &creator_address,
+    //             &collection_name,
+    //             &token_name
+    //         );
+
+    //         if (exists<TokenMutatorStore>(token_address)) {
+    //             let token_store = borrow_global<TokenMutatorStore>(token_address);
+    //             if (token_store.id == random_id) {
+    //                 return object::address_to_object<Token>(token_address)
+    //             };
+    //         };
+
+    //         i = i + 1;
+    //     };
+
+    //     // This should never happen if the random_id is valid
+    //     abort 1
+    // }
+
     #[view]
     public fun get_app_signer_addr(): address {
         object::create_object_address(&@aptos_friend_addr, APP_OBJECT_SEED)
@@ -326,11 +397,6 @@ module aptos_friend_addr::product_nft {
         init_module(account);
     }
 
-    #[test_only]
-    public fun create_collection_with_randomness(creator: &signer) {
-        create_collection(creator);
-    }
-
     #[test(fx = @aptos_framework, aptos = @0x1, creator = @aptos_friend_addr)]
     fun test_random_collection_name(
         fx: &signer, aptos: &signer, creator: &signer
@@ -338,24 +404,15 @@ module aptos_friend_addr::product_nft {
         // Setup
         setup_test(fx, aptos, creator);
 
-        // Call init_module
-        // create_collection_with_randomness(creator);
-
         // Assert that the collection was created
         let app_signer_addr = get_app_signer_addr();
         assert!(exists<CollectionMutatorStore>(app_signer_addr), 0);
 
-        // Check that the collection name is unique
+        // Check that the collection name is as expected
         let collection_store = borrow_global<CollectionMutatorStore>(app_signer_addr);
         let collection_name = collection_store.collection_name;
-        print(&collection_name);
-        assert!(
-            string::length(&collection_name) > string::length(&utf8(b"Open Forge")),
-            1
-        );
 
-        print(&string::index_of(&collection_name, &utf8(b"Open Forge")));
-        assert!(string::index_of(&collection_name, &utf8(b"Open Forge")) == 0, 2);
+        assert!(collection_name == string::utf8(COLLECTION_NAME), 1);
     }
 
     #[test(
@@ -366,19 +423,21 @@ module aptos_friend_addr::product_nft {
         aptos: &signer,
         creator: &signer,
         user: &signer
-    ) acquires ObjectController, CollectionMutatorStore, TokenMutatorStore {
+    ) acquires ObjectController, CollectionMutatorStore, TokenMutatorStore, MintTracker {
         // Setup
         setup_test(fx, aptos, creator);
         account::create_account_for_test(signer::address_of(user));
-
-        // Initialize the module (this will create the collection)
-        // create_collection_with_randomness(creator);
 
         // Mint product
         let product_name = string::utf8(b"Test Product");
         let description = string::utf8(b"This is a test product");
         let uri = string::utf8(b"https://test-product.com/image.jpg");
         mint_product(creator, product_name, description, uri);
+
+        // Check total_minted
+        let creator_address = get_app_signer_addr();
+        let mint_tracker = borrow_global<MintTracker>(creator_address);
+        assert!(mint_tracker.total_minted == 1, 2);
 
         // Modify product description
         let new_description = string::utf8(b"Updated test product description");
@@ -391,12 +450,9 @@ module aptos_friend_addr::product_nft {
         let upvote_count = get_upvote_count(product_name);
         assert!(upvote_count == 2, 0); // Initial count (1) + 1 upvote
 
-        // Transfer product to user
-        // transfer(creator, product_object, signer::address_of(user));
-
         let product_object = get_product_obj(product_name);
 
-        // Verify new owner
+        // Verify owner
         assert!(object::is_owner(product_object, signer::address_of(creator)), 1);
     }
 
@@ -408,13 +464,10 @@ module aptos_friend_addr::product_nft {
         aptos: &signer,
         creator: &signer,
         user: &signer
-    ) acquires ObjectController, CollectionMutatorStore {
+    ) acquires ObjectController, CollectionMutatorStore, MintTracker {
         // Setup
         setup_test(fx, aptos, creator);
         account::create_account_for_test(signer::address_of(user));
-
-        // Initialize the module (this will create the collection)
-        // create_collection_with_randomness(creator);
 
         // Mint product
         let name = string::utf8(b"Test Product");
@@ -425,5 +478,40 @@ module aptos_friend_addr::product_nft {
         // Attempt to mint a different product. Must use different name
         let name2 = string::utf8(b"Test Product 2");
         mint_product(creator, name2, description, uri);
+    }
+
+    #[test(fx = @aptos_framework, aptos = @0x1, creator = @aptos_friend_addr)]
+    fun test_random_product_id(
+        fx: &signer, aptos: &signer, creator: &signer
+    ) acquires ObjectController, CollectionMutatorStore, MintTracker {
+        // Setup
+        setup_test(fx, aptos, creator);
+
+        // Mint some products
+        let product_name1 = string::utf8(b"Test Product 1");
+        let product_name2 = string::utf8(b"Test Product 2");
+        let description = string::utf8(b"This is a test product");
+        let uri = string::utf8(b"https://test-product.com/image.jpg");
+
+        mint_product(creator, product_name1, description, uri);
+        mint_product(creator, product_name2, description, uri);
+
+        // Set a random product ID
+        set_random_product_id();
+
+        // Get the random product ID
+        let random_id = get_random_product_id();
+
+        // Assert that the random ID is within the expected range
+        assert!(random_id > 0 && random_id <= 2, 0);
+
+        // Test when no products are minted
+        let creator_address = get_app_signer_addr();
+        let mint_tracker = borrow_global_mut<MintTracker>(creator_address);
+        mint_tracker.total_minted = 0;
+
+        set_random_product_id();
+        let random_id = get_random_product_id();
+        assert!(random_id == 0, 1);
     }
 }
