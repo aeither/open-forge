@@ -13,11 +13,14 @@ export type MintProductNFTArguments = {
   name: string
   description: string
   uri: string
+  longDescription: string
+  socialUrl: string
 }
 
 export type UpvoteProductArguments = {
   productName: string
 }
+
 export const useMintProductNFT = () => {
   const { client } = useWalletClient()
   const queryClient = useQueryClient()
@@ -25,10 +28,16 @@ export const useMintProductNFT = () => {
   const { keylessAccount } = useKeylessAccount()
 
   return useMutation({
-    mutationFn: async ({ name, description, uri }: MintProductNFTArguments) => {
+    mutationFn: async ({
+      name,
+      description,
+      uri,
+      longDescription,
+      socialUrl,
+    }: MintProductNFTArguments) => {
       const payload = createEntryPayload(ABI, {
         function: "mint_product",
-        functionArguments: [name, description, uri],
+        functionArguments: [name, description, uri, longDescription, socialUrl],
         typeArguments: [],
       })
 
@@ -44,7 +53,7 @@ export const useMintProductNFT = () => {
 
       if (!client) throw new Error("Wallet client not available")
       const result = await client.useABI(ABI).mint_product({
-        arguments: [name, description, uri],
+        arguments: [name, description, uri, longDescription, socialUrl],
         type_arguments: [],
       })
       return { hash: result.hash, toastId }

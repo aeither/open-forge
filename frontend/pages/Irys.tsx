@@ -15,6 +15,8 @@ export function Irys() {
   const [image, setImage] = useState<File | null>(null)
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
+  const [longDescription, setLongDescription] = useState("")
+  const [socialUrl, setSocialUrl] = useState("")
   const [externalUrl, setExternalUrl] = useState("")
   const [metadataUrl, setMetadataUrl] = useState("")
   const [isUploading, setIsUploading] = useState(false)
@@ -25,6 +27,7 @@ export function Irys() {
       setImage(e.target.files[0])
     }
   }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!connected || !wallet || !image) return
@@ -46,6 +49,8 @@ export function Irys() {
         name,
         description,
         uri: metadataUploadUrl,
+        longDescription,
+        socialUrl,
       })
     } catch (error) {
       console.error("Error uploading:", error)
@@ -102,6 +107,34 @@ export function Irys() {
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="longDescription"
+                  className="block text-sm font-medium"
+                >
+                  Long Description
+                </label>
+                <Textarea
+                  id="longDescription"
+                  value={longDescription}
+                  onChange={(e) => setLongDescription(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="socialUrl"
+                  className="block text-sm font-medium"
+                >
+                  Social URL
+                </label>
+                <Input
+                  id="socialUrl"
+                  value={socialUrl}
+                  onChange={(e) => setSocialUrl(e.target.value)}
                   className="mt-1"
                 />
               </div>
