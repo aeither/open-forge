@@ -20,3 +20,38 @@ export const GET_COLLECTION_NFTS = gql`
     }
   }
 `
+
+
+// Get NFT supply
+// query GetCollectionNfts($collection_name: String!) {
+//   current_collections_v2(
+//     where: {collection_name: {_eq: $collection_name}}
+//   ) {
+//     collection_name
+//     description
+//     uri
+//     creator_address
+//     max_supply
+//     total_minted_v2
+//     token_standard
+
+//   }
+// }
+
+// Get NFT by token data id
+// query GetAccountNfts($token_data_id: String) {
+//   current_token_ownerships_v2(where: {token_data_id: {_eq: $token_data_id}}) {
+//     current_token_data {
+//       description
+//       token_name
+//       token_data_id
+//       token_standard
+//       token_uri
+//       last_transaction_timestamp
+//       __typename
+//     }
+//     owner_address
+//     __typename
+//     amount
+//   }
+// }
