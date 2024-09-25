@@ -9,7 +9,6 @@ import Landing from "./pages/Landing"
 import Leaderboard from "./pages/Leaderboard"
 import { Profile } from "./pages/Profile"
 import { ProjectDetails } from "./pages/ProjectDetails"
-import Upload from "./pages/Upload"
 
 function Layout() {
   return (
@@ -53,7 +52,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/upload",
-        element: <Upload />,
+        element: <Irys />,
       },
       {
         path: "/leaderboard",

@@ -96,7 +96,7 @@ export default function Component() {
                   size="sm"
                   className="flex items-center gap-2 rounded-full"
                 >
-                  Surprise me
+                  Surprise me 😲
                 </Button>
                 <Link to="/explore" className="w-full sm:w-auto">
                   <Button

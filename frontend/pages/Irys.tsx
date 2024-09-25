@@ -1,6 +1,3 @@
-import { useWallet } from "@aptos-labs/wallet-adapter-react"
-import { useState } from "react"
-
 import { Header } from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,6 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useMintProductNFT } from "@/hooks/useProductNFT"
 import { getIrysUploader, uploadMetadataURI } from "@/utils/irys"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
+import { useState } from "react"
 
 export function Irys() {
   const wallet = useWallet()
@@ -61,13 +60,13 @@ export function Irys() {
 
   return (
     <>
-      <Header title="Irys Upload" />
+      <Header title="Submit Your Project" />
       <div className="flex items-center justify-center flex-col">
         <Card className="mt-6 w-full max-w-md">
           <CardHeader>
             <CardTitle>
               {connected
-                ? "Upload your NFT metadata"
+                ? "Showcase Your Innovation"
                 : "Connect your wallet to get started"}
             </CardTitle>
           </CardHeader>
@@ -75,7 +74,7 @@ export function Irys() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="image" className="block text-sm font-medium">
-                  Upload Image
+                  Project Image
                 </label>
                 <Input
                   id="image"
@@ -87,13 +86,14 @@ export function Irys() {
               </div>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium">
-                  Name
+                  Project Name
                 </label>
                 <Input
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="mt-1"
+                  placeholder="Enter your project name"
                 />
               </div>
               <div>
@@ -101,13 +101,14 @@ export function Irys() {
                   htmlFor="description"
                   className="block text-sm font-medium"
                 >
-                  Description
+                  Tagline
                 </label>
                 <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="mt-1"
+                  placeholder="Describe your project in one sentence"
                 />
               </div>
               <div>
@@ -115,13 +116,14 @@ export function Irys() {
                   htmlFor="longDescription"
                   className="block text-sm font-medium"
                 >
-                  Long Description
+                  Full Description
                 </label>
                 <Textarea
                   id="longDescription"
                   value={longDescription}
                   onChange={(e) => setLongDescription(e.target.value)}
                   className="mt-1"
+                  placeholder="Tell us more about your project"
                 />
               </div>
               <div>
@@ -129,13 +131,14 @@ export function Irys() {
                   htmlFor="socialUrl"
                   className="block text-sm font-medium"
                 >
-                  Social URL
+                  Social Media URL
                 </label>
                 <Input
                   id="socialUrl"
                   value={socialUrl}
                   onChange={(e) => setSocialUrl(e.target.value)}
                   className="mt-1"
+                  placeholder="https://twitter.com/yourproject"
                 />
               </div>
               <div>
@@ -143,22 +146,23 @@ export function Irys() {
                   htmlFor="externalUrl"
                   className="block text-sm font-medium"
                 >
-                  External URL
+                  Project Website
                 </label>
                 <Input
                   id="externalUrl"
                   value={externalUrl}
                   onChange={(e) => setExternalUrl(e.target.value)}
                   className="mt-1"
+                  placeholder="https://yourproject.com"
                 />
               </div>
-              <Button type="submit" disabled={isUploading}>
-                {isUploading ? "Uploading..." : "Upload"}
+              <Button type="submit" disabled={isUploading} className="w-full">
+                {isUploading ? "Submitting..." : "Launch Your Project"}
               </Button>
             </form>
             {metadataUrl && (
               <div className="mt-4">
-                <h2 className="text-lg font-semibold">Metadata URL:</h2>
+                <h2 className="text-lg font-semibold">Project URL:</h2>
                 <a
                   href={metadataUrl}
                   target="_blank"
