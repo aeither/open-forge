@@ -162,7 +162,7 @@ export function WalletSelector() {
   ) : (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button>Connect a Wallet</Button>
+        <Button>Sign in</Button>
       </DialogTrigger>
       {/* <DialogContent> */}
         <ConnectWalletDialog close={closeDialog} />
