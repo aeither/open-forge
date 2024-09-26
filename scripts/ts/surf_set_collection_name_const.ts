@@ -9,6 +9,7 @@ import {
 } from "@aptos-labs/ts-sdk"
 import { createSurfClient } from "@thalalabs/surf"
 import dotenv from "dotenv"
+import fs from "node:fs"
 import { ABI } from "../../frontend/utils/abi-product_nft"
 dotenv.config()
 
@@ -21,8 +22,6 @@ const surfProductNFT = createSurfClient(aptos).useABI(ABI)
 
 if (!process.env.PRIVATE_KEY) throw new Error("PRIVATE_KEY not found")
 
-// Create user account
-//   const user = Account.generate()
 const privateKey = new Ed25519PrivateKey(process.env.PRIVATE_KEY)
 const user = Account.fromPrivateKey({
   privateKey: privateKey,
@@ -37,6 +36,29 @@ const main = async () => {
     typeArguments: [],
   })
   console.log("🚀 ~ main ~ collectionName:", collectionName)
+
+  // Set COLLECTION_NAME in constants.ts
+  const constantsPath = "frontend/lib/constants.ts"
+  let constantsContent = ""
+
+  if (fs.existsSync(constantsPath)) {
+    constantsContent = fs.readFileSync(constantsPath, "utf8")
+  }
+
+  const collectionNameRegex = /^export const COLLECTION_NAME = .*$/m
+  const newCollectionNameEntry = `export const COLLECTION_NAME = ${JSON.stringify(collectionName)}`
+
+  if (constantsContent.match(collectionNameRegex)) {
+    constantsContent = constantsContent.replace(
+      collectionNameRegex,
+      newCollectionNameEntry
+    )
+  } else {
+    constantsContent += `\n${newCollectionNameEntry}`
+  }
+
+  fs.writeFileSync(constantsPath, constantsContent)
+  console.log("COLLECTION_NAME saved to frontend/lib/constants.ts")
 
   const [app_signer_addr] = await surfProductNFT.view.get_app_signer_addr({
     functionArguments: [],
@@ -68,7 +90,6 @@ async function getUserNFTsByCollection(
   collectionAddress: string
 ) {
   try {
-    // Get the user's owned tokens from the specified collection
     const ownedTokens = await aptos.getAccountOwnedTokensFromCollectionAddress({
       accountAddress: userAddress,
       collectionAddress: collectionAddress,

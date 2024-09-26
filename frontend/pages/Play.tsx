@@ -111,19 +111,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </span>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex justify-between w-full p-0">
         <Button
-          variant="outline"
-          size="sm"
-          className="rounded-full"
+          variant="secondary"
+          size="lg"
+          className="w-1/2 rounded-none h-16 text-lg font-semibold"
           onClick={onPass}
         >
           Pass
         </Button>
         <Button
-          variant="outline"
-          size="sm"
-          className="rounded-full"
+          variant="default"
+          size="lg"
+          className="w-1/2 rounded-none h-16 text-lg font-semibold"
           onClick={onFund}
         >
           Fund

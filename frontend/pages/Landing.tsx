@@ -94,10 +94,7 @@ export default function Component() {
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link to="/play">
-                  <Button
-                    size="sm"
-                    className="flex items-center gap-2 rounded-full"
-                  >
+                  <Button size="sm" className="w-full sm:w-auto">
                     Surprise me 😲
                   </Button>
                 </Link>
@@ -105,7 +102,7 @@ export default function Component() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-full w-full sm:w-auto"
+                    className="w-full sm:w-auto"
                   >
                     Explore Projects
                   </Button>
@@ -149,7 +146,7 @@ export default function Component() {
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-full w-full sm:w-auto"
+                className="w-full sm:w-auto"
               >
                 Submit a Project
               </Button>

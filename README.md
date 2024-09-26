@@ -28,6 +28,13 @@ Open Forge is an Aptos-based platform that makes finding and funding cool projec
 
 ## Key Features
 
+### The Most Accessible Authentication Frontend
+We provide 4 types of sign in that adapt all circumstances
+- Self-custodial wallets (e.g., Petra, Martian) for web3 users who prefer to use their own wallets.
+- Keyless sign-in for seamless Google authentication without requiring transaction approval.
+- Aptos Connect account manager, eliminating the need for downloads.
+- Work on the Telegram Mizu Wallet integration, leveraging over 1 billion Telegram users
+
 ### Tagged Projects
 Find projects easily with simple tags
 
