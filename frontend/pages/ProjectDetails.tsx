@@ -1,15 +1,23 @@
-// components/ProjectDetails.tsx
 import { Header } from "@/components/Header"
 import ProjectStats from "@/components/ProjectStats"
 import RelatedProjects from "@/components/RelatedProjects"
 import { Button } from "@/components/ui/button"
+import { useGetIssuerObjectAddress } from "@/hooks/useHolding"
 import { useNFTDetails } from "@/hooks/useNFTDetails"
+import { useTradeShare } from "@/hooks/useShares"
 import { ExternalLink, Github, Share2, Twitter } from "lucide-react"
+import { useState } from "react"
 import { useParams } from "react-router-dom"
 
 export const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const { loading, error, nftWithMetadata } = useNFTDetails(id)
+  const tradeShareMutation = useTradeShare()
+  const [isSupporting, setIsSupporting] = useState(false)
+
+  const issuerObjectAddress = useGetIssuerObjectAddress(
+    nftWithMetadata?.owner_address
+  )
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
@@ -37,6 +45,16 @@ export const ProjectDetails: React.FC = () => {
       minute: "2-digit",
       hour12: true,
     })
+  }
+
+  const handleSupportProject = async () => {
+    if (!issuerObjectAddress) return
+    setIsSupporting(true)
+    await tradeShareMutation.mutateAsync({
+      issuerObjectAddress,
+      isBuying: true,
+    })
+    setIsSupporting(false)
   }
 
   return (
@@ -109,8 +127,12 @@ export const ProjectDetails: React.FC = () => {
                   )}
                 </li>
               </ul>
-              <Button className="text-white px-6 py-3 rounded-md bg-green-500 hover:bg-green-700 transition duration-300 w-full lg:w-auto">
-                Support This Project
+              <Button
+                className="text-white px-6 py-3 rounded-md bg-green-500 hover:bg-green-700 transition duration-300 w-full lg:w-auto"
+                onClick={handleSupportProject}
+                disabled={isSupporting}
+              >
+                {isSupporting ? "Processing..." : "Support This Project"}
               </Button>
             </div>
           </div>

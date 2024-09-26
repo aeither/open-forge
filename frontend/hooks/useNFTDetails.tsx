@@ -1,4 +1,3 @@
-// hooks/useNFTDetails.ts
 import { GET_ACCOUNT_NFT } from "@/utils/graphql-doc"
 import { useQuery } from "@apollo/client"
 import { useEffect, useState } from "react"
@@ -55,13 +54,18 @@ export function useNFTDetails(tokenDataId: string | undefined) {
     }
 
     const updateNFTWithMetadata = async () => {
-      if (
-        data?.current_token_ownerships_v2 &&
-        data.current_token_ownerships_v2.length > 0
-      ) {
-        const nft = data.current_token_ownerships_v2[0] as NFT
-        const updatedNFT = await fetchNFTMetadata(nft)
-        setNftWithMetadata(updatedNFT as NFT & { metadata: NFTMetadata })
+      if (data?.current_token_ownerships_v2) {
+        // Find the first NFT with amount > 0
+        const validNFT = data.current_token_ownerships_v2.find(
+          (nft: NFT) => nft.amount > 0
+        ) as NFT | undefined
+
+        if (validNFT) {
+          const updatedNFT = await fetchNFTMetadata(validNFT)
+          setNftWithMetadata(updatedNFT as NFT & { metadata: NFTMetadata })
+        } else {
+          setNftWithMetadata(null) // No valid NFT found
+        }
       }
     }
 
