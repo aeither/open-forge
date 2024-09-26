@@ -58,14 +58,14 @@ const ProjectStats: React.FC<ProjectStatsProps> = ({ project }) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
         <button
           type="button"
           onClick={handleUpvote}
-          className="flex flex-col items-center justify-center p-2 rounded-md hover:bg-gray-100 transition duration-300"
+          className="flex flex-row sm:flex-col items-center justify-center p-2 rounded-md hover:bg-gray-100 transition duration-300 mb-4 sm:mb-0"
         >
-          <ChevronUp className="text-gray-600" size={32} />
+          <ChevronUp className="text-gray-600 mr-2 sm:mr-0 sm:mb-2" size={32} />
           <span className="text-2xl font-semibold">{votes}</span>
         </button>
         <div className="flex items-center space-x-4">
@@ -87,7 +87,9 @@ const ProjectStats: React.FC<ProjectStatsProps> = ({ project }) => {
               <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
                 {ownerAddress.slice(0, 2)}
               </div>
-              <span className="text-sm text-gray-600">{`${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}`}</span>
+              <span className="text-sm text-gray-600 break-all">
+                {`${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}`}
+              </span>
             </div>
           </Link>
         )}

@@ -27,6 +27,18 @@ export const ProjectDetails: React.FC = () => {
     window.open(twitterIntentUrl, "_blank")
   }
 
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp)
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+  }
+
   return (
     <div className="min-h-screen">
       <Header title="Details" />
@@ -52,7 +64,7 @@ export const ProjectDetails: React.FC = () => {
                   className="flex items-center text-blue-600 hover:text-blue-800"
                 >
                   <ExternalLink size={16} className="mr-1" />
-                  View Project
+                  Website
                 </a>
                 <a
                   href={metadata.social_url}
@@ -60,8 +72,7 @@ export const ProjectDetails: React.FC = () => {
                   rel="noopener noreferrer"
                   className="flex items-center text-blue-600 hover:text-blue-800"
                 >
-                  <Twitter size={16} className="mr-1" />
-                  Twitter
+                  <Twitter size={16} className="mr-1" />X
                 </a>
                 <a
                   href={metadata.github_url}
@@ -78,7 +89,7 @@ export const ProjectDetails: React.FC = () => {
                   className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
                 >
                   <Share2 size={16} className="mr-2" />
-                  Share on Twitter
+                  Share
                 </button>
               </div>
               <h2 className="text-2xl font-semibold mb-2">About</h2>
@@ -86,19 +97,19 @@ export const ProjectDetails: React.FC = () => {
               <h2 className="text-2xl font-semibold mb-2">Details</h2>
               <ul className="list-disc list-inside text-gray-700 mb-4">
                 <li>Token Standard: {current_token_data.token_standard}</li>
-                <li>Token Data ID: {current_token_data.token_data_id}</li>
-                <li>Owner Address: {owner_address}</li>
+                <li>
+                  Token Data ID:{" "}
+                  {`${current_token_data.token_data_id.slice(0, 6)}...${current_token_data.token_data_id.slice(-4)}`}
+                </li>
                 <li>Amount: {amount}</li>
                 <li>
                   Last Transaction:{" "}
-                  {new Date(
-                    Number.parseInt(
-                      current_token_data.last_transaction_timestamp
-                    )
-                  ).toLocaleString()}
+                  {formatTimestamp(
+                    current_token_data.last_transaction_timestamp
+                  )}
                 </li>
               </ul>
-              <Button className="text-white px-6 py-3 rounded-md hover:bg-green-700 transition duration-300">
+              <Button className="text-white px-6 py-3 rounded-md bg-green-500 hover:bg-green-700 transition duration-300 w-full lg:w-auto">
                 Support This Project
               </Button>
             </div>
