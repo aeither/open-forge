@@ -39,19 +39,21 @@ export const GET_COLLECTION_NFTS = gql`
 // }
 
 // Get NFT by token data id
-// query GetAccountNfts($token_data_id: String) {
-//   current_token_ownerships_v2(where: {token_data_id: {_eq: $token_data_id}}) {
-//     current_token_data {
-//       description
-//       token_name
-//       token_data_id
-//       token_standard
-//       token_uri
-//       last_transaction_timestamp
-//       __typename
-//     }
-//     owner_address
-//     __typename
-//     amount
-//   }
-// }
+export const GET_ACCOUNT_NFT = gql`
+  query GetAccountNft($token_data_id: String) {
+    current_token_ownerships_v2(where: {token_data_id: {_eq: $token_data_id}}) {
+      current_token_data {
+        description
+        token_name
+        token_data_id
+        token_standard
+        token_uri
+        last_transaction_timestamp
+        __typename
+      }
+      owner_address
+      __typename
+      amount
+    }
+  }
+`;
