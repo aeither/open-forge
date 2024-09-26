@@ -25,6 +25,7 @@ export const ProjectDetails: React.FC = () => {
 
   const { current_token_data, owner_address, amount, metadata } =
     nftWithMetadata
+  console.log("🚀 ~ metadata:", metadata)
 
   const shareOnTwitter = () => {
     const tweetText = encodeURIComponent(

@@ -45,6 +45,10 @@ export function useNFTDetails(tokenDataId: string | undefined) {
     const fetchNFTMetadata = async (nft: NFT) => {
       try {
         const response = await fetch(nft.current_token_data.token_uri)
+        console.log(
+          "🚀 ~ fetchNFTMetadata ~ response:",
+          nft
+        )
         const metadata: NFTMetadata = await response.json()
         return { ...nft, metadata }
       } catch (error) {

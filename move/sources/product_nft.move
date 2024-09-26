@@ -6,32 +6,28 @@ module aptos_friend_addr::product_nft {
     use std::error;
     use std::vector;
     use std::debug::print;
-
     use aptos_std::string_utils;
-
     use aptos_framework::object::{Self, Object, ExtendRef};
     use aptos_framework::resource_account;
     use aptos_framework::account;
     use aptos_framework::event;
     use aptos_framework::timestamp;
     use aptos_framework::randomness;
-
     use aptos_token_objects::token::{Self, Token};
     use aptos_token_objects::collection;
     use aptos_token_objects::property_map;
 
     const MAX_DESCRIPTION_LENGTH: u64 = 2000;
     const EDESCRIPTION_TOO_LONG: u64 = 1;
-
     const APP_OBJECT_SEED: vector<u8> = b"OPEN_FORGE";
-
     const PRODUCT_STATUS: vector<u8> = b"Product Status";
     const UPVOTE_COUNT: vector<u8> = b"Upvote Count";
+    const PRODUCT_ID: vector<u8> = b"Product ID";
     const STATUS_TRENDING: vector<u8> = b"Trending";
     const STATUS_NEW: vector<u8> = b"New";
 
     // openssl rand -hex 3
-    const COLLECTION_NAME: vector<u8> = b"Open Forge - 258fdb";
+    const COLLECTION_NAME: vector<u8> = b"Open Forge - 8c68bc";
     const COLLECTION_DESCRIPTION: vector<u8> = b"Open Forge Products Collection";
     const COLLECTION_URI: vector<u8> = b"https://aptos-open-forge-dev-demo.com";
 
@@ -51,8 +47,7 @@ module aptos_friend_addr::product_nft {
         token_name: String,
         long_description: String,
         social_url: String,
-        value: u64,
-        id: u64
+        value: u64
     }
 
     #[event]
@@ -80,29 +75,16 @@ module aptos_friend_addr::product_nft {
         let app_signer = &object::generate_signer(&constructor_ref);
 
         move_to(app_signer, ObjectController { app_extend_ref: extend_ref });
-        move_to(app_signer, MintTracker { total_minted: 0, last_random_id: 0 });
+
+        move_to(
+            app_signer,
+            MintTracker { total_minted: 0, last_random_id: 0 }
+        );
 
         create_collection(app_signer);
     }
 
-    // #[randomness]
     fun create_collection(creator: &signer) {
-
-        // let chars = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        // let random_suffix = vector::empty<u8>();
-        // let i = 0;
-        // while (i < 6) {
-        //     let random_index = randomness::u8_range(0, 62); // 62 is the length of chars
-        //     let char = *vector::borrow(&chars, (random_index as u64));
-        //     vector::push_back(&mut random_suffix, char);
-        //     i = i + 1;
-        // };
-
-        // let collection_name_with_suffix = string::utf8(b"");
-        // string::append(&mut collection_name_with_suffix, collection_name);
-        // string::append(&mut collection_name_with_suffix, string::utf8(b" - "));
-        // string::append(&mut collection_name_with_suffix, string::utf8(random_suffix));
-
         let royalty = option::none();
         let collection_constructor_ref =
             &collection::create_unlimited_collection(
@@ -114,11 +96,11 @@ module aptos_friend_addr::product_nft {
             );
 
         let mutator_ref = collection::generate_mutator_ref(collection_constructor_ref);
+
         move_to(
             creator,
             CollectionMutatorStore { mutator_ref, collection_name: utf8(COLLECTION_NAME) }
         );
-
     }
 
     public entry fun mint_product(
@@ -131,7 +113,6 @@ module aptos_friend_addr::product_nft {
     ) acquires ObjectController, CollectionMutatorStore, MintTracker {
         let creator_address = get_app_signer_addr();
         let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
-
         log(&b"mint_product -> collection_name", &collection_store.collection_name);
 
         let token_constructor_ref =
@@ -158,6 +139,7 @@ module aptos_friend_addr::product_nft {
             string::utf8(PRODUCT_STATUS),
             string::utf8(STATUS_NEW)
         );
+
         property_map::add_typed(
             &property_mutator_ref,
             string::utf8(UPVOTE_COUNT),
@@ -168,6 +150,12 @@ module aptos_friend_addr::product_nft {
         let mint_tracker = borrow_global_mut<MintTracker>(creator_address);
         mint_tracker.total_minted = mint_tracker.total_minted + 1;
 
+        property_map::add_typed(
+            &property_mutator_ref,
+            string::utf8(PRODUCT_ID),
+            mint_tracker.total_minted
+        );
+
         move_to(
             &token_signer,
             TokenMutatorStore {
@@ -176,12 +164,11 @@ module aptos_friend_addr::product_nft {
                 token_name: name,
                 long_description,
                 social_url,
-                value: 1,
-                id: mint_tracker.total_minted
+                value: 1
             }
         );
 
-        event::emit<NewProductEvent>(
+        event::emit(
             NewProductEvent { token_name: name, creator_addr: signer::address_of(user) }
         );
 
@@ -204,9 +191,7 @@ module aptos_friend_addr::product_nft {
         assert!(object::is_owner(product_object, owner_address), 0);
 
         let product_address = object::object_address(&product_object);
-
         let token_mutator_store = borrow_global<TokenMutatorStore>(product_address);
-
         token::set_description(&token_mutator_store.mutator_ref, new_description);
     }
 
@@ -227,7 +212,6 @@ module aptos_friend_addr::product_nft {
 
         let product_address = object::object_address(&product_object);
         let token_mutator_store = borrow_global_mut<TokenMutatorStore>(product_address);
-
         token_mutator_store.long_description = new_long_description;
         token_mutator_store.social_url = new_social_url;
     }
@@ -237,8 +221,8 @@ module aptos_friend_addr::product_nft {
     ) acquires CollectionMutatorStore, TokenMutatorStore {
         let upvoter_address = signer::address_of(user);
         let product_address = get_product_address(name);
-
         let product = borrow_global_mut<TokenMutatorStore>(product_address);
+
         let old_upvotes = product.value;
         let new_upvotes = old_upvotes + 1;
         product.value = new_upvotes;
@@ -274,8 +258,8 @@ module aptos_friend_addr::product_nft {
         );
     }
 
-    public entry fun transfer<T: key>(
-        owner: &signer, object: Object<T>, to: address
+    public entry fun transfer(
+        owner: &signer, object: Object<Token>, to: address
     ) {
         let owner_address = signer::address_of(owner);
         assert!(object::is_owner(object, owner_address), 0);
@@ -297,7 +281,6 @@ module aptos_friend_addr::product_nft {
         if (total_minted == 0) {
             mint_tracker.last_random_id = 0;
         } else {
-            // Use u64_range to get a random number between 1 and total_minted (inclusive)
             mint_tracker.last_random_id = aptos_framework::randomness::u64_range(
                 1, total_minted + 1
             );
@@ -311,42 +294,6 @@ module aptos_friend_addr::product_nft {
         mint_tracker.last_random_id
     }
 
-    //  entry fun getRandomProduct(): Object<Token> acquires MintTracker, CollectionMutatorStore {
-    //     let random_id = getRandomProductId();
-
-    //     if (random_id == 0) {
-    //         // No products minted yet
-    //         abort 0
-    //     };
-
-    //     let creator_address = get_app_signer_addr();
-    //     let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
-    //     let collection_name = collection_store.collection_name;
-
-    //     // Iterate through all minted tokens to find the one with the matching id
-    //     let i = 1;
-    //     while (i <= random_id) {
-    //         let token_name = string_utils::format2(&b"{}", i);
-    //         let token_address = token::create_token_address(
-    //             &creator_address,
-    //             &collection_name,
-    //             &token_name
-    //         );
-
-    //         if (exists<TokenMutatorStore>(token_address)) {
-    //             let token_store = borrow_global<TokenMutatorStore>(token_address);
-    //             if (token_store.id == random_id) {
-    //                 return object::address_to_object<Token>(token_address)
-    //             };
-    //         };
-
-    //         i = i + 1;
-    //     };
-
-    //     // This should never happen if the random_id is valid
-    //     abort 1
-    // }
-
     #[view]
     public fun get_app_signer_addr(): address {
         object::create_object_address(&@aptos_friend_addr, APP_OBJECT_SEED)
@@ -356,8 +303,6 @@ module aptos_friend_addr::product_nft {
     public fun get_upvote_count(
         product_name: String
     ): u64 acquires CollectionMutatorStore, TokenMutatorStore {
-        // let product_address = object::object_address(&product_object);
-
         let product_address = get_product_address(product_name);
         borrow_global<TokenMutatorStore>(product_address).value
     }
@@ -366,7 +311,6 @@ module aptos_friend_addr::product_nft {
     public fun get_product_address(name: String): (address) acquires CollectionMutatorStore {
         let creator_address = get_app_signer_addr();
         let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
-
         let creator_addr = get_app_signer_addr();
         let token_address =
             token::create_token_address(
@@ -378,28 +322,25 @@ module aptos_friend_addr::product_nft {
     }
 
     #[view]
-    public fun get_product_obj(name: String): Object<token::Token> acquires CollectionMutatorStore {
+    public fun get_product_obj(name: String): Object<Token> acquires CollectionMutatorStore {
         let creator_address = get_app_signer_addr();
         let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
-
         let token_address =
             token::create_token_address(
                 &creator_address,
                 &collection_store.collection_name,
                 &name
             );
-        object::address_to_object<token::Token>(token_address)
+        object::address_to_object<Token>(token_address)
     }
 
     #[view]
     public fun get_collection_name(): String acquires CollectionMutatorStore {
         let creator_address = get_app_signer_addr();
         let collection_store = borrow_global<CollectionMutatorStore>(creator_address);
-
         collection_store.collection_name
     }
 
-    // Utils
     fun log(prefix: &vector<u8>, value: &String) {
         let full_message = vector::empty<u8>();
         vector::append(&mut full_message, *prefix);
@@ -486,7 +427,10 @@ module aptos_friend_addr::product_nft {
         let new_long_description = string::utf8(b"This is an updated longer description");
         let new_social_url = string::utf8(b"https://facebook.com/testproduct");
         modify_product_details(
-            creator, product_name, new_long_description, new_social_url
+            creator,
+            product_name,
+            new_long_description,
+            new_social_url
         );
 
         // Upvote product
