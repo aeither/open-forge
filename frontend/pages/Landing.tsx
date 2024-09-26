@@ -83,21 +83,24 @@ export default function Component() {
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10" />
             <div className="relative z-10">
               <h1 className="mb-4 text-center text-3xl sm:text-4xl lg:text-6xl font-bold">
-                Empowering Public Goods on Aptos
+                A Revolutionary Gamified Public Goods Accelerator
               </h1>
               <p className="mb-6 sm:mb-8 text-center text-base sm:text-lg text-muted-foreground">
-                Open Forge is a revolutionary gamified public goods accelerator
-                built on the Aptos blockchain. We're reimagining how open-source
-                projects are funded, supported, and showcased within the Aptos
-                ecosystem.
+                Open Forge is reimagining how open-source projects are funded,
+                supported, and showcased within the Aptos ecosystem. We're
+                leveraging the power of blockchain technology to create a fair,
+                engaging, and addictive platform for discovering and funding
+                innovative projects.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button
-                  size="sm"
-                  className="flex items-center gap-2 rounded-full"
-                >
-                  Surprise me 😲
-                </Button>
+                <Link to="/play">
+                  <Button
+                    size="sm"
+                    className="flex items-center gap-2 rounded-full"
+                  >
+                    Surprise me 😲
+                  </Button>
+                </Link>
                 <Link to="/explore" className="w-full sm:w-auto">
                   <Button
                     variant="outline"

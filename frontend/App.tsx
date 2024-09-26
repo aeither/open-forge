@@ -7,6 +7,7 @@ import { Irys } from "./pages/Irys"
 import { IssuerList } from "./pages/IssuerList"
 import Landing from "./pages/Landing"
 import Leaderboard from "./pages/Leaderboard"
+import Play from "./pages/Play"
 import { Profile } from "./pages/Profile"
 import { ProjectDetails } from "./pages/ProjectDetails"
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+      {
+        path: "/play",
+        element: <Play />,
+      },
       {
         path: "/callback",
         element: <CallbackPage />,
