@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 
-import type { Holding } from "@/utils/types"
 import { surfClientBuilderShare } from "@/utils/aptosClient"
+import type { Holding } from "@/utils/types"
+import { useQuery } from "@tanstack/react-query"
 
 export function useGetHoldings(userAddress?: string) {
   const [holdings, setHoldings] = useState<Holding[]>()
@@ -23,23 +24,20 @@ export function useGetHoldings(userAddress?: string) {
 }
 
 export function useGetHolding(issuerAddress?: string, holderAddress?: string) {
-  const [holding, setHolding] = useState<Holding>()
-
-  useEffect(() => {
-    if (!issuerAddress || !holderAddress) {
-      return
-    }
-    getHoldingObject(
-      issuerAddress as `0x${string}`,
-      holderAddress as `0x${string}`
-    ).then((holdingObject) => {
-      getHolding(holdingObject).then((result) => {
-        setHolding(result)
-      })
-    })
-  }, [issuerAddress, holderAddress])
-
-  return holding
+  return useQuery<Holding | undefined>({
+    queryKey: ["holding", issuerAddress, holderAddress],
+    queryFn: async () => {
+      if (!issuerAddress || !holderAddress) {
+        return undefined
+      }
+      const holdingObject = await getHoldingObject(
+        issuerAddress as `0x${string}`,
+        holderAddress as `0x${string}`
+      )
+      return getHolding(holdingObject)
+    },
+    enabled: !!issuerAddress && !!holderAddress,
+  })
 }
 
 export function useGetIssuerObjectAddress(issuerAddress?: string) {

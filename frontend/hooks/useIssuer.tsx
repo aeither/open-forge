@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 
-import type { Issuer } from "@/utils/types"
 import { surfClientBuilderShare } from "@/utils/aptosClient"
+import type { Issuer } from "@/utils/types"
+import { useQuery } from "@tanstack/react-query"
 
 // This call can be pretty expensive when fetching a big number of assets,
 // therefore it is not recommended to use it in production
@@ -20,20 +21,17 @@ export function useGetIssuers() {
 }
 
 export function useGetIssuer(issuerAddress?: string) {
-  const [issuer, setIssuer] = useState<Issuer>()
-
-  useEffect(() => {
-    if (!issuerAddress) {
-      return
-    }
-    getIssuerObject(issuerAddress as `0x${string}`).then((issuerObject) => {
-      getIssuer(issuerObject).then((result) => {
-        setIssuer(result)
-      })
-    })
-  }, [issuerAddress])
-
-  return issuer
+  return useQuery<Issuer | undefined>({
+    queryKey: ["issuer", issuerAddress],
+    queryFn: async () => {
+      if (!issuerAddress) {
+        return undefined
+      }
+      const issuerObject = await getIssuerObject(issuerAddress as `0x${string}`)
+      return getIssuer(issuerObject)
+    },
+    enabled: !!issuerAddress,
+  })
 }
 
 export function useHasIssuedShare(issuerAddress?: string) {

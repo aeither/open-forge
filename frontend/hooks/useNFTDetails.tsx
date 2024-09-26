@@ -10,6 +10,10 @@ interface NFTData {
   token_standard: string
   token_uri: string
   last_transaction_timestamp: string
+  token_properties: {
+    "Upvote Count": string
+    "Product Status": string
+  }
 }
 
 interface NFT {
