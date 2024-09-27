@@ -16,6 +16,7 @@ interface NFT {
   token_properties: {
     "Upvote Count": string
     "Product Status": string
+    "Product ID": string
   }
   image?: string
 }

@@ -12,6 +12,7 @@ interface NFTData {
   token_properties: {
     "Upvote Count": string
     "Product Status": string
+    "Product ID": string
   }
 }
 

@@ -7,7 +7,8 @@ import {
 } from "@aptos-labs/ts-sdk"
 import { createSurfClient } from "@thalalabs/surf"
 import dotenv from "dotenv"
-import { ABI } from "../../frontend/utils/abi-product_nft"
+import { ABI as SharesABI } from "../../frontend/utils/abi-aptos_friend"
+import { ABI as ProductNFTABI } from "../../frontend/utils/abi-product_nft"
 
 dotenv.config()
 
@@ -16,7 +17,8 @@ const APTOS_NETWORK: Network =
 
 const config = new AptosConfig({ network: APTOS_NETWORK })
 const aptos = new Aptos(config)
-const surfProductNFT = createSurfClient(aptos).useABI(ABI)
+const surfProductNFT = createSurfClient(aptos).useABI(ProductNFTABI)
+const surfSharesNFT = createSurfClient(aptos).useABI(SharesABI)
 
 const INITIAL_BALANCE = 100_000_000 // 1 APT
 
@@ -207,6 +209,11 @@ const main = async () => {
       })
   )
 
+  // Issue shares for each builder
+  for (const builder of builders) {
+    await issueShares(builder, generateRandomUsername())
+  }
+
   console.log("Created 5 builders:")
   builders.forEach((builder, index) => {
     console.log(`Builder ${index + 1} address: ${builder.accountAddress}`)
@@ -272,6 +279,30 @@ const upvoteProduct = async (voter: Account, productName: string) => {
   })
   console.log(
     `Upvoted "${productName}" by ${voter.accountAddress.toString().slice(0, 6)}... | Status: ${tx.success ? "Success" : "Failed"}`
+  )
+}
+
+const generateRandomUsername = () => {
+  const adjectives = ["Cool", "Awesome", "Brilliant", "Clever", "Dynamic"]
+  const nouns = ["Coder", "Builder", "Creator", "Innovator", "Developer"]
+  const randomAdjective =
+    adjectives[Math.floor(Math.random() * adjectives.length)]
+  const randomNoun = nouns[Math.floor(Math.random() * nouns.length)]
+  const randomNumber = Math.floor(Math.random() * 1000)
+  return `${randomAdjective}${randomNoun}${randomNumber}`
+}
+
+const issueShares = async (account: Account, username: string) => {
+  const result = await surfSharesNFT.entry.issue_share({
+    functionArguments: [username],
+    typeArguments: [],
+    account: account,
+  })
+
+  const tx = await aptos.waitForTransaction({ transactionHash: result.hash })
+
+  console.log(
+    `Issued shares for "${username}" by ${account.accountAddress.toString().slice(0, 6)}... | Status: ${tx.success ? "Success" : "Failed"}`
   )
 }
 

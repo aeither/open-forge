@@ -13,7 +13,7 @@ interface ProjectStatsProps {
     token_standard: string
     token_uri: string
     last_transaction_timestamp: string
-    token_properties: Record<string, string> // Add this line
+    token_properties: Record<string, string>
   }
 }
 
