@@ -33,6 +33,10 @@ interface NFT {
     "Product Status": string
     "Product ID": string
   }
+  current_token_ownerships: {
+    owner_address: string
+    amount: number
+  }
   image?: string
 }
 
@@ -178,7 +182,7 @@ export const useRandomProductWithNFT = () => {
     getProjectById,
     matchingNFT,
     isLoading:
-      loading || setRandomProductId.isLoading || getRandomProductId.isFetching,
+      loading || getRandomProductId.isFetching,
     error: error || setRandomProductId.error || getRandomProductId.error,
   }
 }

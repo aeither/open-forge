@@ -11,10 +11,14 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useGetIssuerObjectAddress } from "@/hooks/useHolding"
 import { useRandomProductWithNFT } from "@/hooks/useRandomProduct"
+import { useTradeShare } from "@/hooks/useShares"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import type React from "react"
 import { useEffect } from "react"
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
+import { toast } from "sonner"
 
 const Play: React.FC = () => {
   const {
@@ -25,14 +29,18 @@ const Play: React.FC = () => {
     error,
   } = useRandomProductWithNFT()
   const [searchParams, setSearchParams] = useSearchParams()
-  const navigate = useNavigate()
+  const { connected, account } = useWallet()
+  const tradeShareMutation = useTradeShare()
+  const issuerObjectAddress = useGetIssuerObjectAddress(
+    matchingNFT?.current_token_ownerships?.owner_address as `0x${string}`
+  )
 
   useEffect(() => {
     const productId = searchParams.get("product-id")
     if (productId) {
       getProjectById(productId)
     }
-  }, [searchParams, getProjectById]) // Added getProjectById to the dependency array
+  }, [searchParams, getProjectById])
 
   const handleStart = async () => {
     const randomId = await setAndGetRandomProject()
@@ -48,21 +56,44 @@ const Play: React.FC = () => {
     }
   }
 
-  const handleFund = () => {
-    // Implement funding logic here
-    console.log("Funding project:", matchingNFT?.token_name)
+  const handleFund = async () => {
+    if (!connected || !account) {
+      toast.error("Please connect your wallet to fund this project.")
+      return
+    }
+
+    console.log(
+      "issuerObjectAddress",
+      matchingNFT
+    )
+    if (!issuerObjectAddress) {
+      toast.error("Unable to get issuer object address. Please try again.")
+      return
+    }
+
+    
+    try {
+      await tradeShareMutation.mutateAsync({
+        issuerObjectAddress,
+        isBuying: true,
+      })
+      toast.success(`Successfully funded project: ${matchingNFT?.token_name}`)
+    } catch (error) {
+      console.error("Error funding project:", error)
+      toast.error("Failed to fund the project. Please try again.")
+    }
   }
 
   if (!searchParams.get("product-id")) {
     return (
-      <div className="flex flex-col min-h-[100dvh]">
+      <>
         <Header title={"Open Forge"} />
-        <main className="flex-1 bg-background flex items-center justify-center">
+        <main className="flex-1 bg-background flex min-h-[calc(100vh-74px)] items-center justify-center">
           <Button size="lg" onClick={handleStart} className="text-xl px-8 py-4">
             Start Exploring Projects
           </Button>
         </main>
-      </div>
+      </>
     )
   }
 
@@ -113,8 +144,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   onPass,
   onFund,
 }) => {
-  const navigate = useNavigate()
-
   return (
     <Card className="w-full max-w-sm mx-auto">
       <CardHeader>

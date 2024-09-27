@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "@apollo/client";
 
 /**
  * Edit on Hasura
@@ -7,8 +7,12 @@ import { gql } from "@apollo/client"
 export const GET_COLLECTION_NFTS = gql`
   query GetCollectionNfts($collection_name: String) {
     current_token_datas_v2(
-      where: {current_collection: {collection_name: {_eq: $collection_name}}}
-      order_by: {last_transaction_timestamp: desc}
+      where: {
+        current_collection: {
+          collection_name: { _eq: $collection_name }
+        }
+      }
+      order_by: { last_transaction_timestamp: desc }
     ) {
       token_name
       description
@@ -17,9 +21,13 @@ export const GET_COLLECTION_NFTS = gql`
       last_transaction_timestamp
       token_data_id
       token_properties
+      current_token_ownerships {
+        owner_address
+        amount
+      }
     }
   }
-`
+`;
 
 export const GET_COLLECTION_NFTS_BY_OWNER = gql`
   query GetCollectionNfts($collection_name: String, $owner_address: String) {
