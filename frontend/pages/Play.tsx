@@ -1,3 +1,5 @@
+// components/Play.tsx
+
 import { Header } from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,50 +10,42 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useRandomProductWithNFT } from "@/hooks/useRandomProduct"
 import type React from "react"
-import { useState } from "react"; // Add this import
-import { useNavigate } from "react-router-dom"
-
-const projects = [
-  {
-    id: "1",
-    name: "AI-Driven Prediction Model",
-    description: "Revolutionizing forecasting with machine learning",
-    imageUrl:
-      "https://res.cloudinary.com/dzkwltgyd/image/upload/v1725532306/glif-run-outputs/yhwd4sxpbgocpgg1mfm0.jpg",
-    category: "AI Projects",
-  },
-  {
-    id: "2",
-    name: "Decentralized Identity Solution",
-    description: "Secure and private identity management on the blockchain",
-    imageUrl:
-      "https://res.cloudinary.com/dzkwltgyd/image/upload/v1725532672/glif-run-outputs/x4bj0uzwi77g7cnhfqdj.jpg",
-    category: "Blockchain Infrastructure",
-  },
-  {
-    id: "3",
-    name: "Community Governance Dashboard",
-    description: "Empowering decentralized decision-making",
-    imageUrl:
-      "https://res.cloudinary.com/dzkwltgyd/image/upload/v1725532724/glif-run-outputs/hirsdr3j9dp1lnhkfjy8.jpg",
-    category: "Community Tools",
-  },
-]
+import { useEffect } from "react"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 
 const Play: React.FC = () => {
-  const { setAndGetRandomProject, matchingNFT, isLoading, error } =
-    useRandomProductWithNFT()
-  const [hasStarted, setHasStarted] = useState(false) // Add this state
+  const {
+    setAndGetRandomProject,
+    getProjectById,
+    matchingNFT,
+    isLoading,
+    error,
+  } = useRandomProductWithNFT()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
 
-  const handleStart = () => {
-    setHasStarted(true)
-    setAndGetRandomProject()
+  useEffect(() => {
+    const productId = searchParams.get("product-id")
+    if (productId) {
+      getProjectById(productId)
+    }
+  }, [searchParams, getProjectById]) // Added getProjectById to the dependency array
+
+  const handleStart = async () => {
+    const randomId = await setAndGetRandomProject()
+    if (randomId) {
+      setSearchParams({ "product-id": randomId.toString() })
+    }
   }
 
-  const handlePass = () => {
-    setAndGetRandomProject()
+  const handlePass = async () => {
+    const randomId = await setAndGetRandomProject()
+    if (randomId) {
+      setSearchParams({ "product-id": randomId.toString() })
+    }
   }
 
   const handleFund = () => {
@@ -59,7 +53,7 @@ const Play: React.FC = () => {
     console.log("Funding project:", matchingNFT?.token_name)
   }
 
-  if (!hasStarted) {
+  if (!searchParams.get("product-id")) {
     return (
       <div className="flex flex-col min-h-[100dvh]">
         <Header title={"Open Forge"} />
@@ -72,24 +66,28 @@ const Play: React.FC = () => {
     )
   }
 
-  if (isLoading) return <p>Loading...</p>
-  if (error) return <p>Error: {error.message}</p>
-  if (!matchingNFT) return <p>No matching project found</p>
-
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <Header title={"Open Forge"} />
       <main className="flex-1 bg-background">
         <section className="container mx-auto my-8 sm:my-12 max-w-4xl px-4 sm:px-6 lg:px-8">
-          <ProjectCard
-            id={matchingNFT.token_data_id}
-            name={matchingNFT.token_name}
-            description={matchingNFT.description}
-            imageUrl={matchingNFT.image || ""}
-            category={matchingNFT.token_properties["Product Status"]}
-            onPass={handlePass}
-            onFund={handleFund}
-          />
+          {isLoading ? (
+            <LoadingProjectCard />
+          ) : error ? (
+            <ErrorCard message={error.message} />
+          ) : !matchingNFT ? (
+            <ErrorCard message="No matching project found" />
+          ) : (
+            <ProjectCard
+              id={matchingNFT.token_data_id}
+              name={matchingNFT.token_name}
+              description={matchingNFT.description}
+              imageUrl={matchingNFT.image || ""}
+              category={matchingNFT.token_properties["Product Status"]}
+              onPass={handlePass}
+              onFund={handleFund}
+            />
+          )}
         </section>
       </main>
     </div>
@@ -123,17 +121,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <CardTitle className="text-xl font-bold">{name}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent onClick={() => navigate(`/project/${id}`)}>
-        <img
-          src={imageUrl}
-          alt={name}
-          className="w-full h-64 object-cover rounded-md"
-        />
-        <div className="mt-2">
-          <span className="inline-block bg-muted text-muted-foreground rounded-full px-3 py-1 text-sm font-semibold mr-2">
-            {category}
-          </span>
-        </div>
+      <CardContent>
+        <Link to={`/project/${id}`}>
+          <img
+            src={imageUrl}
+            alt={name}
+            className="w-full h-64 object-cover rounded-md"
+          />
+          <div className="mt-2">
+            <span className="inline-block bg-muted text-muted-foreground rounded-full px-3 py-1 text-sm font-semibold mr-2">
+              {category}
+            </span>
+          </div>
+        </Link>
       </CardContent>
       <CardFooter className="flex justify-between w-full p-0">
         <Button
@@ -153,6 +153,40 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           Fund
         </Button>
       </CardFooter>
+    </Card>
+  )
+}
+
+const LoadingProjectCard: React.FC = () => {
+  return (
+    <Card className="w-full max-w-sm mx-auto">
+      <CardHeader>
+        <Skeleton className="h-6 w-3/4 mb-2" />
+        <Skeleton className="h-4 w-full" />
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="w-full h-64 rounded-md" />
+        <div className="mt-2">
+          <Skeleton className="h-6 w-24 rounded-full" />
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-between w-full p-0">
+        <Skeleton className="w-1/2 h-16" />
+        <Skeleton className="w-1/2 h-16" />
+      </CardFooter>
+    </Card>
+  )
+}
+
+const ErrorCard: React.FC<{ message: string }> = ({ message }) => {
+  return (
+    <Card className="w-full max-w-sm mx-auto">
+      <CardHeader>
+        <CardTitle className="text-xl font-bold text-red-500">Error</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p>{message}</p>
+      </CardContent>
     </Card>
   )
 }

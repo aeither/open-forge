@@ -1,3 +1,5 @@
+// hooks/useRandomProduct.ts
+
 import { Button } from "@/components/ui/button"
 import { useKeylessAccount } from "@/context/KeylessAccountContext"
 import { COLLECTION_NAME } from "@/lib/constants"
@@ -16,7 +18,7 @@ import {
 } from "@tanstack/react-query"
 import { createEntryPayload } from "@thalalabs/surf"
 import { useWalletClient } from "@thalalabs/surf/hooks"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 interface NFT {
@@ -140,45 +142,40 @@ export const useRandomProductWithNFT = () => {
     skip: !COLLECTION_NAME,
   })
 
-  useEffect(() => {
-    const fetchNFTMetadata = async (nft: NFT) => {
-      try {
-        const response = await fetch(nft.token_uri)
-        const metadata: NFTMetadata = await response.json()
-        return { ...nft, image: metadata.image }
-      } catch (error) {
-        console.error("Error fetching NFT metadata:", error)
-        return nft
-      }
+  const fetchNFTMetadata = async (nft: NFT) => {
+    try {
+      const response = await fetch(nft.token_uri)
+      const metadata: NFTMetadata = await response.json()
+      return { ...nft, image: metadata.image }
+    } catch (error) {
+      console.error("Error fetching NFT metadata:", error)
+      return nft
     }
-
-    const updateNFTsWithMetadata = async () => {
-      if (
-        data?.current_token_datas_v2 &&
-        getRandomProductId.data !== undefined
-      ) {
-        const updatedNFTs = await Promise.all(
-          data.current_token_datas_v2.map(fetchNFTMetadata)
-        )
-        const matchingNFT = updatedNFTs.find(
-          (nft) =>
-            nft.token_properties["Product ID"] ===
-            getRandomProductId.data.toString()
-        )
-        setMatchingNFT(matchingNFT || null)
-      }
-    }
-
-    updateNFTsWithMetadata()
-  }, [data, getRandomProductId.data])
+  }
 
   const setAndGetRandomProject = async () => {
     await setRandomProductId.mutateAsync()
-    await getRandomProductId.refetch()
+    const result = await getRandomProductId.refetch()
+    return result.data
+  }
+
+  const getProjectById = async (productId: string) => {
+    if (data?.current_token_datas_v2) {
+      const nft = data.current_token_datas_v2.find(
+        (nft) => nft.token_properties["Product ID"] === productId
+      )
+      if (nft) {
+        const updatedNFT = await fetchNFTMetadata(nft)
+        setMatchingNFT(updatedNFT)
+        return updatedNFT
+      }
+    }
+    return null
   }
 
   return {
     setAndGetRandomProject,
+    getProjectById,
     matchingNFT,
     isLoading:
       loading || setRandomProductId.isLoading || getRandomProductId.isFetching,
