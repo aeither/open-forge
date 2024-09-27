@@ -8,8 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useRandomProductWithNFT } from "@/hooks/useRandomProduct"
 import type React from "react"
-import { useState } from "react"
+import { useState } from "react"; // Add this import
 import { useNavigate } from "react-router-dom"
 
 const projects = [
@@ -40,19 +41,40 @@ const projects = [
 ]
 
 const Play: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const { setAndGetRandomProject, matchingNFT, isLoading, error } =
+    useRandomProductWithNFT()
+  const [hasStarted, setHasStarted] = useState(false) // Add this state
+
+  const handleStart = () => {
+    setHasStarted(true)
+    setAndGetRandomProject()
+  }
 
   const handlePass = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length)
+    setAndGetRandomProject()
   }
 
   const handleFund = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
+    // Implement funding logic here
+    console.log("Funding project:", matchingNFT?.token_name)
+  }
+
+  if (!hasStarted) {
+    return (
+      <div className="flex flex-col min-h-[100dvh]">
+        <Header title={"Open Forge"} />
+        <main className="flex-1 bg-background flex items-center justify-center">
+          <Button size="lg" onClick={handleStart} className="text-xl px-8 py-4">
+            Start Exploring Projects
+          </Button>
+        </main>
+      </div>
     )
   }
 
-  const currentProject = projects[currentIndex]
+  if (isLoading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message}</p>
+  if (!matchingNFT) return <p>No matching project found</p>
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -60,7 +82,11 @@ const Play: React.FC = () => {
       <main className="flex-1 bg-background">
         <section className="container mx-auto my-8 sm:my-12 max-w-4xl px-4 sm:px-6 lg:px-8">
           <ProjectCard
-            {...currentProject}
+            id={matchingNFT.token_data_id}
+            name={matchingNFT.token_name}
+            description={matchingNFT.description}
+            imageUrl={matchingNFT.image || ""}
+            category={matchingNFT.token_properties["Product Status"]}
             onPass={handlePass}
             onFund={handleFund}
           />
@@ -69,8 +95,6 @@ const Play: React.FC = () => {
     </div>
   )
 }
-
-export default Play
 
 interface ProjectCardProps {
   id: string
@@ -132,3 +156,5 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     </Card>
   )
 }
+
+export default Play
