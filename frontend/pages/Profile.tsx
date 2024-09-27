@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useCollectionNFTsByOwner } from "@/hooks/useCollectionNFTs"; // Add this import
+import { useCollectionNFTsByOwner } from "@/hooks/useCollectionNFTs"
 import { useGetHolding, useGetIssuerObjectAddress } from "@/hooks/useHolding"
 import { useGetIssuer, useHasIssuedShare } from "@/hooks/useIssuer"
 import { useIssueShare, useTradeShare } from "@/hooks/useShares"
@@ -20,7 +20,7 @@ export const Profile: React.FC = () => {
   const userAddress = connected && account ? account.address : null
   const isOwnProfile = userAddress === issuerAddress
   const profileAddress = isOwnProfile ? userAddress : issuerAddress
-  const hasIssuedShare = useHasIssuedShare(userAddress as `0x${string}`)
+  const hasIssuedShare = useHasIssuedShare(issuerAddress as `0x${string}`)
   const { data: issuer } = useGetIssuer(profileAddress as `0x${string}`)
   const { data: holding } = useGetHolding(
     profileAddress as `0x${string}`,
@@ -92,22 +92,7 @@ export const Profile: React.FC = () => {
                 ) : (
                   <p>Loading issuer details...</p>
                 )}
-                {hasIssuedShare ? (
-                  <div className="flex justify-center space-x-4 mt-6">
-                    <Button
-                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 "
-                      onClick={() => handleTrade(true)}
-                    >
-                      Buy Share
-                    </Button>
-                    <Button
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 "
-                      onClick={() => handleTrade(false)}
-                    >
-                      Sell Share
-                    </Button>
-                  </div>
-                ) : (
+                {isOwnProfile && !hasIssuedShare ? (
                   <>
                     <div className="space-y-2">
                       <Label htmlFor="username">Username</Label>
@@ -123,7 +108,22 @@ export const Profile: React.FC = () => {
                       Issue Share
                     </Button>
                   </>
-                )}
+                ) : hasIssuedShare ? (
+                  <div className="flex justify-center space-x-4 mt-6">
+                    <Button
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4"
+                      onClick={() => handleTrade(true)}
+                    >
+                      Buy Share
+                    </Button>
+                    <Button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4"
+                      onClick={() => handleTrade(false)}
+                    >
+                      Sell Share
+                    </Button>
+                  </div>
+                ) : null}
               </div>
             ) : (
               <p className="text-center">
