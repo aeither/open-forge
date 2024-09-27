@@ -36,7 +36,7 @@ interface NFT {
   current_token_ownerships: {
     owner_address: string
     amount: number
-  }
+  }[]
   image?: string
 }
 
@@ -169,9 +169,17 @@ export const useRandomProductWithNFT = () => {
         (nft) => nft.token_properties["Product ID"] === productId
       )
       if (nft) {
-        const updatedNFT = await fetchNFTMetadata(nft)
-        setMatchingNFT(updatedNFT)
-        return updatedNFT
+        const validOwnership = nft.current_token_ownerships.find(
+          ownership => ownership.amount > 0
+        )
+        if (validOwnership) {
+          const updatedNFT = await fetchNFTMetadata(nft)
+          setMatchingNFT({
+            ...updatedNFT,
+            current_token_ownerships: [validOwnership]
+          })
+          return updatedNFT
+        }
       }
     }
     return null
@@ -181,8 +189,7 @@ export const useRandomProductWithNFT = () => {
     setAndGetRandomProject,
     getProjectById,
     matchingNFT,
-    isLoading:
-      loading || getRandomProductId.isFetching,
+    isLoading: loading || getRandomProductId.isFetching,
     error: error || setRandomProductId.error || getRandomProductId.error,
   }
 }

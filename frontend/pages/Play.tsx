@@ -32,7 +32,7 @@ const Play: React.FC = () => {
   const { connected, account } = useWallet()
   const tradeShareMutation = useTradeShare()
   const issuerObjectAddress = useGetIssuerObjectAddress(
-    matchingNFT?.current_token_ownerships?.owner_address as `0x${string}`
+    matchingNFT?.current_token_ownerships[0]?.owner_address as `0x${string}`
   )
 
   useEffect(() => {
@@ -62,16 +62,11 @@ const Play: React.FC = () => {
       return
     }
 
-    console.log(
-      "issuerObjectAddress",
-      matchingNFT
-    )
     if (!issuerObjectAddress) {
       toast.error("Unable to get issuer object address. Please try again.")
       return
     }
 
-    
     try {
       await tradeShareMutation.mutateAsync({
         issuerObjectAddress,
