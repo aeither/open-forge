@@ -84,9 +84,23 @@ const Play: React.FC = () => {
       <>
         <Header title={"Open Forge"} />
         <main className="flex-1 bg-background flex min-h-[calc(100vh-74px)] items-center justify-center">
-          <Button size="lg" onClick={handleStart} className="text-xl px-8 py-4">
-            Start Exploring Projects
-          </Button>
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4">Welcome to Open Forge!</h2>
+            <p className="text-lg mb-4">
+              Discover and support innovative projects.
+            </p>
+            <p className="text-lg mb-6">
+              Fund projects you believe in or pass to find the next big idea
+              that catches your eye.
+            </p>
+            <Button
+              size="lg"
+              onClick={handleStart}
+              className="text-xl px-8 py-4"
+            >
+              Start now!
+            </Button>
+          </div>
         </main>
       </>
     )

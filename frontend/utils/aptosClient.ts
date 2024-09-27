@@ -8,9 +8,9 @@ import { ABI as ABI_PRODUCT_NFT } from "@/utils/abi-product_nft"
 const aptos = new Aptos(
   new AptosConfig({
     network: NETWORK,
-    fullnode: `https://aptos-testnet.nodit.io/${import.meta.env.VITE_NODIT_API_KEY}/v1`,
-    indexer: `https://aptos-testnet.nodit.io/${import.meta.env.VITE_NODIT_API_KEY}/v1/graphql`,
-    faucet: "https://faucet.testnet.aptoslabs.com",
+    // fullnode: `https://aptos-testnet.nodit.io/${import.meta.env.VITE_NODIT_API_KEY}/v1`,
+    // indexer: `https://aptos-testnet.nodit.io/${import.meta.env.VITE_NODIT_API_KEY}/v1/graphql`,
+    // faucet: "https://faucet.testnet.aptoslabs.com",
   })
 )
 const surf = createSurfClient(aptos)
