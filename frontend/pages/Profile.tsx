@@ -49,8 +49,8 @@ export const Profile: React.FC = () => {
   return (
     <>
       <Header title={isOwnProfile ? "My Profile" : "User Profile"} />
-      <div className="min-h-[calc(100vh-74px)] bg-gray-100 flex flex-col items-center justify-center p-4 gap-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-[calc(100vh-74px)] flex flex-col items-center justify-center p-4 gap-4">
+        <Card className="w-full max-w-md bg-gray-100">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
               {connected ? issuer?.username || "Profile" : "Connect Wallet"}
@@ -92,39 +92,38 @@ export const Profile: React.FC = () => {
                 ) : (
                   <p>Loading issuer details...</p>
                 )}
-                {isOwnProfile &&
-                  (hasIssuedShare ? (
-                    <div className="flex justify-center space-x-4 mt-6">
-                      <Button
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 "
-                        onClick={() => handleTrade(true)}
-                      >
-                        Buy Share
-                      </Button>
-                      <Button
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 "
-                        onClick={() => handleTrade(false)}
-                      >
-                        Sell Share
-                      </Button>
+                {hasIssuedShare ? (
+                  <div className="flex justify-center space-x-4 mt-6">
+                    <Button
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 "
+                      onClick={() => handleTrade(true)}
+                    >
+                      Buy Share
+                    </Button>
+                    <Button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 "
+                      onClick={() => handleTrade(false)}
+                    >
+                      Sell Share
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="username">Username</Label>
+                      <Input
+                        id="username"
+                        type="text"
+                        value={newUsername}
+                        onChange={(e) => setNewUsername(e.target.value)}
+                        placeholder="Enter username"
+                      />
                     </div>
-                  ) : (
-                    <>
-                      <div className="space-y-2">
-                        <Label htmlFor="username">Username</Label>
-                        <Input
-                          id="username"
-                          type="text"
-                          value={newUsername}
-                          onChange={(e) => setNewUsername(e.target.value)}
-                          placeholder="Enter username"
-                        />
-                      </div>
-                      <Button className="w-full" onClick={handleIssueShare}>
-                        Issue Share
-                      </Button>
-                    </>
-                  ))}
+                    <Button className="w-full" onClick={handleIssueShare}>
+                      Issue Share
+                    </Button>
+                  </>
+                )}
               </div>
             ) : (
               <p className="text-center">

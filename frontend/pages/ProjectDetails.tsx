@@ -65,7 +65,7 @@ export const ProjectDetails: React.FC = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-2/3">
-            <div className="p-6 rounded-lg shadow-sm">
+            <div className="rounded-lg shadow-sm">
               <img
                 src={metadata.image}
                 alt={metadata.name}

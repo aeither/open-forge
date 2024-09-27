@@ -75,7 +75,7 @@ const ProjectStats: React.FC<ProjectStatsProps> = ({ project }) => {
 
   return (
     <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6">
-      <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
+      <div className="flex flex-row items-center justify-between mb-6">
         <div>
           <h3 className="text-lg font-semibold mb-4">Builder</h3>
           {ownerAddress && (
@@ -95,13 +95,17 @@ const ProjectStats: React.FC<ProjectStatsProps> = ({ project }) => {
           <button
             type="button"
             onClick={handleUpvote}
-            className="flex flex-row sm:flex-col items-center justify-center p-2 rounded-md hover:bg-gray-100 transition duration-300 mb-4 sm:mb-0"
+            className="flex flex-col items-center w-full justify-center p-2 rounded-md hover:bg-gray-100 transition duration-300 mb-4 sm:mb-0"
           >
-            <ChevronUp
-              className="text-gray-600 mr-2 sm:mr-0 sm:mb-2"
-              size={32}
-            />
-            <span className="text-2xl font-semibold">{votes}</span>
+            <div className="flex justify-center">
+              <ChevronUp
+                className="text-gray-600"
+                size={32}
+              />
+            </div>
+            <div className="flex justify-center">
+              <span className="text-2xl font-semibold">{votes}</span>
+            </div>
           </button>
         </div>
       </div>
