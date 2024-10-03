@@ -17,6 +17,7 @@ import Leaderboard from "./pages/Leaderboard"
 import Play from "./pages/Play"
 import { Profile } from "./pages/Profile"
 import { ProjectDetails } from "./pages/ProjectDetails"
+import { cn } from "./lib/utils"
 
 const initDataRaw = new URLSearchParams([
   [
@@ -144,7 +145,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <div className={cn("antialiased")}>
+        <RouterProvider router={router} />
+      </div>
     </>
   )
 }

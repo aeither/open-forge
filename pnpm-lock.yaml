@@ -17,6 +17,9 @@ importers:
       '@aptos-labs/wallet-adapter-react':
         specifier: ^3.5.10
         version: 3.6.2(@aptos-labs/ts-sdk@1.27.1)(@mizuwallet-sdk/core@1.3.2(@aptos-labs/ts-sdk@1.27.1)(graphql-request@7.1.0(graphql@16.9.0)))(@mizuwallet-sdk/protocol@0.0.1)(@types/react@18.3.5)(@wallet-standard/core@1.0.3)(aptos@1.21.0)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10)
+      '@fontsource/bricolage-grotesque':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -639,6 +642,9 @@ packages:
 
   '@floating-ui/utils@0.2.7':
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
+
+  '@fontsource/bricolage-grotesque@5.1.0':
+    resolution: {integrity: sha512-kdZyXbftmi09GjewApG5z7KVbcz5ZXNvFUguKodNtOe34j9F3Hp7dWjcZNqMt/o4BtBKZBBLM4MjAVE+DrQpng==}
 
   '@graphql-typed-document-node/core@3.2.0':
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
@@ -4454,6 +4460,8 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@floating-ui/utils@0.2.7': {}
+
+  '@fontsource/bricolage-grotesque@5.1.0': {}
 
   '@graphql-typed-document-node/core@3.2.0(graphql@16.9.0)':
     dependencies:
