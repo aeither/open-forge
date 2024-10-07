@@ -94,3 +94,24 @@ Open Forge aims to revolutionize project funding and discovery by:
 - Integrate AI-powered project recommendation engine
 
 Join us in forging the future of open-source growth and funding on Aptos!
+
+
+designed with accesibility
+
+## User Interface Showcase
+
+### Responsive Design
+
+| Desktop View | Mobile/Telegram View |
+|--------------|----------------------|
+| ![Desktop Interface](https://github.com/user-attachments/assets/c38cd4ea-c349-4e23-8124-c587060aedd9) | ![Mobile/Telegram Interface](https://github.com/user-attachments/assets/219ee7a4-f795-4080-8492-ffd359a440a3) |
+
+### Feature Highlights
+
+| Start Play | Project Selection | Project Details |
+|------------|-------------------|-----------------|
+| ![Start Play](https://github.com/user-attachments/assets/b5155d92-d356-40f4-9d04-425b54577ec3) | ![Project Selection](https://github.com/user-attachments/assets/cfe32377-fb87-42f3-8ab2-56fc8492128f) | ![Project Details](https://github.com/user-attachments/assets/d38b7a1d-4913-4e1c-a74a-e174479461e2) |
+
+| User Profile | Project List | Launch Page |
+|--------------|--------------|-------------|
+| ![User Profile](https://github.com/user-attachments/assets/d4285d93-0f24-42b7-8ceb-e093fdc914b7) | ![Project List](https://github.com/user-attachments/assets/acb8adb2-bf93-42f2-b1bb-fd505936006c) | ![Launch Page](https://github.com/user-attachments/assets/a2497478-0ecf-4523-92de-723cb9c06e4d) |
