@@ -15,10 +15,12 @@
 ## Demo
 
 ### Web Application
-Experience Open Forge at [https://open-forge-eight.vercel.app/](https://open-forge-eight.vercel.app/)
+
+[https://open-forge-eight.vercel.app/](https://open-forge-eight.vercel.app/)
 
 ### Telegram Demo
-[Insert Telegram demo link or instructions here]
+
+https://t.me/OpenForgeBot
 
 ## Problem Statement
 
@@ -60,9 +62,13 @@ Open Forge is a gamified community space on the Aptos blockchain that connects b
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14, TypeScript, Shadcn, Tailwind CSS, Wagmi v2, Viem v2
-- **Smart Contracts**: Move language (featuring bonding curves and randomness)
+- **Frontend**: ViteJS, TypeScript, Shadcn, Tailwind CSS with create-aptos-dapp
+- **Smart Contracts**: Move language
 - **Blockchain**: Aptos
+
+## Architecture
+
+![Architecture](https://github.com/user-attachments/assets/3adfdb3c-27d9-4c17-84fe-8b7c6eb20022)
 
 ## What Sets Us Apart
 
@@ -81,9 +87,10 @@ Open Forge aims to revolutionize project funding and discovery by:
 
 ## Future Roadmap
 
-1. Full integration with Telegram Mizu Wallet
-2. Enhanced analytics for project creators and backers
-3. Cross-chain support for a wider ecosystem of projects
-4. Advanced governance features for community-driven platform evolution
+- Launch Open Forge Launchpad for promising Aptos-based projects
+- Launch decentralized grant program for Aptos ecosystem development
+- Partnership with key Aptos projects for cross-promotion
+- Full integration with Aptos-native wallets and Telegram Mizu Wallet
+- Integrate AI-powered project recommendation engine
 
 Join us in forging the future of open-source growth and funding on Aptos!
