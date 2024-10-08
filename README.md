@@ -60,6 +60,9 @@ Open Forge is a gamified community space on the Aptos blockchain that connects b
 ### 6. ANS Integration
 - Human-readable names instead of long addresses
 
+### 7. Iris Integration
+- Storing Project Metadata
+
 ## Tech Stack
 
 - **Frontend**: ViteJS, TypeScript, Shadcn, Tailwind CSS with create-aptos-dapp
