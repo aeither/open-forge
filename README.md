@@ -115,3 +115,8 @@ designed with accesibility
 | User Profile | Project List | Launch Page |
 |--------------|--------------|-------------|
 | ![User Profile](https://github.com/user-attachments/assets/d4285d93-0f24-42b7-8ceb-e093fdc914b7) | ![Project List](https://github.com/user-attachments/assets/acb8adb2-bf93-42f2-b1bb-fd505936006c) | ![Launch Page](https://github.com/user-attachments/assets/a2497478-0ecf-4523-92de-723cb9c06e4d) |
+
+## Links
+- [Demo video]()
+- [Pitch deck]()
+- [Deployment on Aptos Testnet]()

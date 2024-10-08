@@ -83,14 +83,12 @@ export default function Component() {
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10" />
             <div className="relative z-10">
               <h1 className="mb-4 text-center text-3xl sm:text-4xl lg:text-6xl font-bold">
-                A Revolutionary Gamified Public Goods Accelerator
+                Boost Open-Source Projects with Gamified Funding
               </h1>
               <p className="mb-6 sm:mb-8 text-center text-base sm:text-lg text-muted-foreground">
-                Open Forge is reimagining how open-source projects are funded,
-                supported, and showcased within the Aptos ecosystem. We're
-                leveraging the power of blockchain technology to create a fair,
-                engaging, and addictive platform for discovering and funding
-                innovative projects.
+                Open Forge transforms how open-source projects thrive in the
+                Aptos ecosystem. Our platform makes funding and supporting
+                innovative projects easy, fair, and fun.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link to="/play">
@@ -104,7 +102,7 @@ export default function Component() {
                     size="sm"
                     className="w-full sm:w-auto"
                   >
-                    Explore Projects
+                    View Projects
                   </Button>
                 </Link>
               </div>
@@ -115,7 +113,7 @@ export default function Component() {
       <section className="bg-muted py-8 sm:py-12 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="mb-6 sm:mb-8 text-center text-xl sm:text-2xl font-bold">
-            Become Open Forge Innovators
+            Join Our Community of Innovators
           </h2>
           <div className="relative h-[200px] sm:h-[300px] w-full overflow-hidden rounded-lg border bg-background md:shadow-xl">
             <div className="flex h-full flex-col">
@@ -143,12 +141,8 @@ export default function Component() {
           </div>
           <div className="mt-6 sm:mt-8 flex justify-center">
             <Link to="/upload" className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full sm:w-auto"
-              >
-                Submit a Project
+              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                Submit Your Project
               </Button>
             </Link>
           </div>
