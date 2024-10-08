@@ -117,6 +117,7 @@ designed with accesibility
 | ![User Profile](https://github.com/user-attachments/assets/d4285d93-0f24-42b7-8ceb-e093fdc914b7) | ![Project List](https://github.com/user-attachments/assets/acb8adb2-bf93-42f2-b1bb-fd505936006c) | ![Launch Page](https://github.com/user-attachments/assets/a2497478-0ecf-4523-92de-723cb9c06e4d) |
 
 ## Links
+
 - [Demo video]()
-- [Pitch deck]()
-- [Deployment on Aptos Testnet]()
+- [Pitch deck](https://www.canva.com/design/DAGS7dzX6-Q/PEq3O2F_TpTWpUhlJKRNVQ/edit?utm_content=DAGS7dzX6-Q&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+- [Deployment on Aptos Testnet](https://explorer.aptoslabs.com/account/0x3937fa049f5d8ec5ea9e17b042788f20110b99741ee2c13c1255f0b066f92d67/transactions?network=testnet)
