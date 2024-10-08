@@ -98,10 +98,7 @@ const ProjectStats: React.FC<ProjectStatsProps> = ({ project }) => {
             className="flex flex-col items-center w-full justify-center p-2 rounded-md hover:bg-gray-100 transition duration-300 mb-4 sm:mb-0"
           >
             <div className="flex justify-center">
-              <ChevronUp
-                className="text-gray-600"
-                size={32}
-              />
+              <ChevronUp className="text-gray-600" size={32} />
             </div>
             <div className="flex justify-center">
               <span className="text-2xl font-semibold">{votes}</span>

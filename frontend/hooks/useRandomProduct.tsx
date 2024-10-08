@@ -5,16 +5,16 @@ import { useKeylessAccount } from "@/context/KeylessAccountContext"
 import { COLLECTION_NAME } from "@/lib/constants"
 import { ABI } from "@/utils/abi-product_nft"
 import {
-    getAptosClient,
-    getSurfClient,
-    surfClientProductNFT,
+  getAptosClient,
+  getSurfClient,
+  surfClientProductNFT,
 } from "@/utils/aptosClient"
 import { GET_COLLECTION_NFTS } from "@/utils/graphql-doc"
 import { useApolloClient, useQuery } from "@apollo/client"
 import {
-    useMutation,
-    useQueryClient,
-    useQuery as useReactQuery,
+  useMutation,
+  useQueryClient,
+  useQuery as useReactQuery,
 } from "@tanstack/react-query"
 import { createEntryPayload } from "@thalalabs/surf"
 import { useWalletClient } from "@thalalabs/surf/hooks"
@@ -170,13 +170,13 @@ export const useRandomProductWithNFT = () => {
       )
       if (nft) {
         const validOwnership = nft.current_token_ownerships.find(
-          ownership => ownership.amount > 0
+          (ownership) => ownership.amount > 0
         )
         if (validOwnership) {
           const updatedNFT = await fetchNFTMetadata(nft)
           setMatchingNFT({
             ...updatedNFT,
-            current_token_ownerships: [validOwnership]
+            current_token_ownerships: [validOwnership],
           })
           return updatedNFT
         }

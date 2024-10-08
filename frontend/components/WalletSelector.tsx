@@ -165,7 +165,7 @@ export function WalletSelector() {
         <Button>Sign in</Button>
       </DialogTrigger>
       {/* <DialogContent> */}
-        <ConnectWalletDialog close={closeDialog} />
+      <ConnectWalletDialog close={closeDialog} />
       {/* </DialogContent> */}
     </Dialog>
   )

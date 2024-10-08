@@ -14,7 +14,9 @@ const KeylessAccountContext = createContext<
 export const KeylessAccountProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
-  const [keylessAccount, setKeylessAccount] = useState<KeylessAccount | null>(null)
+  const [keylessAccount, setKeylessAccount] = useState<KeylessAccount | null>(
+    null
+  )
 
   return (
     <KeylessAccountContext.Provider

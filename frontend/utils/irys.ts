@@ -1,8 +1,8 @@
-import type { WalletContextState } from "@aptos-labs/wallet-adapter-react";
-import { WebUploader } from "@irys/web-upload";
-import { WebAptos } from "@irys/web-upload-aptos";
+import type { WalletContextState } from "@aptos-labs/wallet-adapter-react"
+import { WebUploader } from "@irys/web-upload"
+import { WebAptos } from "@irys/web-upload-aptos"
 
-let irysUploaderInstance: any | null = null;
+let irysUploaderInstance: any | null = null
 
 export async function getIrysUploader(
   wallet: WalletContextState
@@ -14,7 +14,7 @@ export async function getIrysUploader(
       .withRpc(rpcURL)
       .devnet()
   }
-  return irysUploaderInstance;
+  return irysUploaderInstance
 }
 
 export async function uploadMetadataURI(

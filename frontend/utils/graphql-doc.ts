@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@apollo/client"
 
 /**
  * Edit on Hasura
@@ -27,7 +27,7 @@ export const GET_COLLECTION_NFTS = gql`
       }
     }
   }
-`;
+`
 
 export const GET_COLLECTION_NFTS_BY_OWNER = gql`
   query GetCollectionNfts($collection_name: String, $owner_address: String) {

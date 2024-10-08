@@ -33,7 +33,7 @@ function GoogleLogo() {
         fill="#EA4335"
       />
     </svg>
-  );
+  )
 }
 
-export default GoogleLogo;
+export default GoogleLogo
