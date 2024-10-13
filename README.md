@@ -121,6 +121,5 @@ designed with accesibility
 
 ## Links
 
-- [Demo video]()
 - [Pitch deck](https://www.canva.com/design/DAGS7dzX6-Q/PEq3O2F_TpTWpUhlJKRNVQ/edit?utm_content=DAGS7dzX6-Q&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 - [Deployment on Aptos Testnet](https://explorer.aptoslabs.com/account/0x3937fa049f5d8ec5ea9e17b042788f20110b99741ee2c13c1255f0b066f92d67/transactions?network=testnet)
